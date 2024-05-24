@@ -21,7 +21,8 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public String saveEmployee(Employee employee){
+    public String saveEmployee(EmployeeDTO employeeDTO){
+        Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employeeRepository.save(employee);
         return "El empleado se ha guardado correctamente";
     }
@@ -39,13 +40,13 @@ public class EmployeeService {
         return employeeList.stream().map(employee -> modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
     }
 
-    public EmployeeDTO updateEmployee(Long id, Employee employee){
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO){
         Optional<Employee> employeeOptional = employeeRepository.findByIdAndEliminated(id, false);
         if(employeeOptional.isEmpty()){
             throw new RuntimeException("El empleado no existe");
         }
         Employee employeePersisted = employeeOptional.get();
-        employeePersisted.setFirstname(employee.getFirstname());
+        employeePersisted.setFirstname(employeeDTO.getFirstname());
         employeeRepository.save(employeePersisted);
         return modelMapper.map(employeePersisted, EmployeeDTO.class);
 

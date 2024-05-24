@@ -31,13 +31,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee){
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(employeeService.saveEmployee(employee));
+    public ResponseEntity<String> saveEmployee(@RequestBody EmployeeDTO employeeDTO){
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(employeeService.saveEmployee(employeeDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
-        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO){
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employeeDTO));
     }
 
     @DeleteMapping("/{id}")
