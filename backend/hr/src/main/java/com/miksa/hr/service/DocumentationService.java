@@ -26,6 +26,11 @@ public class DocumentationService {
         this.modelMapper = modelMapper;
     }
 
+    public DocumentationDTO downloadDocumentation(Long id) {
+        Documentation documentation = findDocumentation(id);
+        return modelMapper.map(documentation, DocumentationDTO.class);
+    }
+
     public DocumentationDTO uploadDocumentation(DocumentationDTO documentationDTO) {
 
         Employee employee = employeeService.findEmployee(documentationDTO.getIdEmployee());

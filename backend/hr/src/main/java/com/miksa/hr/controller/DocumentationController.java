@@ -17,6 +17,11 @@ public class DocumentationController {
         this.documentationService = documentationService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DocumentationDTO> downloadDocumentation(@PathVariable Long id){
+        return ResponseEntity.ok(documentationService.downloadDocumentation(id));
+    }
+
     @PostMapping()
     public ResponseEntity<DocumentationDTO> uploadDocumentation(@Valid @RequestBody DocumentationDTO documentationDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(documentationService.uploadDocumentation(documentationDTO));
