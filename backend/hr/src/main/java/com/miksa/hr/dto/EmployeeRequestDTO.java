@@ -3,6 +3,7 @@ package com.miksa.hr.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.miksa.hr.entity.enums.GenderEnum;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,18 @@ import java.time.LocalDate;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EmployeeRequestDTO {
     private Long id;
+    @NotBlank
     private String lastname;
+    @NotBlank
     private String firstname;
+    @NotNull
     private Long dni;
+    @NotNull
     private Long cuil;
+    @Email @NotNull
     private String email;
     private LocalDate dateOfAdmission;
+    @Past
     private LocalDate dateOfBirth;
     private String maritalStatus;
     private String workingHours;

@@ -2,10 +2,10 @@ package com.miksa.hr.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.miksa.hr.entity.AbsencePermission;
-import com.miksa.hr.entity.Employee;
 import com.miksa.hr.entity.enums.DocumentationType;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertFalse;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +21,15 @@ import java.time.LocalDateTime;
 public class DocumentationDTO {
     private Long id;
     private String description;
+    @Null
     private LocalDateTime uploadedDate;
+    @Null
     private String pathToFile;
+    @NotNull
     private Long idEmployee;
     private Long idAbsencePermission;
+    @NotNull
     private DocumentationType documentationType;
+    @AssertFalse
     private boolean eliminated;
 }

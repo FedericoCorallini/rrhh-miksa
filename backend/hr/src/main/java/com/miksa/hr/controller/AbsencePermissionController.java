@@ -4,6 +4,7 @@ import com.miksa.hr.dto.AbsencePermissionDTO;
 import com.miksa.hr.dto.AbsencePermissionRequestDTO;
 import com.miksa.hr.entity.enums.PermissionState;
 import com.miksa.hr.service.AbsencePermissionService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -32,17 +33,17 @@ public class AbsencePermissionController {
     }
 
     @PostMapping
-    public ResponseEntity<AbsencePermissionRequestDTO> saveAbsencePermission(@RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
+    public ResponseEntity<AbsencePermissionRequestDTO> saveAbsencePermission(@Valid @RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(absencePermissionService.saveAbsencePermission(absencePermissionDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AbsencePermissionDTO> updateAbsencePermission(@PathVariable Long id, @RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
+    public ResponseEntity<AbsencePermissionDTO> updateAbsencePermission(@PathVariable Long id, @Valid @RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
         return ResponseEntity.ok(absencePermissionService.updateAbsencePermission(id, absencePermissionDTO));
     }
 
     @PatchMapping("/state/{id}")
-    public ResponseEntity<String> updateAbsencePermissionState(@PathVariable Long id, PermissionState state){
+    public ResponseEntity<String> updateAbsencePermissionState(@PathVariable Long id, @RequestBody PermissionState state){
         return ResponseEntity.ok(absencePermissionService.updateAbsencePermissionState(id, state));
     }
 

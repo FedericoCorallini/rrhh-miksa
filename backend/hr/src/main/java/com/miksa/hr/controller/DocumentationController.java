@@ -2,6 +2,7 @@ package com.miksa.hr.controller;
 
 import com.miksa.hr.dto.DocumentationDTO;
 import com.miksa.hr.service.DocumentationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,14 @@ public class DocumentationController {
     }
 
     @PostMapping()
-    public ResponseEntity<DocumentationDTO> uploadDocumentation(@RequestBody DocumentationDTO documentationDTO){
+    public ResponseEntity<DocumentationDTO> uploadDocumentation(@Valid @RequestBody DocumentationDTO documentationDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(documentationService.uploadDocumentation(documentationDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DocumentationDTO> updateDocumentation(
             @PathVariable Long id,
-            @RequestBody DocumentationDTO documentationDTO
+            @Valid @RequestBody DocumentationDTO documentationDTO
     ){
         return ResponseEntity.ok(documentationService.updateDocumentation(id, documentationDTO));
     }

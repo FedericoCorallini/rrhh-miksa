@@ -4,6 +4,7 @@ import com.miksa.hr.dto.EmployeeDTO;
 import com.miksa.hr.dto.EmployeeRequestDTO;
 import com.miksa.hr.entity.Employee;
 import com.miksa.hr.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -34,12 +35,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeRequestDTO> saveEmployee(@RequestBody EmployeeRequestDTO employeeDTO){
+    public ResponseEntity<EmployeeRequestDTO> saveEmployee(@Valid @RequestBody EmployeeRequestDTO employeeDTO){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(employeeService.saveEmployee(employeeDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeRequestDTO employeeDTO){
         return ResponseEntity.ok(employeeService.updateEmployee(id, employeeDTO));
     }
 

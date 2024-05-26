@@ -2,7 +2,8 @@ package com.miksa.hr.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.miksa.hr.entity.enums.PermissionState;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,13 @@ import java.time.LocalDateTime;
 public class AbsencePermissionRequestDTO {
     private Long id;
     private String details;
+    @NotNull(message = "Debes ingresar la fecha de inicio")
+    @Future(message = "La fecha de inicio debe ser posterior a la fecha actual")
     private LocalDateTime startDateTime;
+    @NotNull(message = "Debes ingresar la fecha de finalizacion")
+    @Future(message = "La fecha de finalizacion debe ser posterior a la fecha actual")
     private LocalDateTime endDateTime;
     private String reason;
+    @NotNull(message = "Debes enviar el id del empleado al que corresponde el permiso")
     private Long employeeId;
-    private PermissionState permissionState;
 }
