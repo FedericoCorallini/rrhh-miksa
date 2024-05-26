@@ -1,6 +1,7 @@
 package com.miksa.hr.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.miksa.hr.entity.enums.DocumentationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,13 @@ public class Documentation {
     private Long id;
     private String description;
     private LocalDateTime uploadedDate;
+    private String pathToFile;
     @ManyToOne
     @JoinColumn(name = "employee_id")
+    @JsonBackReference
     private Employee employee;
     @OneToOne(mappedBy = "documentation", cascade = CascadeType.ALL)
+    @JsonBackReference
     private AbsencePermission absencePermission;
     @Column(name = "documentation_type")
     @Enumerated(EnumType.STRING)

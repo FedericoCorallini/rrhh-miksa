@@ -1,5 +1,6 @@
 package com.miksa.hr.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,11 @@ public class Employee {
     @Column(name = "cell_phone_number")
     private String cellPhoneNumber;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Documentation> documentationList;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<AbsencePermission> absencePermissionsList;
     private boolean eliminated;
 }
 

@@ -21,18 +21,15 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public String saveEmployee(EmployeeDTO employeeDTO){
+    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO){
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employeeRepository.save(employee);
-        return "El empleado se ha guardado correctamente";
+        return employeeDTO;
     }
 
     public EmployeeDTO getEmployeeById(Long id){
-        Optional<Employee> employeeOptional = employeeRepository.findByIdAndEliminated(id, false);
-        if(employeeOptional.isEmpty()){
-            throw new RuntimeException("El empleado no existe");
-        }
-        return modelMapper.map(employeeOptional.get(), EmployeeDTO.class);
+        Employee employee = findEmployee(id);
+        return modelMapper.map(employee, EmployeeDTO.class);
     }
 
     public List<EmployeeDTO> getEmployees() {
@@ -41,11 +38,8 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO){
-        Optional<Employee> employeeOptional = employeeRepository.findByIdAndEliminated(id, false);
-        if(employeeOptional.isEmpty()){
-            throw new RuntimeException("El empleado no existe");
-        }
-        Employee employeePersisted = employeeOptional.get();
+        Employee employeePersisted = findEmployee(id);
+        // evaluar posibilidad de modificar datos de los empleados y cuales
         employeePersisted.setFirstname(employeeDTO.getFirstname());
         employeeRepository.save(employeePersisted);
         return modelMapper.map(employeePersisted, EmployeeDTO.class);
@@ -53,13 +47,17 @@ public class EmployeeService {
     }
 
     public String deleteEmployee(Long id) {
+        Employee employee = findEmployee(id);
+        employee.setEliminated(true);
+        employeeRepository.save(employee);
+        return "Empleado eliminado";
+    }
+
+    public Employee findEmployee(Long id) {
         Optional<Employee> employeeOptional = employeeRepository.findByIdAndEliminated(id, false);
         if(employeeOptional.isEmpty()){
             throw new RuntimeException("El empleado no existe");
         }
-        Employee employee = employeeOptional.get();
-        employee.setEliminated(true);
-        employeeRepository.save(employee);
-        return "Empleado eliminado";
+        return employeeOptional.get();
     }
 }

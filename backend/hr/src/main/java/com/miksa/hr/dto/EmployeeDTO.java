@@ -2,7 +2,6 @@ package com.miksa.hr.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.miksa.hr.entity.Documentation;
 import com.miksa.hr.entity.enums.GenderEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +33,8 @@ public class EmployeeDTO {
     private GenderEnum gender;
     private String homePhoneNumber;
     private String cellPhoneNumber;
-    private List<Documentation> documentationList;
+    private List<DocumentationDTO> documentationList;
+    private List<AbsencePermissionDTO> absencePermissionList;
 
 
 }
