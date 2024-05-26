@@ -1,6 +1,7 @@
 package com.miksa.hr.controller;
 
 import com.miksa.hr.dto.EmployeeDTO;
+import com.miksa.hr.dto.EmployeeRequestDTO;
 import com.miksa.hr.entity.Employee;
 import com.miksa.hr.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -33,12 +34,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeRequestDTO> saveEmployee(@RequestBody EmployeeRequestDTO employeeDTO){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(employeeService.saveEmployee(employeeDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestDTO employeeDTO){
         return ResponseEntity.ok(employeeService.updateEmployee(id, employeeDTO));
     }
 

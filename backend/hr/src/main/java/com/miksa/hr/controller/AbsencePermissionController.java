@@ -1,6 +1,7 @@
 package com.miksa.hr.controller;
 
 import com.miksa.hr.dto.AbsencePermissionDTO;
+import com.miksa.hr.dto.AbsencePermissionRequestDTO;
 import com.miksa.hr.entity.enums.PermissionState;
 import com.miksa.hr.service.AbsencePermissionService;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,12 @@ public class AbsencePermissionController {
     }
 
     @PostMapping
-    public ResponseEntity<AbsencePermissionDTO> saveAbsencePermission(@RequestBody AbsencePermissionDTO absencePermissionDTO){
+    public ResponseEntity<AbsencePermissionRequestDTO> saveAbsencePermission(@RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(absencePermissionService.saveAbsencePermission(absencePermissionDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AbsencePermissionDTO> updateAbsencePermission(@PathVariable Long id, @RequestBody AbsencePermissionDTO absencePermissionDTO){
+    public ResponseEntity<AbsencePermissionDTO> updateAbsencePermission(@PathVariable Long id, @RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
         return ResponseEntity.ok(absencePermissionService.updateAbsencePermission(id, absencePermissionDTO));
     }
 

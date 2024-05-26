@@ -24,6 +24,7 @@ public class DocumentationDTO {
     private LocalDateTime uploadedDate;
     private String pathToFile;
     private Long idEmployee;
-    private Long idAbscencePermission;
+    private Long idAbsencePermission;
     private DocumentationType documentationType;
+    private boolean eliminated;
 }

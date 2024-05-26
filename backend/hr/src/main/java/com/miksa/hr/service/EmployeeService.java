@@ -1,6 +1,8 @@
 package com.miksa.hr.service;
 
+import com.miksa.hr.dto.DocumentationDTO;
 import com.miksa.hr.dto.EmployeeDTO;
+import com.miksa.hr.dto.EmployeeRequestDTO;
 import com.miksa.hr.entity.Employee;
 import com.miksa.hr.repository.IEmployeeRepository;
 import org.modelmapper.ModelMapper;
@@ -21,7 +23,7 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO){
+    public EmployeeRequestDTO saveEmployee(EmployeeRequestDTO employeeDTO){
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employeeRepository.save(employee);
         return employeeDTO;
@@ -29,15 +31,24 @@ public class EmployeeService {
 
     public EmployeeDTO getEmployeeById(Long id){
         Employee employee = findEmployee(id);
-        return modelMapper.map(employee, EmployeeDTO.class);
+        EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
+        filterEliminatedItems(employeeDTO);
+        return employeeDTO;
     }
 
     public List<EmployeeDTO> getEmployees() {
         List<Employee> employeeList = employeeRepository.findByEliminated(false);
-        return employeeList.stream().map(employee -> modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
+        List<EmployeeDTO> employeeDTOList= employeeList
+                .stream()
+                .map(employee -> modelMapper.map(employee, EmployeeDTO.class))
+                .collect(Collectors.toList());
+        for (EmployeeDTO employeeDTO : employeeDTOList) {
+            filterEliminatedItems(employeeDTO);
+        }
+        return employeeDTOList;
     }
 
-    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO){
+    public EmployeeDTO updateEmployee(Long id, EmployeeRequestDTO employeeDTO){
         Employee employeePersisted = findEmployee(id);
         // evaluar posibilidad de modificar datos de los empleados y cuales
         employeePersisted.setFirstname(employeeDTO.getFirstname());
@@ -59,5 +70,22 @@ public class EmployeeService {
             throw new RuntimeException("El empleado no existe");
         }
         return employeeOptional.get();
+    }
+
+    private void filterEliminatedItems(EmployeeDTO employeeDTO) {
+        if(employeeDTO.getDocumentationList() != null) {
+            employeeDTO.setDocumentationList(
+                    employeeDTO.getDocumentationList()
+                            .stream()
+                            .filter(documentationDTO -> !documentationDTO.isEliminated())
+                            .collect(Collectors.toList()));
+        }
+        if (employeeDTO.getAbsencePermissionList() != null) {
+            employeeDTO.setAbsencePermissionList(
+                    employeeDTO.getAbsencePermissionList()
+                            .stream()
+                            .filter(absencePermissionDTO -> !absencePermissionDTO.isEliminated())
+                            .collect(Collectors.toList()));
+        }
     }
 }

@@ -33,7 +33,7 @@ public class DocumentationService {
         documentation.setUploadedDate(LocalDateTime.now());
 
         if(!documentationDTO.getDocumentationType().name().equals("DDJJ")){
-            AbsencePermission absencePermission = absencePermissionService.findAbsencePermission(documentationDTO.getIdAbscencePermission());
+            AbsencePermission absencePermission = absencePermissionService.findAbsencePermission(documentationDTO.getIdAbsencePermission());
             documentation.setAbsencePermission(absencePermission);
         }
 
