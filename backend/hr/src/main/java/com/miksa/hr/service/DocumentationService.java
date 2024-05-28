@@ -7,8 +7,14 @@ import com.miksa.hr.entity.Employee;
 import com.miksa.hr.repository.IDocumentationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -68,5 +74,32 @@ public class DocumentationService {
             throw new RuntimeException("La documentacion no existe");
         }
         return documentationOptional.get();
+    }
+
+    public String uploadFile(Long idDocumentation, MultipartFile file) throws IOException {
+
+        Documentation documentation = findDocumentation(idDocumentation);
+        var path = "src/main/resources/documentation/" + documentation.getEmployee().getId();
+
+        try {
+            if(file.isEmpty()) {
+                throw new RuntimeException("Empty file");
+            }
+            Path destinationPath = Paths.get(path)
+                    .normalize()
+                    .toAbsolutePath();
+            if (Files.notExists(destinationPath)) {
+                Files.createDirectories(destinationPath);
+            }
+            Path destination = destinationPath.resolve(Objects.requireNonNull(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), destination);
+            documentation.setPathToFile(destination.toString());
+
+        } catch(IOException e) {
+            throw new RuntimeException("Store exception");
+        }
+
+        documentationRepository.save(documentation);
+        return documentation.getPathToFile();
     }
 }

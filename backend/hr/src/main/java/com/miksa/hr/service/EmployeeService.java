@@ -1,6 +1,5 @@
 package com.miksa.hr.service;
 
-import com.miksa.hr.dto.DocumentationDTO;
 import com.miksa.hr.dto.EmployeeDTO;
 import com.miksa.hr.dto.EmployeeRequestDTO;
 import com.miksa.hr.entity.Employee;
@@ -46,6 +45,11 @@ public class EmployeeService {
             filterEliminatedItems(employeeDTO);
         }
         return employeeDTOList;
+
+//        List<Employee> employeeList = employeeRepository.findEmployeeWithQuery();
+//        return employeeList.stream()
+//                .map(employee -> modelMapper.map(employee, EmployeeDTO.class))
+//                .collect(Collectors.toList());
     }
 
     public EmployeeDTO updateEmployee(Long id, EmployeeRequestDTO employeeDTO){

@@ -4,8 +4,12 @@ import com.miksa.hr.dto.DocumentationDTO;
 import com.miksa.hr.service.DocumentationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/documentation")
@@ -38,5 +42,10 @@ public class DocumentationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDocumentation(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(documentationService.deleteDocumentation(id));
+    }
+
+    @PostMapping(value = "/upload/{idDocumentation}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(@PathVariable Long idDocumentation, @RequestPart(value = "file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(documentationService.uploadFile(idDocumentation, file));
     }
 }
