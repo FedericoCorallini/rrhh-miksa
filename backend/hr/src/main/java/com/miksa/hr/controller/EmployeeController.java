@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,11 +26,13 @@ public class EmployeeController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('SCOPE_readuser')")
     public ResponseEntity<List<EmployeeDTO>> getEmployees(){
      return ResponseEntity.ok(employeeService.getEmployees());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_updateuser')")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id){
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
