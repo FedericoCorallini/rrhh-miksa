@@ -28,14 +28,14 @@ public class AbsencePermission {
     private LocalDateTime endDateTime;
     private String reason;
     @OneToOne
-    @JoinColumn(name = "documentation_id")
+    @JoinColumn(name = "documentation_id", updatable = false)
     @JsonManagedReference
     private Documentation documentation;
     @Enumerated(EnumType.STRING)
     @Column(name = "permission_state")
     private PermissionState permissionState;
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", updatable = false)
     @JsonBackReference
     private Employee employee;
     private boolean eliminated;

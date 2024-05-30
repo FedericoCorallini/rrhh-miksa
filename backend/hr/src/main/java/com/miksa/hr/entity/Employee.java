@@ -23,12 +23,15 @@ public class Employee {
     private Long id;
     private String lastname;
     private String firstname;
+    @Column(unique = true)
     private Long dni;
+    @Column(unique = true)
     private Long cuil;
+    @Column(unique = true)
     private String email;
-    @Column(name = "date_of_admission")
+    @Column(name = "date_of_admission", updatable = false)
     private LocalDate dateOfAdmission;
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", updatable = false)
     private LocalDate dateOfBirth;
     @Column(name = "marital_status")
     private String maritalStatus;

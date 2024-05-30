@@ -34,7 +34,7 @@ public class EmployeeDTO {
     private String homePhoneNumber;
     private String cellPhoneNumber;
     private List<DocumentationDTO> documentationList;
-    private List<AbsencePermissionDTO> absencePermissionList;
+    private List<AbsencePermissionDTO> absencePermissionsList;
 
 
 }

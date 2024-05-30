@@ -6,10 +6,13 @@ import com.miksa.hr.entity.Documentation;
 import com.miksa.hr.entity.Employee;
 import com.miksa.hr.repository.IDocumentationRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,7 +82,7 @@ public class DocumentationService {
     public String uploadFile(Long idDocumentation, MultipartFile file) throws IOException {
 
         Documentation documentation = findDocumentation(idDocumentation);
-        var path = "src/main/resources/documentation/" + documentation.getEmployee().getId();
+        var path = "../../../../documentation/" + documentation.getEmployee().getId();
 
         try {
             if(file.isEmpty()) {
@@ -101,5 +104,13 @@ public class DocumentationService {
 
         documentationRepository.save(documentation);
         return documentation.getPathToFile();
+    }
+
+    public Resource downloadFile(Long idDocumentation) throws MalformedURLException {
+        Documentation documentation = findDocumentation(idDocumentation);
+        var location = documentation.getPathToFile();
+        var uri = Paths.get(location).toUri();
+        return new UrlResource(uri);
+
     }
 }

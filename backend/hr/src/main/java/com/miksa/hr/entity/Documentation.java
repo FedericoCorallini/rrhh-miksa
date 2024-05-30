@@ -21,10 +21,11 @@ public class Documentation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    @Column(updatable = false)
     private LocalDateTime uploadedDate;
     private String pathToFile;
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", updatable = false)
     @JsonBackReference
     private Employee employee;
     @OneToOne(mappedBy = "documentation", cascade = CascadeType.ALL)

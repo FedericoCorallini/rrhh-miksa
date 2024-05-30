@@ -3,6 +3,7 @@ package com.miksa.hr.controller;
 import com.miksa.hr.dto.DocumentationDTO;
 import com.miksa.hr.service.DocumentationService;
 import jakarta.validation.Valid;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 @RestController
 @RequestMapping("/api/documentation")
@@ -48,4 +50,10 @@ public class DocumentationController {
     public ResponseEntity<String> uploadFile(@PathVariable Long idDocumentation, @RequestPart(value = "file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(documentationService.uploadFile(idDocumentation, file));
     }
+
+    @GetMapping(value = "/download/{idDocumentation}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long idDocumentation) throws MalformedURLException {
+        return ResponseEntity.ok(documentationService.downloadFile(idDocumentation));
+    }
+
 }

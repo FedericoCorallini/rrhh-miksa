@@ -84,9 +84,9 @@ public class EmployeeService {
                             .filter(documentationDTO -> !documentationDTO.isEliminated())
                             .collect(Collectors.toList()));
         }
-        if (employeeDTO.getAbsencePermissionList() != null) {
-            employeeDTO.setAbsencePermissionList(
-                    employeeDTO.getAbsencePermissionList()
+        if (employeeDTO.getAbsencePermissionsList() != null) {
+            employeeDTO.setAbsencePermissionsList(
+                    employeeDTO.getAbsencePermissionsList()
                             .stream()
                             .filter(absencePermissionDTO -> !absencePermissionDTO.isEliminated())
                             .collect(Collectors.toList()));
