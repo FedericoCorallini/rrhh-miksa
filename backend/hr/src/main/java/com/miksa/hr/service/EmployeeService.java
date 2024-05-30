@@ -31,6 +31,7 @@ public class EmployeeService {
     public EmployeeDTO getEmployeeById(Long id){
         Employee employee = findEmployee(id);
         EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
+        // Si fuese necesario que en empleado DTO figuren las listas de documentos y permisos asociados
         filterEliminatedItems(employeeDTO);
         return employeeDTO;
     }

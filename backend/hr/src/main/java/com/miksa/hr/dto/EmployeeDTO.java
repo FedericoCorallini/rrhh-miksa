@@ -35,6 +35,7 @@ public class EmployeeDTO {
     private String cellPhoneNumber;
     private List<DocumentationDTO> documentationList;
     private List<AbsencePermissionDTO> absencePermissionsList;
+    private boolean eliminated;
 
 
 }
