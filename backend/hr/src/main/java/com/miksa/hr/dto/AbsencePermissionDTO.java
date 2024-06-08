@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,8 +22,8 @@ public class AbsencePermissionDTO {
 
     private Long id;
     private String details;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private LocalDate startDateTime;
+    private LocalDate endDateTime;
     private String reason;
     private DocumentationDTO documentation;
     private Long employeeId;

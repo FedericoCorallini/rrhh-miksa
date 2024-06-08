@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 
 @RestController
 @RequestMapping("/api/documentation")
+@CrossOrigin
 public class DocumentationController {
 
     public final DocumentationService documentationService;

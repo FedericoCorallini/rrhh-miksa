@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -23,9 +25,11 @@ public class AbsencePermission {
     private Long id;
     private String details;
     @Column(name = "start_date_time")
-    private LocalDateTime startDateTime;
+    private LocalDate startDateTime;
     @Column(name = "end_date_time")
-    private LocalDateTime endDateTime;
+    private LocalDate endDateTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String reason;
     @OneToOne
     @JoinColumn(name = "documentation_id", updatable = false)

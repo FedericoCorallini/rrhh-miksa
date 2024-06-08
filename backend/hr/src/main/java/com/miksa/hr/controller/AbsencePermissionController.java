@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/absence-permission")
+@CrossOrigin
 public class AbsencePermissionController {
 
     private final AbsencePermissionService absencePermissionService;
@@ -22,6 +23,10 @@ public class AbsencePermissionController {
         this.absencePermissionService = absencePermissionService;
     }
 
+    @PostMapping("hello")
+    public String hello(String msj){
+        return msj;
+    }
     @GetMapping
     public ResponseEntity<List<AbsencePermissionDTO>> getAbsencePermissions(){
         return ResponseEntity.ok(absencePermissionService.getAbsencePermissions());
