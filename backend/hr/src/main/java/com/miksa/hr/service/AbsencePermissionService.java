@@ -2,6 +2,7 @@ package com.miksa.hr.service;
 
 import com.miksa.hr.dto.AbsencePermissionDTO;
 import com.miksa.hr.dto.AbsencePermissionRequestDTO;
+import com.miksa.hr.dto.EmployeeDTO;
 import com.miksa.hr.entity.AbsencePermission;
 import com.miksa.hr.entity.Employee;
 import com.miksa.hr.entity.enums.PermissionState;
@@ -57,8 +58,9 @@ public class AbsencePermissionService {
     public AbsencePermissionDTO updateAbsencePermission(Long id, AbsencePermissionRequestDTO absencePermissionDTO) {
         AbsencePermission absencePermission = findAbsencePermission(id);
         // campos variables a modificar
+        AbsencePermission absencePermission1 = modelMapper.map(absencePermissionDTO, AbsencePermission.class);
         absencePermission.setReason(absencePermissionDTO.getReason());
-        absencePermissionRepository.save(absencePermission);
+        absencePermissionRepository.save(absencePermission1);
         return modelMapper.map(absencePermission, AbsencePermissionDTO.class);
     }
 

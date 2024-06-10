@@ -1,16 +1,23 @@
+server:
+  port: 5000
 spring:
   application:
     name: hr
 
   datasource:
-    url: jdbc:mysql://localhost:3310/miksa
+#    url: jdbc:mysql://localhost:3310/miksa
+    url: jdbc:mysql://miksa.c1e0m20qu542.sa-east-1.rds.amazonaws.com:3306/miksa
     dbname: miksa
     username: root
-    password: 12345678
+#    password: 12345678
+    password: SeminarioCloud2024
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: tue
     hibernate:
       ddl-auto: update
 

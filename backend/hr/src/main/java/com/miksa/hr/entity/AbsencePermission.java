@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -22,20 +24,23 @@ public class AbsencePermission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String details;
+    private LocalDate creationDate;
     @Column(name = "start_date_time")
-    private LocalDateTime startDateTime;
+    private LocalDate startDateTime;
     @Column(name = "end_date_time")
-    private LocalDateTime endDateTime;
+    private LocalDate endDateTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String reason;
     @OneToOne
-    @JoinColumn(name = "documentation_id")
+    @JoinColumn(name = "documentation_id", updatable = false)
     @JsonManagedReference
     private Documentation documentation;
     @Enumerated(EnumType.STRING)
     @Column(name = "permission_state")
     private PermissionState permissionState;
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", updatable = false)
     @JsonBackReference
     private Employee employee;
     private boolean eliminated;

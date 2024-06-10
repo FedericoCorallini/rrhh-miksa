@@ -12,19 +12,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class DocumentationDTO {
-    private Long id;
+public class DocumentationRequestDTO {
     private String description;
-    private LocalDateTime uploadedDate;
-    private String pathToFile;
+    @NotNull
     private Long idEmployee;
     private Long idAbsencePermission;
+    @NotNull
     private DocumentationType documentationType;
-    private boolean eliminated;
 }

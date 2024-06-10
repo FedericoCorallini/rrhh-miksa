@@ -1,15 +1,19 @@
 package com.miksa.hr.service;
 
 import com.miksa.hr.dto.DocumentationDTO;
+import com.miksa.hr.dto.DocumentationRequestDTO;
 import com.miksa.hr.entity.AbsencePermission;
 import com.miksa.hr.entity.Documentation;
 import com.miksa.hr.entity.Employee;
 import com.miksa.hr.repository.IDocumentationRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,7 +41,7 @@ public class DocumentationService {
         return modelMapper.map(documentation, DocumentationDTO.class);
     }
 
-    public DocumentationDTO uploadDocumentation(DocumentationDTO documentationDTO) {
+    public DocumentationDTO uploadDocumentation(DocumentationRequestDTO documentationDTO) {
 
         Employee employee = employeeService.findEmployee(documentationDTO.getIdEmployee());
         Documentation documentation = modelMapper.map(documentationDTO, Documentation.class);
@@ -50,15 +54,15 @@ public class DocumentationService {
 
         documentation.setEmployee(employee);
         documentationRepository.save(documentation);
-        return documentationDTO;
+        return modelMapper.map(documentation, DocumentationDTO.class);
     }
 
-    public DocumentationDTO updateDocumentation(Long idDocumentation, DocumentationDTO documentationDTO) {
+    public DocumentationDTO updateDocumentation(Long idDocumentation, DocumentationRequestDTO documentationDTO) {
         Documentation documentation = findDocumentation(idDocumentation);
         // evaluar posibilidad de modificar parametros
         documentation.setDescription("new description");
         documentationRepository.save(documentation);
-        return documentationDTO;
+        return modelMapper.map(documentation, DocumentationDTO.class);
     }
 
     public String deleteDocumentation(Long id) {
@@ -79,7 +83,7 @@ public class DocumentationService {
     public String uploadFile(Long idDocumentation, MultipartFile file) throws IOException {
 
         Documentation documentation = findDocumentation(idDocumentation);
-        var path = "src/main/resources/documentation/" + documentation.getEmployee().getId();
+        var path = "../../../../documentation/" + documentation.getEmployee().getId();
 
         try {
             if(file.isEmpty()) {
@@ -101,5 +105,13 @@ public class DocumentationService {
 
         documentationRepository.save(documentation);
         return documentation.getPathToFile();
+    }
+
+    public Resource downloadFile(Long idDocumentation) throws MalformedURLException {
+        Documentation documentation = findDocumentation(idDocumentation);
+        var location = documentation.getPathToFile();
+        var uri = Paths.get(location).toUri();
+        return new UrlResource(uri);
+
     }
 }
