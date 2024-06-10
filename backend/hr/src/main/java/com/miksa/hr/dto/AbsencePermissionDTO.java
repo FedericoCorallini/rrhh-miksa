@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -24,9 +25,14 @@ public class AbsencePermissionDTO {
     private String details;
     private LocalDate startDateTime;
     private LocalDate endDateTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String reason;
     private DocumentationDTO documentation;
     private Long employeeId;
     private PermissionState permissionState;
     private boolean eliminated;
+    private LocalDate creationDate;
+    private String employeeName;
+    private String employeePosition;
 }

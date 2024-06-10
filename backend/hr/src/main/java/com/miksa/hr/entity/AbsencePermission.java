@@ -24,6 +24,7 @@ public class AbsencePermission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String details;
+    private LocalDate creationDate;
     @Column(name = "start_date_time")
     private LocalDate startDateTime;
     @Column(name = "end_date_time")

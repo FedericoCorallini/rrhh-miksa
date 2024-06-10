@@ -53,5 +53,9 @@ public class Employee {
     @JsonManagedReference
     private List<AbsencePermission> absencePermissionsList;
     private boolean eliminated;
+
+    public String getFullName() {
+        return this.firstname + " " + this.lastname;
+    }
 }
 
