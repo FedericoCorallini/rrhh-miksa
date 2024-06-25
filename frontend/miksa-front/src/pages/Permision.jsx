@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { patchState, getAbsencePermissions, getFile } from "../utils/Axios";
+import { PermissionModal } from "../components/PermissionModal";
 
 export const Permision = () => {
   const COLUMNS = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "details", headerName: "Detalles", width: 200 },
+    { field: "employee_name", headerName: "Empleado", width: 150 },
+    { field: "reason", headerName: "Motivo", width: 150 },
     {
-      field: "start_date_time",
+      field: "start_date",
       headerName: "Fecha de inicio",
-      width: 200,
+      width: 150,
       type: "Date",
     },
     {
-      field: "end_date_time",
+      field: "end_date",
       headerName: "Fecha de finalizacion",
-      width: 200,
+      width: 150,
       type: "Date",
     },
     { field: "permission_state", headerName: "Estado", width: 110 },
@@ -32,6 +33,8 @@ export const Permision = () => {
           <button onClick={() => changeState(params.row.id, "RECHAZADO")}>
             Rechazar
           </button>
+          
+          <button ><PermissionModal permission={params.row}/></button>
           <button onClick={() => downloadFile(params.row.documentation.id)}>Descargar</button>
         </>
       ),
@@ -69,6 +72,7 @@ export const Permision = () => {
         rows={permissions}
         disableColumnSelector
         disableDensitySelector
+        disableColumnFilter
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
