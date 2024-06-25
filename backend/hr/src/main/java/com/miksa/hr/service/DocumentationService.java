@@ -43,12 +43,12 @@ public class DocumentationService {
 
     public DocumentationDTO uploadDocumentation(DocumentationRequestDTO documentationDTO) {
 
-        Employee employee = employeeService.findEmployee(documentationDTO.getIdEmployee());
+        Employee employee = employeeService.findEmployee(documentationDTO.getEmployee());
         Documentation documentation = modelMapper.map(documentationDTO, Documentation.class);
         documentation.setUploadedDate(LocalDateTime.now());
 
         if(!documentationDTO.getDocumentationType().name().equals("DDJJ")){
-            AbsencePermission absencePermission = absencePermissionService.findAbsencePermission(documentationDTO.getIdAbsencePermission());
+            AbsencePermission absencePermission = absencePermissionService.findAbsencePermission(documentationDTO.getAbsencePermission());
             documentation.setAbsencePermission(absencePermission);
         }
 

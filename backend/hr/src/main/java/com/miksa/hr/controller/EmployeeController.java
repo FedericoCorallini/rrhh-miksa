@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/employee")
+@CrossOrigin
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -26,13 +27,11 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_readuser')")
     public ResponseEntity<List<EmployeeDTO>> getEmployees(){
      return ResponseEntity.ok(employeeService.getEmployees());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_updateuser')")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id){
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }

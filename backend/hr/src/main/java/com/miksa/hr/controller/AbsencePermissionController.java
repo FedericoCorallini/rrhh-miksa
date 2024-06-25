@@ -38,7 +38,7 @@ public class AbsencePermissionController {
     }
 
     @PostMapping
-    public ResponseEntity<AbsencePermissionRequestDTO> saveAbsencePermission(@Valid @RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
+    public ResponseEntity<AbsencePermissionDTO> saveAbsencePermission(@Valid @RequestBody AbsencePermissionRequestDTO absencePermissionDTO){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(absencePermissionService.saveAbsencePermission(absencePermissionDTO));
     }
 

@@ -23,8 +23,8 @@ public class AbsencePermissionDTO {
 
     private Long id;
     private String details;
-    private LocalDate startDateTime;
-    private LocalDate endDateTime;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalTime startTime;
     private LocalTime endTime;
     private String reason;

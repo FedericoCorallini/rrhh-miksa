@@ -9,7 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,10 +23,12 @@ public class AbsencePermissionRequestDTO {
     private String details;
     @NotNull(message = "Debes ingresar la fecha de inicio")
     @Future(message = "La fecha de inicio debe ser posterior a la fecha actual")
-    private LocalDateTime startDateTime;
+    private LocalDate startDate;
     @NotNull(message = "Debes ingresar la fecha de finalizacion")
     @Future(message = "La fecha de finalizacion debe ser posterior a la fecha actual")
-    private LocalDateTime endDateTime;
+    private LocalDate endDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String reason;
     @NotNull(message = "Debes enviar el id del empleado al que corresponde el permiso")
     private Long employeeId;

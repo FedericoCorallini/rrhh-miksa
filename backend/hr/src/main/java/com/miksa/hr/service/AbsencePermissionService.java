@@ -46,13 +46,13 @@ public class AbsencePermissionService {
         return absencePermissionOptional.get();
     }
 
-    public AbsencePermissionRequestDTO saveAbsencePermission(AbsencePermissionRequestDTO absencePermissionDTO) {
+    public AbsencePermissionDTO saveAbsencePermission(AbsencePermissionRequestDTO absencePermissionDTO) {
         Employee employee = employeeService.findEmployee(absencePermissionDTO.getEmployeeId());
         AbsencePermission absencePermission = modelMapper.map(absencePermissionDTO, AbsencePermission.class);
         absencePermission.setPermissionState(PermissionState.PENDIENTE);
         absencePermission.setEmployee(employee);
-        absencePermissionRepository.save(absencePermission);
-        return absencePermissionDTO;
+        AbsencePermission savedPermission = absencePermissionRepository.save(absencePermission);
+        return modelMapper.map(savedPermission, AbsencePermissionDTO.class);
     }
 
     public AbsencePermissionDTO updateAbsencePermission(Long id, AbsencePermissionRequestDTO absencePermissionDTO) {

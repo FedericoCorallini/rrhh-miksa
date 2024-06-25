@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 public class DocumentationRequestDTO {
     private String description;
     @NotNull
-    private Long idEmployee;
-    private Long idAbsencePermission;
+    private Long employee;
+    private Long absencePermission;
     @NotNull
     private DocumentationType documentationType;
 }

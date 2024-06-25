@@ -26,9 +26,9 @@ public class AbsencePermission {
     private String details;
     private LocalDate creationDate;
     @Column(name = "start_date_time")
-    private LocalDate startDateTime;
+    private LocalDate startDate;
     @Column(name = "end_date_time")
-    private LocalDate endDateTime;
+    private LocalDate endDate;
     private LocalTime startTime;
     private LocalTime endTime;
     private String reason;
