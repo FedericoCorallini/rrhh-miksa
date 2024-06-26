@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export const DocumentationRequestModal = ({setDoc}) => {
+export const DocumentationRequestModal = ({setDoc, setFile}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,7 +32,7 @@ export const DocumentationRequestModal = ({setDoc}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <DocumentationRequestForm handleClose={handleClose} setDoc={setDoc}></DocumentationRequestForm>
+            <DocumentationRequestForm handleClose={handleClose} setDoc={setDoc} setFile={setFile} ></DocumentationRequestForm>
         </Box>
       </Modal>
     </div>

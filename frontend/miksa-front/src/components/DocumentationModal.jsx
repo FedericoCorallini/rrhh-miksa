@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export const DocumentationModal = ({employeeId}) => {
+export const DocumentationModal = ({employeeId, reload}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,7 +32,7 @@ export const DocumentationModal = ({employeeId}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <DocumentationForm employeeId={employeeId}></DocumentationForm>
+            <DocumentationForm employeeId={employeeId} handleClose={handleClose} reload={reload}></DocumentationForm>
         </Box>
       </Modal>
     </div>

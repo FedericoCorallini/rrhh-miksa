@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 import BasicTimePicker from './BasicTimePicker';
 import dayjs from 'dayjs';
 
-export const PermisionForm = ({ permision }) => {
+export const PermisionForm = ({ permision, download }) => {
   const [data, setData] = useState(permision);
 
   useEffect(() => {
@@ -97,10 +97,10 @@ export const PermisionForm = ({ permision }) => {
         time={data.permission.end_time} 
      
       />
-      <Button sx={{ flexBasis: 'calc(50ch + 55px)' }} type="submit" variant="contained">
+      <Button onClick={() => download(data.permission.documentation.id)}  sx={{ flexBasis: 'calc(50ch + 55px)' }} variant="contained">
         Descargar documentacion
       </Button>
-      <Button sx={{ flexBasis: 'calc(25ch + 20px)' }} type="submit" variant="contained">
+      <Button sx={{ flexBasis: 'calc(25ch + 20px)' }} variant="contained">
         Aprobar
       </Button>
       <Button sx={{ flexBasis: 'calc(25ch + 20px)' }} type="submit" variant="contained">

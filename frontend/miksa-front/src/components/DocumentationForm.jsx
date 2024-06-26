@@ -1,11 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { postDocument } from '../utils/Axios';
+import { Button, FormControl, Input, InputLabel, MenuItem, Select } from '@mui/material';
+import { postDocument, postFile } from '../utils/Axios';
+import { styled } from '@mui/material/styles';
 
-export const DocumentationForm = ({employeeId}) => {
+
+export const DocumentationForm = ({employeeId, handleClose, reload}) => {
   const [data, setData] = useState({ employee: employeeId, documentation_type: '', description: '' });
+  const [file, setFile] = useState();
+  const [docId, setDocId] = useState(0);
+  
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        // Aquí puedes manejar el archivo cargado, por ejemplo, subirlo a un servidor
+        setFile(file)
+        console.log('Archivo cargado:', file);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,10 +47,21 @@ export const DocumentationForm = ({employeeId}) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    postDocument(data);
+    const response = await postDocument(data);
+    setDocId(response.data.id)
   };
+
+  useEffect(() => {
+    if (docId !== 0) {
+      const fileData = new FormData()
+      fileData.append('file', file)
+      postFile(fileData, docId)
+      handleClose()
+      reload()
+    }
+  }, [docId]);
 
   return (
     <Box
@@ -60,9 +96,10 @@ export const DocumentationForm = ({employeeId}) => {
           <MenuItem value={"Retraso"}>Retraso</MenuItem>
         </Select>
       </FormControl>
-      <Button variant="contained">
-        Cargar documento
-      </Button>
+      <Button component="label" variant="contained" >
+        Archivo
+        <VisuallyHiddenInput onChange={handleFileChange} type="file" />
+      </Button>      
       <Button type="submit" variant="contained">
         Guardar
       </Button>

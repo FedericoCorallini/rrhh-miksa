@@ -17,7 +17,7 @@ const style = {
   p: 1,
 };
 
-export const PermissionModal = ({permission}) => {
+export const PermissionModal = ({permission, download}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,7 +32,7 @@ export const PermissionModal = ({permission}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <PermisionForm permision={{permission}}></PermisionForm>
+            <PermisionForm permision={{permission}} download={download}></PermisionForm>
         </Box>
       </Modal>
     </div>

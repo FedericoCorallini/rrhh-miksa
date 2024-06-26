@@ -34,7 +34,7 @@ export const Permision = () => {
             Rechazar
           </button>
           
-          <button ><PermissionModal permission={params.row}/></button>
+          <button ><PermissionModal permission={params.row} download={downloadFile}/></button>
           <button onClick={() => downloadFile(params.row.documentation.id)}>Descargar</button>
         </>
       ),

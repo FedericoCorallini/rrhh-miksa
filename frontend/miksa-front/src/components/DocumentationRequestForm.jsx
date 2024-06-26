@@ -2,9 +2,22 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-export const DocumentationRequestForm = ({handleClose, setDoc}) => {
+export const DocumentationRequestForm = ({handleClose, setDoc, setFile}) => {
   const [data, setData] = useState({ id_absence_permission: null, documentation_type: '', description: '' });
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -12,6 +25,15 @@ export const DocumentationRequestForm = ({handleClose, setDoc}) => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        // Aquí puedes manejar el archivo cargado, por ejemplo, subirlo a un servidor
+        setFile(file)
+        console.log('Archivo cargado:', file);
+    }
   };
 
   const handleSelectChange = (e) => {
@@ -58,9 +80,10 @@ export const DocumentationRequestForm = ({handleClose, setDoc}) => {
           <MenuItem value={"RETRASO"}>Retraso</MenuItem>
         </Select>
       </FormControl>
-      <Button variant="contained">
-        Cargar documento
-      </Button>
+      <Button component="label" variant="contained" >
+       Cargar Archivo
+        <VisuallyHiddenInput onChange={handleFileChange} type="file" />
+      </Button>  
       <Button onClick={onButtonClick} variant="contained">
         Guardar
       </Button>

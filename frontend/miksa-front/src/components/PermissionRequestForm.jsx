@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { BasicDatePicker } from './BasicDatePicker';
 import { Button } from '@mui/material';
 import BasicTimePicker from './BasicTimePicker';
-import { postDocument, postPermission } from '../utils/Axios';
+import { postDocument, postFile, postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
 import { DocumentationRequestModal } from './DocumentationRequestModal';
 
@@ -22,6 +22,9 @@ export const PermissionRequestForm = () => {
     employee: null,
     absence_permission: null
   })
+
+  const [file, setFile] = useState();
+  const [docId, setDocId] = useState(0);
 
   const handleChange = (e) => {
     console.log(e)
@@ -64,9 +67,22 @@ export const PermissionRequestForm = () => {
 
   useEffect(() => {
     if (doc.absence_permission !== null && doc.employee !== null) {
-      postDocument(doc)
+      postDoc()
     }
   }, [doc]);
+
+  const postDoc = async () =>{
+      const response = await postDocument(doc)
+      setDocId(response.data.id)
+  }
+
+  useEffect(() => {
+    if (docId !== 0) {
+      const fileData = new FormData()
+      fileData.append('file', file)
+      postFile(fileData, docId)
+    }
+  }, [docId]);
 
   return (
     <Box
@@ -117,7 +133,7 @@ export const PermissionRequestForm = () => {
         time={data.end_time}
         onChange={(time) => handleTimeChange('end_time', time)}
       />
-      <DocumentationRequestModal setDoc={setDoc}></DocumentationRequestModal>
+      <DocumentationRequestModal setDoc={setDoc} setFile={setFile}></DocumentationRequestModal>
       <Button sx={{ flexBasis: 'calc(27.5ch)' }} type="submit" variant="contained">
         Enviar
       </Button>
