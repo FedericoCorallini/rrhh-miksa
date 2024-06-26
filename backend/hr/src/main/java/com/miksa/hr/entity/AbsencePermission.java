@@ -32,8 +32,8 @@ public class AbsencePermission {
     private LocalTime startTime;
     private LocalTime endTime;
     private String reason;
-    @OneToOne
-    @JoinColumn(name = "documentation_id", updatable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "documentation_id")
     @JsonManagedReference
     private Documentation documentation;
     @Enumerated(EnumType.STRING)

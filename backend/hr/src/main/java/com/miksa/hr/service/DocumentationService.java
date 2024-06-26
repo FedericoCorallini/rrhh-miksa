@@ -5,11 +5,13 @@ import com.miksa.hr.dto.DocumentationRequestDTO;
 import com.miksa.hr.entity.AbsencePermission;
 import com.miksa.hr.entity.Documentation;
 import com.miksa.hr.entity.Employee;
+import com.miksa.hr.repository.IAbsencePermissionRepository;
 import com.miksa.hr.repository.IDocumentationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class DocumentationService {
     private final IDocumentationRepository documentationRepository;
     private final ModelMapper modelMapper;
 
-    public DocumentationService(EmployeeService employeeService, AbsencePermissionService absencePermissionService, IDocumentationRepository documentationRepository, ModelMapper modelMapper) {
+    public DocumentationService(EmployeeService employeeService, AbsencePermissionService absencePermissionService, IAbsencePermissionRepository absencePermissionRepository, IDocumentationRepository documentationRepository, ModelMapper modelMapper) {
         this.employeeService = employeeService;
         this.absencePermissionService = absencePermissionService;
         this.documentationRepository = documentationRepository;
@@ -41,6 +43,7 @@ public class DocumentationService {
         return modelMapper.map(documentation, DocumentationDTO.class);
     }
 
+    @Transactional
     public DocumentationDTO uploadDocumentation(DocumentationRequestDTO documentationDTO) {
 
         Employee employee = employeeService.findEmployee(documentationDTO.getEmployee());
@@ -49,6 +52,7 @@ public class DocumentationService {
 
         if(!documentationDTO.getDocumentationType().name().equals("DDJJ")){
             AbsencePermission absencePermission = absencePermissionService.findAbsencePermission(documentationDTO.getAbsencePermission());
+            absencePermission.setDocumentation(documentation);
             documentation.setAbsencePermission(absencePermission);
         }
 
