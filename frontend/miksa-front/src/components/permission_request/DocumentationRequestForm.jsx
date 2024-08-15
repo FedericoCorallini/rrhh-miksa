@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { postAllFile } from '../../utils/Axios';
 
 export const DocumentationRequestForm = ({handleClose, setDoc, setFile}) => {
   const [data, setData] = useState({ id_absence_permission: null, documentation_type: '', description: '' });
@@ -30,7 +31,6 @@ export const DocumentationRequestForm = ({handleClose, setDoc, setFile}) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        // Aquí puedes manejar el archivo cargado, por ejemplo, subirlo a un servidor
         setFile(file)
         console.log('Archivo cargado:', file);
     }

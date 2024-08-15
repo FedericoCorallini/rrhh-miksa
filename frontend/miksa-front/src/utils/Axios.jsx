@@ -196,3 +196,19 @@ export const postFile = async (file, docId) => {
 
     return await axios(config);
 }
+
+export const postAllFile = async (file) => {
+    
+    const config = {
+        method: 'post',
+        url: BASE_URL + `/documentation/upload/all`,
+        data: file,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}

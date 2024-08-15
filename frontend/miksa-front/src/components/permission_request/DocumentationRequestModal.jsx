@@ -3,28 +3,28 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { PermissionRequestForm } from './PermissionRequestForm';
+import { DocumentationRequestForm } from './DocumentationRequestForm';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 465,
+  width: 400,
   bgcolor: 'background.paper',
-  border: '1px solid #000',
+  border: '2px solid #000',
   boxShadow: 24,
-  p: 1,
+  p: 4,
 };
 
-export const PermissionRequestModal = ({permission}) => {
+export const DocumentationRequestModal = ({setDoc, setFile, id}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button sx={{marginTop: '10px'}} variant='contained' onClick={handleOpen}>Nueva solicitud</Button>
+      <Button fullWidth variant="contained" onClick={handleOpen}>Cargar documento</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -32,7 +32,7 @@ export const PermissionRequestModal = ({permission}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <PermissionRequestForm permision={{permission}}></PermissionRequestForm>
+            <DocumentationRequestForm handleClose={handleClose} setDoc={setDoc} setFile={setFile}></DocumentationRequestForm>
         </Box>
       </Modal>
     </div>

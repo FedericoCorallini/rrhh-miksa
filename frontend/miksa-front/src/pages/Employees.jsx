@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { deleteEmployee, getEmployees, getFile } from "../utils/Axios";
-import { PermissionModal } from "../components/PermissionModal";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Button } from "@mui/material";
+import { deleteEmployee, getEmployees, getFile } from "../utils/Axios";
 
 export const Employees = () => {
   const COLUMNS = [

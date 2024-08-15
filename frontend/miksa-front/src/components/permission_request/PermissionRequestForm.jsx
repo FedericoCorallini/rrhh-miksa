@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { BasicDatePicker } from './BasicDatePicker';
+import { BasicDatePicker } from '../BasicDatePicker';
 import { Button } from '@mui/material';
-import BasicTimePicker from './BasicTimePicker';
-import { postDocument, postFile, postPermission } from '../utils/Axios';
+import BasicTimePicker from '../BasicTimePicker';
+import { postDocument, postFile, postPermission } from '../../utils/Axios';
 import dayjs from 'dayjs';
 import { DocumentationRequestModal } from './DocumentationRequestModal';
 
