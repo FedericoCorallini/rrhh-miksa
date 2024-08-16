@@ -111,6 +111,44 @@ public class DocumentationService {
         return documentation.getPathToFile();
     }
 
+    public String uploadFile(DocumentationRequestDTO documentationDTO, MultipartFile file) throws IOException {
+        Employee employee = employeeService.findEmployee(documentationDTO.getEmployee());
+        Documentation documentation = modelMapper.map(documentationDTO, Documentation.class);
+        documentation.setUploadedDate(LocalDateTime.now());
+
+        if(!documentationDTO.getDocumentationType().name().equals("DDJJ")){
+            AbsencePermission absencePermission = absencePermissionService.findAbsencePermission(documentationDTO.getAbsencePermission());
+            absencePermission.setDocumentation(documentation);
+            documentation.setAbsencePermission(absencePermission);
+        }
+
+        documentation.setEmployee(employee);
+        Documentation savedDocumentation = documentationRepository.save(documentation);
+
+        var path = "../../../../documentation/" + documentationDTO.getEmployee();
+
+        try {
+            if(file.isEmpty()) {
+                throw new RuntimeException("Empty file");
+            }
+            Path destinationPath = Paths.get(path)
+                    .normalize()
+                    .toAbsolutePath();
+            if (Files.notExists(destinationPath)) {
+                Files.createDirectories(destinationPath);
+            }
+            Path destination = destinationPath.resolve(Objects.requireNonNull(file.getOriginalFilename().concat(savedDocumentation.getId().toString())));
+            Files.copy(file.getInputStream(), destination);
+            documentation.setPathToFile(destination.toString());
+
+        } catch(IOException e) {
+            throw new RuntimeException("Store exception");
+        }
+
+        documentationRepository.save(documentation);
+        return documentation.getPathToFile();
+    }
+
     public Resource downloadFile(Long idDocumentation) throws MalformedURLException {
         Documentation documentation = findDocumentation(idDocumentation);
         var location = documentation.getPathToFile();

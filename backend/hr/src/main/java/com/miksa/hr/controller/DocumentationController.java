@@ -58,4 +58,9 @@ public class DocumentationController {
         return ResponseEntity.ok(documentationService.downloadFile(idDocumentation));
     }
 
+    @PostMapping(value = "/upload/all", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(@Valid @RequestPart DocumentationRequestDTO documentation, @RequestPart(value = "file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(documentationService.uploadFile(documentation, file));
+    }
+
 }
