@@ -39,12 +39,20 @@ export const PermissionRequest = () => {
       field: "upload",
       headerName: "Adjuntar",
       width: 250,
-      renderCell: (params) =>
-        (
-          <>
-            <DocumentationAppendModal id={params.row.id} />
-          </>
-        ),
+      renderCell: (params) => (
+        params.row.documentation ? (
+          <Button
+            fullWidth
+            size="small"
+            variant="outlined"
+            onClick={() => downloadFile(params.row.documentation.id)}
+          >
+            Descargar
+          </Button>
+        ) : (
+          <DocumentationAppendModal id={params.row.id} />
+        )
+      ),
     },
     {
       field: "actions",

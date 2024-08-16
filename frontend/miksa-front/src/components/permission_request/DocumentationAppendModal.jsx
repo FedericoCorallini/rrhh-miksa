@@ -24,7 +24,7 @@ export const DocumentationAppendModal = ({id}) => {
 
   return (
     <div>
-      <Button size="small" variant="outlined" onClick={handleOpen}>Adjuntar documento</Button>
+      <Button fullWidth size="small" variant="outlined" onClick={handleOpen}>Adjuntar documento</Button>
       <Modal
         open={open}
         onClose={handleClose}

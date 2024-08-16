@@ -23,8 +23,8 @@ export const PermissionRequestForm = () => {
     absence_permission: null
   })
 
-  const [file, setFile] = useState();
-  const [docId, setDocId] = useState(0);
+  // const [file, setFile] = useState();
+  // const [docId, setDocId] = useState(0);
 
   const handleChange = (e) => {
     console.log(e)
@@ -35,13 +35,13 @@ export const PermissionRequestForm = () => {
     }));
   };
 
-  const setDocIds = (permissionId, employeeId) => {
-    setDoc((prevData) => ({
-      ...prevData,
-      absence_permission: permissionId,
-      employee: employeeId
-    }));
-  };
+  // const setDocIds = (permissionId, employeeId) => {
+  //   setDoc((prevData) => ({
+  //     ...prevData,
+  //     absence_permission: permissionId,
+  //     employee: employeeId
+  //   }));
+  // };
 
   const handleDateChange = (name, date) => {
     setData((prevData) => ({
@@ -61,28 +61,28 @@ export const PermissionRequestForm = () => {
     e.preventDefault();
     const response = await postPermission(data)
     console.log(response.data.id);
-    setDocIds(response.data.id, response.data.employee_id)
+    //setDocIds(response.data.id, response.data.employee_id)
 
   };
 
-  useEffect(() => {
-    if (doc.absence_permission !== null && doc.employee !== null) {
-      postDoc()
-    }
-  }, [doc]);
+  // useEffect(() => {
+  //   if (doc.absence_permission !== null && doc.employee !== null) {
+  //     postDoc()
+  //   }
+  // }, [doc]);
 
-  const postDoc = async () =>{
-      const response = await postDocument(doc)
-      setDocId(response.data.id)
-  }
+  // const postDoc = async () =>{
+  //     const response = await postDocument(doc)
+  //     setDocId(response.data.id)
+  // }
 
-  useEffect(() => {
-    if (docId !== 0) {
-      const fileData = new FormData()
-      fileData.append('file', file)
-      postFile(fileData, docId)
-    }
-  }, [docId]);
+  // useEffect(() => {
+  //   if (docId !== 0) {
+  //     const fileData = new FormData()
+  //     fileData.append('file', file)
+  //     postFile(fileData, docId)
+  //   }
+  // }, [docId]);
 
   return (
     <Box
@@ -133,7 +133,7 @@ export const PermissionRequestForm = () => {
         time={data.end_time}
         onChange={(time) => handleTimeChange('end_time', time)}
       />
-      <DocumentationRequestModal setDoc={setDoc} setFile={setFile}></DocumentationRequestModal>
+      {/* <DocumentationRequestModal setDoc={setDoc} setFile={setFile}></DocumentationRequestModal> */}
       <Button sx={{ flexBasis: 'calc(27.5ch)' }} type="submit" variant="contained">
         Enviar
       </Button>
