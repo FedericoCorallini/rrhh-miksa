@@ -19,10 +19,10 @@ spring:
     hibernate:
       ddl-auto: update
 
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: https://dev-a8n8uoz6yo02wcvy.us.auth0.com/
-#          audiences: http://spring-miksa
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-a8n8uoz6yo02wcvy.us.auth0.com/
+          audiences: http://spring-miksa
 
