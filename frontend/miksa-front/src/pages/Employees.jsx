@@ -17,24 +17,30 @@ export const Employees = () => {
     },
     {
       field: "job_position",
-      headerName: "Lugar de trabajo",
+      headerName: "Puesto laboral",
       width: 150,
       type: "Date",
     },
     { field: "working_hours", headerName: "Horario ", width: 150 },
     {
-      field: "actions",
-      headerName: "Acciones",
-      width: 350,
+      field: "delete",
+      headerName: "Eliminar",
+      width: 250,
       renderCell: (params) => (
         <>
-          <button onClick={() => deleteRow(params.row.id)}>
-            Eliminar
-          </button>
-          <button >
-          <NavLink to={`/perfil/${params.row.id}`} > Detalles </NavLink>
-          </button>
-          
+          <Button onClick={() => deleteRow(params.row.id)}>Eliminar</Button>
+        </>
+      ),
+    },
+    {
+      field: "details",
+      headerName: "Detalles",
+      width: 250,
+      renderCell: (params) => (
+        <>
+          <Button>
+            <NavLink to={`/perfil/${params.row.id}`}> Ver Detalles </NavLink>
+          </Button>
         </>
       ),
     },
@@ -48,14 +54,6 @@ export const Employees = () => {
     await deleteEmployee(id);
     callApi();
   };
-
-  const downloadFile = async (id) => {
-    const data = await getFile(id);
-    const pdfBlob = new Blob([data], { type: 'application/pdf' })
-    const url = window.URL.createObjectURL(pdfBlob);
-    window.open(url, '_blank');
-  };
-
 
   const [employees, setEmployees] = useState([]);
 
@@ -78,12 +76,18 @@ export const Employees = () => {
             showQuickFilter: true,
           },
         }}
-      
       />
-      <Button sx={{ mt: '15px' }} size="small" color="primary" variant='contained'>
-        <NavLink className='active'to={`/perfil/0`} > Agregar empleado </NavLink>
+      <Button
+        sx={{ mt: "15px" }}
+        size="small"
+        color="primary"
+        variant="contained"
+      >
+        <NavLink className="active" to={`/perfil/0`}>
+          {" "}
+          Agregar empleado{" "}
+        </NavLink>
       </Button>
     </Box>
-    
   );
 };

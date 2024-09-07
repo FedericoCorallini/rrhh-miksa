@@ -16,8 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     clientId={clientId}
     authorizationParams={{
       redirect_uri: window.location.origin,
-      audience: "http://spring-miksa",
-      scope: "read:current_user update:current_user_metadata"
+      audience: "http://spring-miksa"
     }}
   >
     <App />

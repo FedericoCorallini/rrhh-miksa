@@ -107,7 +107,7 @@ export const PermissionResponse = () => {
         rows={permissions}
         disableColumnSelector
         disableDensitySelector
-        disableColumnFilter
+        
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
@@ -116,7 +116,14 @@ export const PermissionResponse = () => {
         }}
         initialState={{
           sorting: {
-            sortModel: [{ field: "start_date_time", sort: "desc" }],
+            sortModel: [{ field: "start_date", sort: "desc" }],
+          },
+          filter: {
+            filterModel: {
+              items: [
+                { field: "permission_state", operatorValue: "equals", value: "PENDIENTE" },
+              ],
+            },
           },
         }}
       />

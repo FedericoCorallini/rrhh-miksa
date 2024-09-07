@@ -62,6 +62,20 @@ export const getEmployee = async (id) => {
     return await axios(config);
 }
 
+export const getEmployeeByEmail = async () => {
+    
+    const config = {
+        method: `get`,
+        url: BASE_URL + `/employee/email`,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}
+
 export const putEmployee = async (id, data) => {
     
     const config = {

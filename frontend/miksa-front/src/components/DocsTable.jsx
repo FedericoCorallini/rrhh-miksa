@@ -39,7 +39,7 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
   };
 
   return (
-    <Box sx={{ height: 350, width: 1 }}>
+    <Box sx={{ height: 350, width: 1}}>
       <DataGrid
         columns={COLUMNS}
         rows={filterDocumentation}

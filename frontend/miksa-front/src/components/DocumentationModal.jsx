@@ -24,7 +24,7 @@ export const DocumentationModal = ({employeeId, reload}) => {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}>Nuevo</Button>
+      <Button variant="contained" onClick={handleOpen} sx={{mt: 1}}>Nuevo</Button>
       <Modal
         open={open}
         onClose={handleClose}

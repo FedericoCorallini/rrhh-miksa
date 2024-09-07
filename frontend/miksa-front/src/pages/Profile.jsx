@@ -9,7 +9,6 @@ import { FamilyFields } from '../components/FamilyFields';
 import { ProfileForm } from '../components/ProfileForm';
 import { getEmployee } from '../utils/Axios';
 import { DocsTable } from '../components/DocsTable';
-import { DocumentationModal } from '../components/DocumentationModal';
 import { useParams } from 'react-router-dom';
 
 
@@ -53,8 +52,9 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    callApi();
-    
+    if(id != 0){
+      callApi();
+    }  
   }, []);
 
   const callApi = async () => {
@@ -65,7 +65,7 @@ export const Profile = () => {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Perfil" {...a11yProps(0)} />
