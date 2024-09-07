@@ -23,25 +23,36 @@ public class AbsencePermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String details;
+
     private LocalDate creationDate;
+
     @Column(name = "start_date_time")
     private LocalDate startDate;
+
     @Column(name = "end_date_time")
     private LocalDate endDate;
+
     private LocalTime startTime;
+
     private LocalTime endTime;
+
     private String reason;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "documentation_id")
     @JsonManagedReference
     private Documentation documentation;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "permission_state")
     private PermissionState permissionState;
+
     @ManyToOne
     @JoinColumn(name = "employee_id", updatable = false)
     @JsonBackReference
     private Employee employee;
+
     private boolean eliminated;
 }

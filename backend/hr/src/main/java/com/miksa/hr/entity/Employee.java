@@ -18,40 +18,58 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Employee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String lastname;
+
     private String firstname;
+
     @Column(unique = true)
     private Long dni;
+
     @Column(unique = true)
     private Long cuil;
+
     @Column(unique = true)
     private String email;
+
     @Column(name = "date_of_admission", updatable = false)
     private LocalDate dateOfAdmission;
+
     @Column(name = "date_of_birth", updatable = false)
     private LocalDate dateOfBirth;
+
     @Column(name = "marital_status")
     private String maritalStatus;
+
     @Column(name = "working_hours")
     private String workingHours;
+
     private String nationality;
+
     @Column(name = "job_position")
     private String jobPosition;
+
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
+
     @Column(name = "home_phone_number")
     private String homePhoneNumber;
+
     @Column(name = "cell_phone_number")
     private String cellPhoneNumber;
+
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Documentation> documentationList;
+
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<AbsencePermission> absencePermissionsList;
+
     private boolean eliminated;
 
     public String getFullName() {

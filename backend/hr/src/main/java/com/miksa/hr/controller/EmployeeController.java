@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +32,10 @@ public class EmployeeController {
      return ResponseEntity.ok(employeeService.getEmployees());
     }
 
+    @GetMapping("/email")
+    public ResponseEntity<EmployeeDTO> getEmployeeByEmail(@AuthenticationPrincipal Jwt principal){
+        return ResponseEntity.ok(employeeService.getEmployeeByEmail(principal.getClaim("email")));
+    }
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id){
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
