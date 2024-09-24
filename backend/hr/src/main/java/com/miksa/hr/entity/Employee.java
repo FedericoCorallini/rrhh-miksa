@@ -62,6 +62,10 @@ public class Employee {
     @Column(name = "cell_phone_number")
     private String cellPhoneNumber;
 
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private BankAccount bankAccount;
+
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Documentation> documentationList;

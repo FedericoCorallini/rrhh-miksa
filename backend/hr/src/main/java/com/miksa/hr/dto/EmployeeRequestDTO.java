@@ -2,6 +2,7 @@ package com.miksa.hr.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.miksa.hr.entity.BankAccount;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -37,5 +38,6 @@ public class EmployeeRequestDTO {
     private GenderEnum gender;
     private String homePhoneNumber;
     private String cellPhoneNumber;
+    private BankAccount bankAccount;
 
 }
