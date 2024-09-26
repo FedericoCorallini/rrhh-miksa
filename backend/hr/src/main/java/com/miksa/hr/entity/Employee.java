@@ -72,6 +72,14 @@ public class Employee {
 
     private boolean eliminated;
 
+    @ManyToMany(cascade = CascadeType.ALL) // tengo que configurar cascada?
+    @JoinTable(
+            name = "employee_family",
+            joinColumns = @JoinColumn(name = "employee_id"), // Columna para el ID del empleado
+            inverseJoinColumns = @JoinColumn(name = "family_id") // Columna para el ID de la familia
+    )
+
+
     public String getFullName() {
         return this.firstname + " " + this.lastname;
     }
