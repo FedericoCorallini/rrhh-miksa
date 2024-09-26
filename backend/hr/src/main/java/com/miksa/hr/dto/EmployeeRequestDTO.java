@@ -17,27 +17,43 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EmployeeRequestDTO {
-    private Long id;
+
+   // private Long id;
+
     @NotBlank
     private String lastname;
+
     @NotBlank
     private String firstname;
+
     @NotNull
     private Long dni;
+
     @NotNull
     private Long cuil;
+
     @Email @NotNull
     private String email;
+
     private LocalDate dateOfAdmission;
+
     @Past
     private LocalDate dateOfBirth;
+
     private String maritalStatus;
+
     private String workingHours;
+
     private String nationality;
+
     private String jobPosition;
+
     private GenderEnum gender;
+
     private String homePhoneNumber;
+
     private String cellPhoneNumber;
-    private BankAccount bankAccount;
+
+    private BankAccountDTO bankAccount;
 
 }

@@ -3,6 +3,7 @@ package com.miksa.hr.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.miksa.hr.entity.enums.BankEnum;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,16 +30,19 @@ public class BankAccount {
 
     BankEnum bank;
 
+    @Column(name = "is_salary_account")
     boolean isSalaryAccount;
 
     String cbu;
 
+    @Column(name = "account_number")
     Integer accountNumber;
 
+    @Column(name = "bank_banch")
     String bankBranch;
 
-    @OneToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+//    @OneToOne
+//    @JoinColumn(name = "employee_id")
+//    private Employee employee;
 
 }
