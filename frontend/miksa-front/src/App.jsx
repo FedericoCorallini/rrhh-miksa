@@ -5,6 +5,7 @@ import { PermissionResponse } from "./pages/PermissionResponse.jsx";
 import { PermissionRequest } from "./pages/PermissionRequest.jsx";
 import { NavBar } from "./components/NavBar.jsx";
 import { Employees } from "./pages/Employees.jsx";
+import Swal from 'sweetalert2'
 
 function App() {
   

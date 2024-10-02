@@ -4,6 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { deleteEmployee, getEmployees, getFile } from "../utils/Axios";
+import Swal from 'sweetalert2'
 
 export const Employees = () => {
   const COLUMNS = [
@@ -28,7 +29,35 @@ export const Employees = () => {
       width: 250,
       renderCell: (params) => (
         <>
-          <Button onClick={() => deleteRow(params.row.id)}>Eliminar</Button>
+          <Button onClick={() => {  {deleteRow(params.row.id)}
+                                                 Swal.fire({
+                                                   title: 'Eliminado con exito',
+                                                   icon: 'success',
+                                                   confirmButtonText: 'Aceptar'
+                                                 });
+          /* Para confirmar si desea eliminar
+          Swal.fire({
+            title: "¿Está seguro que desea eliminar?",
+            text: "No se podrá revertir",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, borrar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              {deleteRow(params.row.id)}
+              Swal.fire({
+                title: "Eliminado",
+                icon: "success"
+              });
+            }
+          });*/
+          }}
+      >
+              Eliminar
+              </Button>
+
         </>
       ),
     },

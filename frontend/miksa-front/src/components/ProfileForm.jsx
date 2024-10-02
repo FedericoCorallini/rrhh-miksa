@@ -5,6 +5,7 @@ import { BasicDatePicker } from "./BasicDatePicker";
 import { Button } from "@mui/material";
 import { postEmployee, putEmployee } from "../utils/Axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2'
 
 export const ProfileForm = ({ profile }) => {
   const [data, setData] = useState(profile);
@@ -111,6 +112,25 @@ export const ProfileForm = ({ profile }) => {
 
       return Object.values(tempErrors).every((x) => x === '');
     };
+
+  const isFormValid = () => {
+
+    return (
+      data.firstname &&
+      data.lastname &&
+      /^[0-9]+$/.test(data.dni) &&
+      /^[0-9]+$/.test(data.cuil) &&
+      /^[0-9]+$/.test(data.cell_phone_number) &&
+      /^[0-9]+$/.test(data.home_phone_number) &&
+      data.email &&
+      data.marital_status &&
+      data.working_hours &&
+      data.nationality &&
+      data.job_position &&
+      data.gender &&
+      data.date_of_birth
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -264,10 +284,20 @@ export const ProfileForm = ({ profile }) => {
           type="submit"
           variant="contained"
           size="large"
+          disabled={!isFormValid()}
+          onClick={() => {
+                Swal.fire({
+                  title: 'Guardado exitoso',
+                  text: 'El formulario se ha enviado correctamente',
+                  icon: 'success',
+                  confirmButtonText: 'Aceptar'
+                });
+              }}
         >
           Guardar
         </Button>
-      )}
+       )}
+
     </Box>
   );
 };
