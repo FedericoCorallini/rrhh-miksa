@@ -8,6 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export const ProfileForm = ({ profile }) => {
   const [data, setData] = useState(profile);
+  const [errors, setErrors] = useState(profile);
   const { user } = useAuth0();
 
   useEffect(() => {
@@ -16,10 +17,14 @@ export const ProfileForm = ({ profile }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+       if (["dni", "cuil", "cell_phone_number", "home_phone_number"].includes(name)) {
+          if (!/^\d*$/.test(value)) return;
+        }
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    validateField(name, value);
   };
 
   const handleDateChange = (name, date) => {
@@ -29,13 +34,95 @@ export const ProfileForm = ({ profile }) => {
     }));
   };
 
+  const validateField = (fieldName, value) => {
+      let tempErrors = { ...errors };
+
+      switch (fieldName) {
+        case 'firstname':
+          tempErrors.firstname = value ? '' : 'El nombre es obligatorio';
+          break;
+        case 'lastname':
+          tempErrors.lastname = value ? '' : 'El apellido es obligatorio';
+          break;
+        case 'dni':
+          tempErrors.dni = value ? '' : 'El DNI es obligatorio';
+          break;
+        case 'cuil':
+          tempErrors.cuil = value ? '' : 'El CUIL es obligatorio';
+          break;
+        case 'cell_phone_number':
+          tempErrors.cell_phone_number = value ? '' : 'El celular es obligatorio';
+          break;
+        case 'home_phone_number':
+                  tempErrors.home_phone_number = value ? '' : 'El telefono es obligatorio';
+          break;
+        case 'email':
+          if (!value) {
+            tempErrors.email = 'El email es obligatorio';
+          } else if (!/\S+@\S+\.\S+/.test(value)) {
+            tempErrors.email = 'El email no es válido';
+          } else {
+            tempErrors.email = '';
+          }
+          break;
+        case 'marital_status':
+            tempErrors.marital_status = value ? '' : 'El estado civil es obligatorio';
+            break;
+        case 'working_hours':
+            tempErrors.working_hours = value ? '' : 'El horario laboral es obligatorio';
+            break;
+        case 'nationality':
+            tempErrors.nationality = value ? '' : 'La nacionalidad es obligatoria';
+            break;
+        case 'gender':
+            tempErrors.gender = value ? '' : 'El género es obligatorio';
+             break;
+        case 'job_position':
+            tempErrors.job_position = value ? '' : 'El puesto laboral es obligatorio';
+            break;
+
+        default:
+          break;
+      }
+
+      setErrors(tempErrors);
+    };
+
+  const validate = () => {
+      let tempErrors = {};
+
+      tempErrors.firstname = data.firstname ? '' : 'El nombre es obligatorio';
+      tempErrors.lastname = data.lastname ? '' : 'El apellido es obligatorio';
+      tempErrors.dni = data.dni ? '' : 'El DNI es obligatorio';
+      tempErrors.cuil = data.cuil ? '' : 'El CUIL es obligatorio';
+      tempErrors.cell_phone_number = data.cell_phone_number ? '' : 'El celular es obligatorio';
+      tempErrors.home_phone_number = data.home_phone_number ? '' : 'El telefono es obligatorio';
+      tempErrors.marital_status = data.marital_status ? '' : 'El estado civil es obligatorio';
+      tempErrors.email = data.email ? '' : 'El email es obligatorio';
+      if (data.email && !/\S+@\S+\.\S+/.test(data.email)) {
+         tempErrors.email = 'El email no es válido';
+      }
+      tempErrors.working_hours = data.working_hours ? '' : 'El horario laboral es obligatorio';
+      tempErrors.nationality = data.nationality ? '' : 'La nacionalidad es obligatoria';
+      tempErrors.gender = data.gender ? '' : 'El género es obligatorio';
+      tempErrors.job_position = data.job_position ? '' : 'El puesto laboral es obligatorio';
+
+      setErrors(tempErrors);
+
+      return Object.values(tempErrors).every((x) => x === '');
+    };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (validate()) {
     if (data.id === undefined) {
       postEmployee(data);
     } else {
       putEmployee(data.id, data);
     }
+    } else {
+        console.log('Errores en el formulario')
+        }
   };
 
   return (
@@ -53,6 +140,8 @@ export const ProfileForm = ({ profile }) => {
           name="firstname"
           value={data.firstname || ""}
           onChange={handleChange}
+          error={!!errors.firstname}
+          helperText={errors.firstname}
         />
         <TextField
           label="Apellido"
@@ -60,6 +149,8 @@ export const ProfileForm = ({ profile }) => {
           name="lastname"
           value={data.lastname || ""}
           onChange={handleChange}
+          error={!!errors.lastname}
+          helperText={errors.lastname}
         />
         <TextField
           label="Dni"
@@ -67,6 +158,9 @@ export const ProfileForm = ({ profile }) => {
           name="dni"
           value={data.dni || ""}
           onChange={handleChange}
+          error={!!errors.dni}
+          helperText={errors.dni}
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         />
         <TextField
           label="Cuil"
@@ -74,6 +168,9 @@ export const ProfileForm = ({ profile }) => {
           name="cuil"
           value={data.cuil || ""}
           onChange={handleChange}
+          error={!!errors.cuil}
+          helperText={errors.cuil}
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         />
         <TextField
           label="Celular"
@@ -81,6 +178,9 @@ export const ProfileForm = ({ profile }) => {
           name="cell_phone_number"
           value={data.cell_phone_number || ""}
           onChange={handleChange}
+          error={!!errors.cell_phone_number}
+          helperText={errors.cell_phone_number}
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         />
         <TextField
           label="Telefono"
@@ -88,6 +188,9 @@ export const ProfileForm = ({ profile }) => {
           name="home_phone_number"
           value={data.home_phone_number || ""}
           onChange={handleChange}
+          error={!!errors.home_phone_number}
+          helperText={errors.home_phone_number}
+          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
         />
         <TextField
           label="Email"
@@ -95,6 +198,8 @@ export const ProfileForm = ({ profile }) => {
           name="email"
           value={data.email || ""}
           onChange={handleChange}
+          error={!!errors.email}
+          helperText={errors.email}
         />
         <TextField
           label="Estado civil"
@@ -102,6 +207,8 @@ export const ProfileForm = ({ profile }) => {
           name="marital_status"
           value={data.marital_status || ""}
           onChange={handleChange}
+          error={!!errors.marital_status}
+          helperText={errors.marital_status}
         />
         <TextField
           label="Horario laboral"
@@ -109,6 +216,8 @@ export const ProfileForm = ({ profile }) => {
           name="working_hours"
           value={data.working_hours || ""}
           onChange={handleChange}
+          error={!!errors.working_hours}
+          helperText={errors.working_hours}
         />
         <TextField
           label="Nacionalidad"
@@ -116,6 +225,8 @@ export const ProfileForm = ({ profile }) => {
           name="nationality"
           value={data.nationality || ""}
           onChange={handleChange}
+          error={!!errors.nationality}
+          helperText={errors.nationality}
         />
         <TextField
           label="Puesto laboral"
@@ -123,6 +234,8 @@ export const ProfileForm = ({ profile }) => {
           name="job_position"
           value={data.job_position || ""}
           onChange={handleChange}
+          error={!!errors.job_position}
+          helperText={errors.job_position}
         />
         <TextField
           label="Genero"
@@ -130,6 +243,8 @@ export const ProfileForm = ({ profile }) => {
           name="gender"
           value={data.gender || ""}
           onChange={handleChange}
+          error={!!errors.gender}
+          helperText={errors.gender}
         />
         <BasicDatePicker
           label="Fecha de nacimiento"
