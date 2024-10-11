@@ -1,2 +1,4 @@
 # Ignorar el archivo de variables de entorno
+hr/pom.xml
+hr/src/main/resources/application.yml
 .env
