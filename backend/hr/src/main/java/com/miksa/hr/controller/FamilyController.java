@@ -41,7 +41,7 @@ public class FamilyController {
         return familyDTO != null ? ResponseEntity.ok(familyDTO) : ResponseEntity.notFound().build();
     }*/
 
-    @PostMapping
+    @PostMapping//pasarle el ide del empleado
     public ResponseEntity<FamilyRequestDTO> createFamily(@Validated @RequestBody FamilyRequestDTO familyRequestDTO) {
         FamilyRequestDTO createdFamily = familyService.saveFamily(familyRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFamily);

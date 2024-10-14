@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/family")
+@RequestMapping("/api/employee")
 @CrossOrigin
 public class EmployeeController {
 

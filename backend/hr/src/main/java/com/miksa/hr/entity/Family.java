@@ -33,7 +33,7 @@ public class Family {
     private GenderEnum gender;
     private boolean lives;
 
-    @ManyToMany(mappedBy = "families") //
+    @ManyToMany(mappedBy = "families") //cascade
     private List<Employee> employees; //
     //private List<Employee> employees = new ArrayList<>();
 

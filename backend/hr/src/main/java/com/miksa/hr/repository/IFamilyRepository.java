@@ -14,6 +14,5 @@ public interface IFamilyRepository extends JpaRepository<Family, Long> {
     List<Family> findByDateOfBirth(LocalDate birthDate);
     //para buscar por relacion (madre padre hijo...)
     List<Family> findByRelation(FamilyRelation relation);
-
     List<Family> findByEmployeesId(Long id);
 }

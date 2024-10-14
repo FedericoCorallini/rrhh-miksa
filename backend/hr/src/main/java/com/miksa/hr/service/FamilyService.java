@@ -24,14 +24,12 @@ public class FamilyService {
         this.modelMapper = modelMapper;
     }
 
-    // Guardar un familiar
+    // Guardar un familiar y asociarlo a empleado
     public FamilyRequestDTO saveFamily(FamilyRequestDTO familyDTO) {
         Family family = modelMapper.map(familyDTO, Family.class);
         familyRepository.save(family);
         return familyDTO;
     }
-
-
 
     public List<FamilyDTO> getFamiliesByEmployeeId(Long employeeId) {
         List<Family> familyList = familyRepository.findByEmployeesId(employeeId); // Método en el repositorio para buscar por empleado

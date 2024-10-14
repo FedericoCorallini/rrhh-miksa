@@ -1,7 +1,7 @@
 package com.miksa.hr.entity.enums;
 
 public enum FamilyRelation {
-    FATHER,
+    PADRE,
     MOTHER,
     SON,
     DAUGHTER,
