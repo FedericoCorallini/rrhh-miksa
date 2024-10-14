@@ -17,7 +17,7 @@ const style = {
   p: 1,
 };
 
-export const PermissionRequestModal = ({permission}) => {
+export const PermissionRequestModal = ({permission, updateRequests}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,7 +32,11 @@ export const PermissionRequestModal = ({permission}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <PermissionRequestForm permision={{permission}}></PermissionRequestForm>
+            <PermissionRequestForm 
+              permission={{permission}}
+              updateRequests={updateRequests} 
+              onClose={handleClose} 
+            />
         </Box>
       </Modal>
     </div>

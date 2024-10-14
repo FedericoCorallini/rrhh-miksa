@@ -29,7 +29,6 @@ export const PermisionRequest = () => {
           <button onClick={() => deleteRow(params.row.id)}>
             Eliminar
           </button>
-
         </>
       ),
     },
@@ -58,6 +57,9 @@ export const PermisionRequest = () => {
     const respuesta = await getEmployee(1);
     setPermissions(respuesta.data.absence_permissions_list);
   };
+  const updateRequests = () => {
+    callApi();
+  };
 
   return (
     <Box sx={{ height: 450, width: 1 }}>
@@ -75,7 +77,7 @@ export const PermisionRequest = () => {
           },
         }}
       />
-      <PermissionRequestModal permission={"permission"} />
+      <PermissionRequestModal permission={"permission"} updateRequests={updateRequests} />
     </Box>
   );
 };
