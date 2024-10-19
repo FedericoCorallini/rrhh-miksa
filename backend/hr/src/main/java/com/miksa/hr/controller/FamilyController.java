@@ -35,18 +35,15 @@ public class FamilyController {
         return ResponseEntity.ok(familyService.getFamiliesByEmployeeId(employeeId));
     }
 
-    /*@GetMapping("/{id}")
-    public ResponseEntity<FamilyDTO> getFamilyById(@PathVariable Long id) {
-        FamilyDTO familyDTO = familyService.getFamilyById(id);
-        return familyDTO != null ? ResponseEntity.ok(familyDTO) : ResponseEntity.notFound().build();
-    }*/
 
-    @PostMapping//pasarle el ide del empleado
-    public ResponseEntity<FamilyRequestDTO> createFamily(@Validated @RequestBody FamilyRequestDTO familyRequestDTO) {
-        FamilyRequestDTO createdFamily = familyService.saveFamily(familyRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFamily);
-    }
+   @PostMapping
+   public ResponseEntity<FamilyDTO> createFamily(@Validated @RequestBody FamilyRequestDTO familyRequestDTO) {
+       // Ahora el servicio retorna un FamilyDTO
+       FamilyDTO createdFamily = familyService.saveFamily(familyRequestDTO);
 
+       // Retornamos el FamilyDTO en la respuesta
+       return ResponseEntity.status(HttpStatus.CREATED).body(createdFamily);
+   }
     @PutMapping("/{id}")
     public ResponseEntity<FamilyDTO> updateFamily(@PathVariable Long id, @Validated @RequestBody FamilyRequestDTO familyRequestDTO) {
         FamilyDTO updatedFamily = familyService.updateFamily(id, familyRequestDTO);
@@ -66,8 +63,11 @@ public class FamilyController {
 
     @GetMapping("/relation")
     public ResponseEntity<List<FamilyDTO>> findFamiliesByRelation(@RequestParam String relation) {
-        // Asegúrate de manejar correctamente la conversión de la cadena a tu enum FamilyRelation
-        FamilyRelation familyRelation = FamilyRelation.valueOf(relation.toUpperCase());
-        return ResponseEntity.ok(familyService.findFamiliesByRelation(familyRelation));
+        try {
+            FamilyRelation familyRelation = FamilyRelation.valueOf(relation.toUpperCase());
+            return ResponseEntity.ok(familyService.findFamiliesByRelation(familyRelation));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Maneja relaciones inválidas
+        }
     }
 }

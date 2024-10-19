@@ -2,8 +2,10 @@ package com.miksa.hr.service;
 
 import com.miksa.hr.dto.FamilyDTO;
 import com.miksa.hr.dto.FamilyRequestDTO;
+import com.miksa.hr.entity.Employee;
 import com.miksa.hr.entity.Family;
 import com.miksa.hr.entity.enums.FamilyRelation;
+import com.miksa.hr.repository.IEmployeeRepository;
 import com.miksa.hr.repository.IFamilyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,22 +19,36 @@ import java.util.stream.Collectors;
 public class FamilyService {
 
     private final IFamilyRepository familyRepository;
+    private final IEmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
 
-    public FamilyService(IFamilyRepository familyRepository, ModelMapper modelMapper) {
+    public FamilyService(IFamilyRepository familyRepository, IEmployeeRepository employeeRepository, ModelMapper modelMapper) {
         this.familyRepository = familyRepository;
+        this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
     }
 
-    // Guardar un familiar y asociarlo a empleado
+   /* // Guardar un familiar y asociarlo a empleado
     public FamilyRequestDTO saveFamily(FamilyRequestDTO familyDTO) {
         Family family = modelMapper.map(familyDTO, Family.class);
         familyRepository.save(family);
         return familyDTO;
     }
+    */
+   public FamilyDTO saveFamily(FamilyRequestDTO familyDTO) {
+       Family family = modelMapper.map(familyDTO, Family.class);
+       Employee employee = employeeRepository.findById(familyDTO.getEmployeeId())
+               .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+       family.setEmployee(employee);
+
+       familyRepository.save(family);
+       return modelMapper.map(family, FamilyDTO.class);
+   }
+
+
 
     public List<FamilyDTO> getFamiliesByEmployeeId(Long employeeId) {
-        List<Family> familyList = familyRepository.findByEmployeesId(employeeId); // Método en el repositorio para buscar por empleado
+        List<Family> familyList = familyRepository.findByEmployeeId(employeeId);
         return familyList.stream()
                 .map(family -> modelMapper.map(family, FamilyDTO.class))
                 .collect(Collectors.toList());

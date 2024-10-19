@@ -1,5 +1,7 @@
 package com.miksa.hr.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miksa.hr.entity.enums.FamilyRelation;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.persistence.*;
@@ -33,9 +35,11 @@ public class Family {
     private GenderEnum gender;
     private boolean lives;
 
-    @ManyToMany(mappedBy = "families") //cascade
-    private List<Employee> employees; //
-    //private List<Employee> employees = new ArrayList<>();
+    // Relación Many-to-One, ya que un familiar pertenece a un solo empleado
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false) // Clave foránea para el empleado
+    @JsonIgnore
+    private Employee employee;
 
 
     public Family() {
@@ -60,4 +64,8 @@ public class Family {
         return getClass().hashCode();
     }
 
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 }

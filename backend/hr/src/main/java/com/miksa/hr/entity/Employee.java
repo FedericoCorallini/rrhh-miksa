@@ -72,13 +72,10 @@ public class Employee {
 
     private boolean eliminated;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "employee_family",
-            joinColumns = @JoinColumn(name = "employee_id"), // Columna para el ID del empleado
-            inverseJoinColumns = @JoinColumn(name = "family_id") // Columna para el ID de la familia
-    )
-    private List<Family> families; 
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Family> families = new ArrayList<>();  //
+
     //private List<Family> families = new ArrayList<>();
     public String getFullName() {
         return this.firstname + " " + this.lastname;

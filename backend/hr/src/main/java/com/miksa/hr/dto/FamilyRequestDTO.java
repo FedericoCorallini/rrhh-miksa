@@ -6,6 +6,7 @@ import com.miksa.hr.entity.enums.FamilyRelation;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,27 +18,45 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+//Se utiliza para recibir los datos cuando se crea o actualiza un familiar,
+// y en este caso, incluye el employeeId para asociar el familiar al empleado.
 public class FamilyRequestDTO {
-    private Long id; // va a ser usada para el update del familiar
+    private Long employeeId; // Para asociar el familiar al empleado
+    private Long id; // Será usada para el update del familiar
 
-    @NotBlank
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String firstname;
 
-    @NotBlank
+    @NotBlank(message = "El apellido no puede estar vacío")
     private String lastname;
 
-    @NotNull
+    @NotNull(message = "La relación familiar es obligatoria")
     private FamilyRelation relation;
 
-    @NotNull
-    private boolean lives;
+    @NotNull(message = "El estado de si vive o no es obligatorio")
+    private Boolean lives;
 
-    @NotNull
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
+    @Past(message = "La fecha de nacimiento debe ser anterior a la actual")
     private LocalDate dateOfBirth;
 
-    @NotNull
-    private boolean coexists;
+    @NotNull(message = "El campo 'coexists' es obligatorio")
+    private Boolean coexists;
 
-    @NotNull
+    @NotNull(message = "El género es obligatorio")
     private GenderEnum gender;
+
+    public boolean isLives() {
+        return lives;
+    }
+    public void setLives(boolean lives) {
+        this.lives = lives;
+    }
+
+    public boolean isCoexists() {
+        return coexists;
+    }
+    public void setCoexists(boolean coexists) {
+        this.coexists = coexists;
+    }
 }
