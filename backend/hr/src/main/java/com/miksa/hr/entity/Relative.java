@@ -1,6 +1,5 @@
 package com.miksa.hr.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miksa.hr.entity.enums.FamilyRelation;
 import com.miksa.hr.entity.enums.GenderEnum;
@@ -10,12 +9,11 @@ import lombok.Setter;
 //import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Setter
 @Getter
 @Entity
-public class Family {
+public class Relative {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,11 +40,11 @@ public class Family {
     private Employee employee;
 
 
-    public Family() {
+    public Relative() {
     }
 
 
-    public Family(String firstname, String lastname, FamilyRelation relation) {
+    public Relative(String firstname, String lastname, FamilyRelation relation) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.relation = relation;
@@ -54,9 +52,9 @@ public class Family {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Family)) return false;
-        Family family = (Family) o;
-        return id != null && id.equals(family.id);
+        if (!(o instanceof Relative)) return false;
+        Relative relative = (Relative) o;
+        return id != null && id.equals(relative.id);
     }
 
     @Override

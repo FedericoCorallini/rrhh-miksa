@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByIdAndEliminated(Long id, boolean eliminated);
-
     Optional<Employee> findByEmailAndEliminated(String email, boolean eliminated);
     List<Employee> findByEliminated(boolean eliminated);
 

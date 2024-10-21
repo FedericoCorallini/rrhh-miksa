@@ -74,7 +74,7 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
-    private List<Family> families = new ArrayList<>();  //
+    private List<Relative> families = new ArrayList<>();  //
 
     //private List<Family> families = new ArrayList<>();
     public String getFullName() {
