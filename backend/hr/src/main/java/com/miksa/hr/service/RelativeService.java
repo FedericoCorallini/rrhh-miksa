@@ -46,9 +46,12 @@ public class RelativeService {
                 .collect(Collectors.toList());
     }
 
-    // Actualizar datos de un familiar, creo que solo deberian ser esos
+
     public RelativeDTO updateFamily(Long id, RelativeRequestDTO familyDTO) {
         Relative relativePersisted = findFamily(id);
+
+        relativePersisted.setFirstname(familyDTO.getFirstname());
+        relativePersisted.setLastname(familyDTO.getLastname());
         relativePersisted.setRelation(familyDTO.getRelation());
         relativePersisted.setLives(familyDTO.isLives());
         relativePersisted.setDateOfBirth(familyDTO.getDateOfBirth());
