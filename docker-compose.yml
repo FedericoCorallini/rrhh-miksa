@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     container_name: mysql-miksa
     environment:
-      MYSQL_ROOT_PASSWORD: cande34Pa
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: miksa
     ports:
       - "3310:3306"
