@@ -72,11 +72,10 @@ public class Employee {
 
     private boolean eliminated;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Relative> families = new ArrayList<>();  //
+    private List<Relative> families = new ArrayList<>();
 
-    //private List<Family> families = new ArrayList<>();
     public String getFullName() {
         return this.firstname + " " + this.lastname;
     }

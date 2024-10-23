@@ -10,14 +10,23 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RelativeDTO {
+
     private Long id;
+
     private Long employeeId;
+
     private String firstname;
+
     private String lastname;
+
     private FamilyRelation relation;
+
     private boolean lives;
+
     private LocalDate dateOfBirth;
+
     private boolean coexists;
+
     private GenderEnum gender;
 
     public Long getId() {
@@ -27,7 +36,7 @@ public class RelativeDTO {
     public void setId(Long id) {
         this.id = id;
     }
-    ///
+
     public Long getEmployeeId() {
         return employeeId;
     }
