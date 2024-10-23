@@ -28,16 +28,14 @@ public class RelativeService {
         this.modelMapper = modelMapper;
     }
 
-//parece que no esta recuperando el empleado por su id
-       public RelativeDTO saveFamily(RelativeRequestDTO familyDTO) {
-           Relative relative = modelMapper.map(familyDTO, Relative.class);
-           Employee employee = employeeRepository.findByIdAndEliminated(familyDTO.getEmployeeId(), false)
-                   .orElseThrow(() -> new RuntimeException("Empleado no encontrado o eliminado"));
-           relative.setEmployee(employee);
-           familyRepository.save(relative);
-           return modelMapper.map(relative, RelativeDTO.class);
-       }
-
+    public RelativeDTO saveFamily(RelativeRequestDTO familyDTO) {
+        Relative relative = modelMapper.map(familyDTO, Relative.class);
+        Employee employee = employeeRepository.findByIdAndEliminated(familyDTO.getEmployeeId(), false)
+               .orElseThrow(() -> new RuntimeException("Empleado no encontrado o eliminado"));
+        relative.setEmployee(employee);
+        familyRepository.save(relative);
+        return modelMapper.map(relative, RelativeDTO.class);
+    }
 
     public List<RelativeDTO> getFamiliesByEmployeeId(Long employeeId) {
         List<Relative> relativeList = familyRepository.findByEmployeeId(employeeId);
@@ -45,7 +43,6 @@ public class RelativeService {
                 .map(relative -> modelMapper.map(relative, RelativeDTO.class))
                 .collect(Collectors.toList());
     }
-
 
     public RelativeDTO updateFamily(Long id, RelativeRequestDTO familyDTO) {
         Relative relativePersisted = findFamily(id);
@@ -57,17 +54,16 @@ public class RelativeService {
         relativePersisted.setDateOfBirth(familyDTO.getDateOfBirth());
         relativePersisted.setCoexists(familyDTO.getCoexists());
         relativePersisted.setGender(familyDTO.getGender());
+
         familyRepository.save(relativePersisted);
         return modelMapper.map(relativePersisted, RelativeDTO.class);
     }
 
-    // Eliminar familiar lo agrego ya que si se carga mal o por error el familiar y no corresponde, se elimia permanentemente
     public String deleteFamily(Long id) {
         familyRepository.deleteById(id);
         return "Familiar eliminado permanentemente";
     }
 
-    // lista los familiares que cumplen años en la fecha ingresada
     public List<RelativeDTO> findFamiliesByBirthday(LocalDate birthDate) {
         List<Relative> relativeList = familyRepository.findByDateOfBirth(birthDate);
         return relativeList.stream()
@@ -75,13 +71,13 @@ public class RelativeService {
                 .collect(Collectors.toList());
     }
 
-    //lista los familiares que cumplen con la relacion ingresada(pensada para dia del padre o madre
     public List<RelativeDTO> findFamiliesByRelation(FamilyRelation relation) {
         List<Relative> relativeList = familyRepository.findByRelation(relation);
         return relativeList.stream()
                 .map(relative -> modelMapper.map(relative, RelativeDTO.class))
                 .collect(Collectors.toList());
     }
+
     private Relative findFamily(Long id) {
         Optional<Relative> familyOptional = familyRepository.findById(id);
         if(familyOptional.isEmpty()) {

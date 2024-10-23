@@ -54,7 +54,7 @@ public class EmployeeDTO {
 
     private BankAccountDTO bankAccount;
 
-    private List<RelativeDTO> familyList;
+    private List<RelativeDTO> families;
 
     private boolean eliminated;
 
