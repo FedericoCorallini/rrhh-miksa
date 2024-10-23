@@ -63,7 +63,6 @@ public class Employee {
     private String cellPhoneNumber;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // @JsonManagedReference
     private BankAccount bankAccount;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -75,6 +74,10 @@ public class Employee {
     private List<AbsencePermission> absencePermissionsList;
 
     private boolean eliminated;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Relative> families = new ArrayList<>();
 
     public String getFullName() {
         return this.firstname + " " + this.lastname;

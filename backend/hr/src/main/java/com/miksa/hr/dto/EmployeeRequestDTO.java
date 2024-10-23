@@ -2,7 +2,6 @@ package com.miksa.hr.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.miksa.hr.entity.BankAccount;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EmployeeRequestDTO {
-
-   // private Long id;
 
     @NotBlank
     private String lastname;

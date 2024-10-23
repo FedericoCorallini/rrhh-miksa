@@ -19,24 +19,43 @@ import java.util.List;
 public class EmployeeDTO {
 
     private Long id;
-    private String lastname;
-    private String firstname;
-    private Long dni;
-    private Long cuil;
-    private String email;
-    private LocalDate dateOfAdmission;
-    private LocalDate dateOfBirth;
-    private String maritalStatus;
-    private String workingHours;
-    private String nationality;
-    private String jobPosition;
-    private GenderEnum gender;
-    private String homePhoneNumber;
-    private String cellPhoneNumber;
-    private List<DocumentationDTO> documentationList;
-    private List<AbsencePermissionDTO> absencePermissionsList;
-    private BankAccountDTO bankAccount;
-    private boolean eliminated;
 
+    private String lastname;
+
+    private String firstname;
+
+    private Long dni;
+
+    private Long cuil;
+
+    private String email;
+
+    private LocalDate dateOfAdmission;
+
+    private LocalDate dateOfBirth;
+
+    private String maritalStatus;
+
+    private String workingHours;
+
+    private String nationality;
+
+    private String jobPosition;
+
+    private GenderEnum gender;
+
+    private String homePhoneNumber;
+
+    private String cellPhoneNumber;
+
+    private List<DocumentationDTO> documentationList;
+
+    private List<AbsencePermissionDTO> absencePermissionsList;
+
+    private BankAccountDTO bankAccount;
+
+    private List<RelativeDTO> families;
+
+    private boolean eliminated;
 
 }

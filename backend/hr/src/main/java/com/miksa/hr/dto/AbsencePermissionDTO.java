@@ -22,17 +22,30 @@ import java.time.LocalTime;
 public class AbsencePermissionDTO {
 
     private Long id;
+
     private String details;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     private LocalTime startTime;
+
     private LocalTime endTime;
+
     private String reason;
+
     private DocumentationDTO documentation;
+
     private Long employeeId;
+
     private PermissionState permissionState;
+
     private boolean eliminated;
+
     private LocalDate creationDate;
+
     private String employeeName;
+
     private String employeePosition;
 }
