@@ -18,10 +18,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DocumentationRequestDTO {
+
     private String description;
+
     @NotNull
     private Long employee;
+
     private Long absencePermission;
+
     @NotNull
     private DocumentationType documentationType;
 }

@@ -7,6 +7,7 @@ import com.miksa.hr.entity.enums.FamilyRelation;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-//Se utiliza para recibir los datos cuando se crea o actualiza un familiar,
-// y en este caso, incluye el employeeId para asociar el familiar al empleado.
 public class RelativeRequestDTO {
-    private Long employeeId; // Para asociar el familiar al empleado
-    private Long id; // Será usada para el update del familiar
+
+    private Long employeeId;
+
+    private Long id; // Será usada para el update del familiar ?
 
     @NotBlank(message = "El nombre no puede estar vacío")
     private String firstname;
@@ -36,9 +37,8 @@ public class RelativeRequestDTO {
     @NotNull(message = "El estado de si vive o no es obligatorio")
     private Boolean lives;
 
-    //@NotNull(message = "La fecha de nacimiento es obligatoria")
-   //@Past(message = "La fecha de nacimiento debe ser anterior a la actual")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
+    @Past(message = "La fecha de nacimiento debe ser anterior a la actual")
     private LocalDate dateOfBirth;
 
     @NotNull(message = "El campo 'coexists' es obligatorio")
@@ -47,17 +47,4 @@ public class RelativeRequestDTO {
     @NotNull(message = "El género es obligatorio")
     private GenderEnum gender;
 
-    public boolean isLives() {
-        return lives;
-    }
-    public void setLives(boolean lives) {
-        this.lives = lives;
-    }
-
-    public boolean isCoexists() {
-        return coexists;
-    }
-    public void setCoexists(boolean coexists) {
-        this.coexists = coexists;
-    }
 }

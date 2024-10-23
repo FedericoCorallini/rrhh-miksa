@@ -53,9 +53,9 @@ public class RelativeService {
         relativePersisted.setFirstname(familyDTO.getFirstname());
         relativePersisted.setLastname(familyDTO.getLastname());
         relativePersisted.setRelation(familyDTO.getRelation());
-        relativePersisted.setLives(familyDTO.isLives());
+        relativePersisted.setLives(familyDTO.getLives());
         relativePersisted.setDateOfBirth(familyDTO.getDateOfBirth());
-        relativePersisted.setCoexists(familyDTO.isCoexists());
+        relativePersisted.setCoexists(familyDTO.getCoexists());
         relativePersisted.setGender(familyDTO.getGender());
         familyRepository.save(relativePersisted);
         return modelMapper.map(relativePersisted, RelativeDTO.class);

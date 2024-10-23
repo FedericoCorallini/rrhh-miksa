@@ -34,22 +34,17 @@ public class RelativeController {
         return ResponseEntity.ok(relativeService.getFamiliesByEmployeeId(employeeId));
     }
 
-
-   @PostMapping
-   public ResponseEntity<RelativeDTO> createFamily(@Validated @RequestBody RelativeRequestDTO relativeRequestDTO) {
-       // Ahora el servicio retorna un FamilyDTO
+    @PostMapping
+    public ResponseEntity<RelativeDTO> createFamily(@Validated @RequestBody RelativeRequestDTO relativeRequestDTO) {
        RelativeDTO createdFamily = relativeService.saveFamily(relativeRequestDTO);
-
-       // Retornamos el FamilyDTO en la respuesta
        return ResponseEntity.status(HttpStatus.CREATED).body(createdFamily);
-   }
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<RelativeDTO> updateFamily(@PathVariable Long id, @Validated @RequestBody RelativeRequestDTO relativeRequestDTO) {
         RelativeDTO updatedFamily = relativeService.updateFamily(id, relativeRequestDTO);
         return updatedFamily != null ? ResponseEntity.ok(updatedFamily) : ResponseEntity.notFound().build();
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFamily(@PathVariable Long id) {
@@ -68,7 +63,7 @@ public class RelativeController {
             FamilyRelation familyRelation = FamilyRelation.valueOf(relation.toUpperCase());
             return ResponseEntity.ok(relativeService.findFamiliesByRelation(familyRelation));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // Maneja relaciones inválidas
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

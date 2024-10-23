@@ -63,8 +63,7 @@ public class EmployeeService {
 
     public EmployeeDTO updateEmployee(Long id, EmployeeRequestDTO employeeDTO){
         Employee employeePersisted = findEmployee(id);
-        // evaluar posibilidad de modificar datos de los empleados y cuales
-        employeePersisted.setFirstname(employeeDTO.getFirstname());
+        modelMapper.map(employeeDTO, employeePersisted);
         employeeRepository.save(employeePersisted);
         return modelMapper.map(employeePersisted, EmployeeDTO.class);
 

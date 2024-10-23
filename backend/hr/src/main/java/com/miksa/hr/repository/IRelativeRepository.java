@@ -10,9 +10,7 @@ import java.util.List;
 
 @Repository
 public interface IRelativeRepository extends JpaRepository<Relative, Long> {
-    //para buscar por cumpleaños
     List<Relative> findByDateOfBirth(LocalDate birthDate);
-    //para buscar por relacion (madre padre hijo...)
     List<Relative> findByRelation(FamilyRelation relation);
     List<Relative> findByEmployeeId(Long employeeId);
 }
