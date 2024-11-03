@@ -6,9 +6,9 @@ import { Button } from '@mui/material';
 import BasicTimePicker from './BasicTimePicker';
 import { postDocument, postFile, postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
-import { DocumentationRequestModal } from './DocumentationRequestModal';
+import { DocumentationRequestSection } from './DocumentationRequestSection';
 
-export const PermissionRequestForm = () => {
+export const PermissionRequestModalForm = () => {
   const [data, setData] = useState({ 
     employee_id: 1,
     reason: '',
@@ -133,7 +133,7 @@ export const PermissionRequestForm = () => {
         time={data.end_time}
         onChange={(time) => handleTimeChange('end_time', time)}
       />
-      <DocumentationRequestModal setDoc={setDoc} setFile={setFile}></DocumentationRequestModal>
+      <DocumentationRequestSection setDoc={setDoc} setFile={setFile}></DocumentationRequestSection>
       <Button sx={{ flexBasis: 'calc(27.5ch)' }} type="submit" variant="contained">
         Enviar
       </Button>

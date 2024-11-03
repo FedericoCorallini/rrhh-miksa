@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deletePermission, getEmployee, getFile } from "../utils/Axios";
-import { PermissionRequestModal } from "../components/PermissionRequestModal";
+import { PermissionRequestSection } from "../components/PermissionRequestSection.jsx";
 
-export const PermisionRequest = () => {
+export const PermisionRequestPage = () => {
   const COLUMNS = [
     { field: "details", headerName: "Detalles", width: 200 },
     {
@@ -75,7 +75,7 @@ export const PermisionRequest = () => {
           },
         }}
       />
-      <PermissionRequestModal permission={"permission"} />
+      <PermissionRequestSection permission={"permission"} />
     </Box>
   );
 };

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { DocumentationForm } from './DocumentationForm';
+import { DocumentationRequestModalForm } from './DocumentationRequestModalForm';
 
 const style = {
   position: 'absolute',
@@ -17,14 +17,14 @@ const style = {
   p: 4,
 };
 
-export const DocumentationModal = ({employeeId, reload}) => {
+export const DocumentationRequestSection = ({setDoc, setFile}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button variant="contained" onClick={handleOpen}>Nuevo</Button>
+      <Button fullWidth variant="contained" onClick={handleOpen}>Cargar documento</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -32,7 +32,7 @@ export const DocumentationModal = ({employeeId, reload}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <DocumentationForm employeeId={employeeId} handleClose={handleClose} reload={reload}></DocumentationForm>
+            <DocumentationRequestModalForm handleClose={handleClose} setDoc={setDoc} setFile={setFile} ></DocumentationRequestModalForm>
         </Box>
       </Modal>
     </div>

@@ -1,31 +1,48 @@
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import LoginButton from './components/LoginButton.jsx'
-import LogoutButton from './components/LogoutButton.jsx'
-import { Profile } from './pages/Profile.jsx'
-import { Permision } from './pages/Permision.jsx'
-import { PermisionRequest } from './pages/PermisionRequest.jsx'
-import { NavBar } from './components/NavBar.jsx'
+
+
+import { ProfilePage } from './pages/ProfilePage.jsx'
+import { PermisionRequestPage } from './pages/PermisionRequestPage.jsx'
 import { Employees } from './pages/Employees.jsx'
+import { PermissionResponsePage } from './pages/PermissionResponsePage.jsx'
 
 function App() {
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, loginWithRedirect]);
+
+  const ProtectedRoute = ({ children, roleRequired }) => {
+    const { user } = useAuth0();
+    const userRole = user?.role;
+
+    if (!isAuthenticated) {
+      console.log("No autenticado");
+      return <Navigate to="/login" />;
+    }
+    if (userRole !== roleRequired) {
+      console.log("No autorizado");
+      return <Navigate to="/" />;
+    }
+    return children;
+  };
 
   return (
     <>
-      
       <BrowserRouter>
-
-        <NavBar />
-
         <Routes>
-          <Route path='/' element={<LoginButton />} /> 
-          <Route path='/login' element={<LoginButton />} />
-          <Route path='/perfil/:id' element={<Profile />} />
-          <Route path='/permisos' element={<Permision />} />
-          <Route path='/solicitudes' element={<PermisionRequest />} />
-          <Route path='/empleados' element={<Employees />} />
-          <Route path='/logout' element={<LogoutButton />} />
+          <Route path='/' element={<MainLayout/>}>
+            <Route path='/perfil/:id' element={<ProfilePage />} />
+            <Route path='/permisos' element={<PermissionResponsePage />} />
+            <Route path='/solicitudes' element={<PermisionRequestPage />} />
+            <Route path='/empleados' element={<Employees />} />
+            <Route path='/logout' element={<LogoutButton />} />
+          </Route>
         </Routes>
       </BrowserRouter>
   
