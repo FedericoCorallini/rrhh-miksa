@@ -17,22 +17,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 public class Documentation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String description;
+
     @Column(updatable = false)
     private LocalDateTime uploadedDate;
+
     private String pathToFile;
+
     @ManyToOne
     @JoinColumn(name = "employee_id", updatable = false)
     @JsonBackReference
     private Employee employee;
+
     @OneToOne(mappedBy = "documentation", cascade = CascadeType.ALL)
     @JsonBackReference
     private AbsencePermission absencePermission;
+
     @Column(name = "documentation_type")
     @Enumerated(EnumType.STRING)
     private DocumentationType documentationType;
+
     private boolean eliminated;
 }

@@ -19,17 +19,25 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AbsencePermissionRequestDTO {
+
     private Long id;
+
     private String details;
+
     @NotNull(message = "Debes ingresar la fecha de inicio")
     @Future(message = "La fecha de inicio debe ser posterior a la fecha actual")
     private LocalDate startDate;
+
     @NotNull(message = "Debes ingresar la fecha de finalizacion")
     @Future(message = "La fecha de finalizacion debe ser posterior a la fecha actual")
     private LocalDate endDate;
+
     private LocalTime startTime;
+
     private LocalTime endTime;
+
     private String reason;
+
     @NotNull(message = "Debes enviar el id del empleado al que corresponde el permiso")
     private Long employeeId;
 }

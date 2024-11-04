@@ -19,12 +19,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DocumentationDTO {
+
     private Long id;
+
     private String description;
+
     private LocalDateTime uploadedDate;
+
     private String pathToFile;
+
     private Long idEmployee;
+
     private Long idAbsencePermission;
+
     private DocumentationType documentationType;
+
     private boolean eliminated;
 }

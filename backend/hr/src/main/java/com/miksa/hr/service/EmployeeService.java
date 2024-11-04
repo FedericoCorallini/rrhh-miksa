@@ -28,6 +28,14 @@ public class EmployeeService {
         return employeeDTO;
     }
 
+    public EmployeeDTO getEmployeeByEmail(String email){
+        Employee employee = findEmployeeByEmail(email);
+        EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
+        // Si fuese necesario que en empleado DTO figuren las listas de documentos y permisos asociados
+        filterEliminatedItems(employeeDTO);
+        return employeeDTO;
+    }
+
     public EmployeeDTO getEmployeeById(Long id){
         Employee employee = findEmployee(id);
         EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
@@ -55,8 +63,7 @@ public class EmployeeService {
 
     public EmployeeDTO updateEmployee(Long id, EmployeeRequestDTO employeeDTO){
         Employee employeePersisted = findEmployee(id);
-        // evaluar posibilidad de modificar datos de los empleados y cuales
-        employeePersisted.setFirstname(employeeDTO.getFirstname());
+        modelMapper.map(employeeDTO, employeePersisted);
         employeeRepository.save(employeePersisted);
         return modelMapper.map(employeePersisted, EmployeeDTO.class);
 
@@ -71,6 +78,14 @@ public class EmployeeService {
 
     public Employee findEmployee(Long id) {
         Optional<Employee> employeeOptional = employeeRepository.findByIdAndEliminated(id, false);
+        if(employeeOptional.isEmpty()){
+            throw new RuntimeException("El empleado no existe");
+        }
+        return employeeOptional.get();
+    }
+
+    public Employee findEmployeeByEmail(String email) {
+        Optional<Employee> employeeOptional = employeeRepository.findByEmailAndEliminated(email, false);
         if(employeeOptional.isEmpty()){
             throw new RuntimeException("El empleado no existe");
         }
