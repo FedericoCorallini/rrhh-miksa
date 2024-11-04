@@ -51,8 +51,9 @@ export const ProfilePage = () => {
   };
 
   useEffect(() => {
-    callApi();
-    
+    if(id != 0){
+      callApi();
+    }  
   }, []);
 
   const callApi = async () => {

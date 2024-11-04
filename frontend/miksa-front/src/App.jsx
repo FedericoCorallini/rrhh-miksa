@@ -11,13 +11,32 @@ import { EmployeesPage } from './pages/EmployeesPage.jsx';
 import { PermissionResponsePage } from './pages/PermissionResponsePage.jsx';
 
 function App() {
-  const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      loginWithRedirect();
+    const getToken = async () => {
+      if (isAuthenticated) {
+        try {
+          const accessToken = await getAccessTokenSilently({
+            authorizationParams: {
+              audience: `http://spring-miksa`,
+            },
+          });
+          sessionStorage.setItem('jwt', accessToken);
+          console.log(accessToken);
+        } catch (e) {
+          console.log(e.message);
+        }
+      } else {
+        loginWithRedirect();
+      }
+    };
+
+    if (!isAuthenticated && !isLoading) {
+      getToken();
     }
-  }, [isLoading, isAuthenticated, loginWithRedirect]);
+  }, [isAuthenticated, getAccessTokenSilently, loginWithRedirect, isLoading]);
+
 
   const ProtectedRoute = ({ children, roleRequired }) => {
     const { user } = useAuth0();

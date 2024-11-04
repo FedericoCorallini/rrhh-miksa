@@ -71,7 +71,7 @@ export const PermissionResponsePage = () => {
       width: 150,
       renderCell: (params) => (
         <>
-          <PermissionTable permission={params.row} />
+          <PermissionResponseTable permission={params.row} />
         </>
       ),
     },
