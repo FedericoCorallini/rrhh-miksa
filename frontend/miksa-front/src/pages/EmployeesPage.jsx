@@ -87,3 +87,4 @@ export const EmployeesPage = () => {
     
   );
 };
+export default EmployeesPage;

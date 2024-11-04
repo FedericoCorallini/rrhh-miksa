@@ -87,4 +87,6 @@ export const ProfilePage = () => {
       </CustomTabPanel>
     </Box>
   );
-}
+};
+
+export default ProfilePage;

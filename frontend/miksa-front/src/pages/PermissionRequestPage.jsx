@@ -79,3 +79,4 @@ export const PermissionRequestPage = () => {
     </Box>
   );
 };
+export default PermissionRequestPage;

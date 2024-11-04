@@ -130,3 +130,4 @@ export const PermissionResponsePage = () => {
     </Box>
   );
 };
+export default PermissionResponsePage;
