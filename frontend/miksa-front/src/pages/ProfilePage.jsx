@@ -58,8 +58,10 @@ export const ProfilePage = () => {
 
   const callApi = async () => {
     console.log(id)
+    console.log("callApi")
     const respuesta = await getEmployee(id);
     setProfile(respuesta.data);
+    console.log(respuesta.data);
     setDocumentation(respuesta.data.documentation_list)
   };
 

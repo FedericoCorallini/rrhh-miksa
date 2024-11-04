@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { BasicDatePicker } from "./BasicDatePicker";
+import { BasicDatePicker } from "../BasicDatePicker";
 import { Button } from "@mui/material";
-import { postEmployee, putEmployee } from "../utils/Axios";
+import { postEmployee, putEmployee } from "../../utils/Axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const ProfileForm = ({ profile }) => {
