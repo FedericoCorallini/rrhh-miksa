@@ -9,8 +9,8 @@ function TopNavBar() {
   return (
     <Navbar bg="light" data-bs-theme="light">
       <Container>
-        <Navbar.Brand as={NavLink} to='/perfil/0'>Perfil</Navbar.Brand>
         <Nav className="me-auto">
+          <Nav.Link as={NavLink} to='/perfil/0'>Perfil</Nav.Link>
           <Nav.Link as={NavLink} to='/solicitudes'>Solicitudes</Nav.Link>
           <Nav.Link as={NavLink} to='/empleados'>Empleados</Nav.Link>
           <Nav.Link as={NavLink} to='/permisos'>Permisos</Nav.Link>
