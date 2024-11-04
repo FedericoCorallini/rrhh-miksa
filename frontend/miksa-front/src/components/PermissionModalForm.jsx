@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import React, { useEffect, useState } from "react";
-import { BasicDatePicker } from "../BasicDatePicker";
-import BasicTimePicker from "../BasicTimePicker";
+import { BasicDatePicker } from "./BasicDatePicker";
+import BasicTimePicker from "./BasicTimePicker";
 
 export const PermissionModalForm = ({ permission }) => {
   const [data, setData] = useState(permission);

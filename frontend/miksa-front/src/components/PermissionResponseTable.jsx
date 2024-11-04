@@ -16,7 +16,7 @@ const style = {
   p: 1,
 };
 
-export const PermissionTable = ({ permission }) => {
+export const PermissionResponseTable = ({ permission }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

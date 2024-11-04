@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DocumentationModal } from "./DocumentationModal";
-import { deleteDocumentation, getFile, postDocument } from "../utils/Axios";
+import { DocumentationSection } from "../DocumentationSection";
+import { deleteDocumentation, getFile, postDocument } from "../../utils/Axios";
 
 
 export const DocsTable = ({documentation, reload, employeeId}) => {
@@ -48,7 +48,7 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
         disableColumnFilter   
       />
       {console.log(documentation)}
-      <DocumentationModal employeeId={employeeId} reload={reload}></DocumentationModal>
+      <DocumentationSection employeeId={employeeId} reload={reload}></DocumentationSection>
     </Box>
   );
 };

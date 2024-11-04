@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deletePermission, getEmployee, getFile } from "../utils/Axios";
 import { PermissionRequestSection } from "../components/PermissionRequestSection.jsx";
 
-export const PermisionRequestPage = () => {
+export const PermissionRequestPage = () => {
   const COLUMNS = [
     { field: "details", headerName: "Detalles", width: 200 },
     {

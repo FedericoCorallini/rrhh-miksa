@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import { AccountFields } from '../components/profile/AccountFields';
 import { FamilyFields } from '../components/profile/FamilyFields';
 import { ProfileForm } from '../components/profile/ProfileForm';
+import { DocsTable } from '../components/profile/DocsTable';
 import { getEmployee } from '../utils/Axios';
-import { DocsTable } from '../components/DocsTable';
 import { useParams } from 'react-router-dom';
 
 
@@ -40,7 +40,7 @@ function a11yProps(index) {
   };
 }
 
-export const Profile = () => {
+export const ProfilePage = () => {
   const [value, setValue] = useState(0);
   const [profile, setProfile] = useState([]);
   const [documentation, setDocumentation] = useState([]);

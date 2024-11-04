@@ -1,11 +1,12 @@
-
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import './App.css'
+import { useAuth0 } from '@auth0/auth0-react'
 
-
+import MainLayout from './layout/MainLayout.jsx'
 import { ProfilePage } from './pages/ProfilePage.jsx'
-import { PermisionRequestPage } from './pages/PermisionRequestPage.jsx'
-import { Employees } from './pages/Employees.jsx'
+import { PermissionRequestPage } from './pages/PermissionRequestPage.jsx'
+import { EmployeesPage } from './pages/EmployeesPage.jsx'
 import { PermissionResponsePage } from './pages/PermissionResponsePage.jsx'
 
 function App() {
@@ -39,9 +40,8 @@ function App() {
           <Route path='/' element={<MainLayout/>}>
             <Route path='/perfil/:id' element={<ProfilePage />} />
             <Route path='/permisos' element={<PermissionResponsePage />} />
-            <Route path='/solicitudes' element={<PermisionRequestPage />} />
-            <Route path='/empleados' element={<Employees />} />
-            <Route path='/logout' element={<LogoutButton />} />
+            <Route path='/solicitudes' element={<PermissionRequestPage />} />
+            <Route path='/empleados' element={<EmployeesPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

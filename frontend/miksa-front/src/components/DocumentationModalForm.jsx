@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, Input, InputLabel, MenuItem, Select } from '@mui/material';
+import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
 
-export const DocumentationRequestModalForm = ({handleClose, setDoc, setFile}) => {
-  const [data, setData] = useState({ id_absence_permission: null, documentation_type: '', description: '' });
 
+export const DocumentationModalForm = ({employeeId, handleClose, reload}) => {
+  const [data, setData] = useState({ employee: employeeId, documentation_type: '', description: '' });
+  const [file, setFile] = useState();
+  const [docId, setDocId] = useState(0);
+  
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -19,14 +23,6 @@ export const DocumentationRequestModalForm = ({handleClose, setDoc, setFile}) =>
     width: 1,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -36,6 +32,14 @@ export const DocumentationRequestModalForm = ({handleClose, setDoc, setFile}) =>
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSelectChange = (e) => {
     setData((prevData) => ({
       ...prevData,
@@ -43,15 +47,26 @@ export const DocumentationRequestModalForm = ({handleClose, setDoc, setFile}) =>
     }));
   };
 
-  const onButtonClick = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setDoc(data)
-    handleClose()
- 
+    const response = await postDocument(data);
+    setDocId(response.data.id)
   };
+
+  useEffect(() => {
+    if (docId !== 0) {
+      const fileData = new FormData()
+      fileData.append('file', file)
+      postFile(fileData, docId)
+      handleClose()
+      reload()
+    }
+  }, [docId]);
 
   return (
     <Box
+      component="form"
+      onSubmit={handleSubmit}
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
@@ -76,15 +91,16 @@ export const DocumentationRequestModalForm = ({handleClose, setDoc, setFile}) =>
           onChange={handleSelectChange}
           label="Tipo de documento"
         >
-          <MenuItem value={"PERMISO"}>Permiso</MenuItem>
-          <MenuItem value={"RETRASO"}>Retraso</MenuItem>
+          <MenuItem value={"DDJJ"}>DDJJ</MenuItem>
+          <MenuItem value={"Permiso"}>Permiso</MenuItem>
+          <MenuItem value={"Retraso"}>Retraso</MenuItem>
         </Select>
       </FormControl>
       <Button component="label" variant="contained" >
-       Cargar Archivo
+        Archivo
         <VisuallyHiddenInput onChange={handleFileChange} type="file" />
-      </Button>  
-      <Button onClick={onButtonClick} variant="contained">
+      </Button>      
+      <Button type="submit" variant="contained">
         Guardar
       </Button>
     </Box>

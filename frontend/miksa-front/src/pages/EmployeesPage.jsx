@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deleteEmployee, getEmployees, getFile } from "../utils/Axios";
-import { PermissionModal } from "../components/PermissionModal";
 import { NavLink } from "react-router-dom";
 import { Button } from "@mui/material";
 
-export const Employees = () => {
+export const EmployeesPage = () => {
   const COLUMNS = [
     { field: "firstname", headerName: "Nombre", width: 150 },
     { field: "lastname", headerName: "Apellido", width: 150 },

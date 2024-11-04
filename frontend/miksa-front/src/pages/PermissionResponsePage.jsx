@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { PermissionTable } from "../components/PermissionTable.jsx";
+import { PermissionResponseTable } from "../components/PermissionResponseTable.jsx";
 import { getAbsencePermissions, getFile, patchState } from "../utils/Axios";
 
 export const PermissionResponsePage = () => {
