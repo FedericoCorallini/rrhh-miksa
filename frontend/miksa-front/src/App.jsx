@@ -9,7 +9,7 @@ import EmployeesPage from "./pages/EmployeesPage.jsx";
 import Loading from "./components/Loading.jsx";
 
 const App = () => {
-  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading, user } = useAuth0();
 
   useEffect(() => {
     const getToken = async () => {

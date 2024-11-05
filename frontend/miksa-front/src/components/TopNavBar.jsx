@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import LogoutButton from './LogoutButton';
 
 function TopNavBar() {
   return (
@@ -16,6 +17,7 @@ function TopNavBar() {
           <Nav.Link as={NavLink} to='/permisos'>Permisos</Nav.Link>
         </Nav>
       </Container>
+      <LogoutButton />
     </Navbar>
   );
 }
