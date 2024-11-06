@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { PermissionModalForm } from "../components/PermissionModalForm.jsx";
+import { PermissionDetailsModal } from "../components/PermissionDetailsModal.jsx";
 import { getAbsencePermissions, getFile, patchState } from "../utils/Axios";
 import Modal from '@mui/material/Modal';
 
@@ -161,7 +161,7 @@ export const PermissionResponsePage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {selectedPermission && <PermissionModalForm permission={selectedPermission} />}
+          {selectedPermission && <PermissionDetailsModal permission={selectedPermission} />}
         </Box>
       </Modal>
     </Box>

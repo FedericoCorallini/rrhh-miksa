@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 import BasicTimePicker from './BasicTimePicker';
 import { postDocument, postFile, postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
-import { DocumentationRequestModalForm } from './DocumentationRequestModalForm';
+import { DocumentationModalForm } from './DocumentationModalForm';
 import Modal from '@mui/material/Modal'; // Importar Modal
 
 const style = {
@@ -158,7 +158,7 @@ export const PermissionRequestModalForm = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <DocumentationRequestModalForm handleClose={handleClose} setDoc={setDoc} setFile={setFile} />
+          <DocumentationModalForm handleClose={handleClose} setDoc={setDoc} setFile={setFile} />
         </Box>
       </Modal>
       <Button sx={{ flexBasis: 'calc(27.5ch)' }} type="submit" variant="contained">

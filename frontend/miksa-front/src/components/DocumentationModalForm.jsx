@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, Input, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
 
-
-export const DocumentationModalForm = ({employeeId, handleClose, reload}) => {
-  const [data, setData] = useState({ employee: employeeId, documentation_type: '', description: '' });
-  const [file, setFile] = useState();
+export const DocumentationModalForm = ({ employeeId, handleClose, reload, setDoc, setFile }) => {
+  const [data, setData] = useState({ employee: employeeId || null, documentation_type: '', description: '' });
+  const [file, setFileState] = useState();
   const [docId, setDocId] = useState(0);
-  
+
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -26,9 +25,9 @@ export const DocumentationModalForm = ({employeeId, handleClose, reload}) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        // Aquí puedes manejar el archivo cargado, por ejemplo, subirlo a un servidor
-        setFile(file)
-        console.log('Archivo cargado:', file);
+      setFileState(file);
+      if (setFile) setFile(file);
+      console.log('Archivo cargado:', file);
     }
   };
 
@@ -49,17 +48,22 @@ export const DocumentationModalForm = ({employeeId, handleClose, reload}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await postDocument(data);
-    setDocId(response.data.id)
+    if (setDoc) {
+      setDoc(data);
+      handleClose();
+    } else {
+      const response = await postDocument(data);
+      setDocId(response.data.id);
+    }
   };
 
   useEffect(() => {
     if (docId !== 0) {
-      const fileData = new FormData()
-      fileData.append('file', file)
-      postFile(fileData, docId)
-      handleClose()
-      reload()
+      const fileData = new FormData();
+      fileData.append('file', file);
+      postFile(fileData, docId);
+      handleClose();
+      if (reload) reload();
     }
   }, [docId]);
 
@@ -91,15 +95,24 @@ export const DocumentationModalForm = ({employeeId, handleClose, reload}) => {
           onChange={handleSelectChange}
           label="Tipo de documento"
         >
-          <MenuItem value={"DDJJ"}>DDJJ</MenuItem>
-          <MenuItem value={"Permiso"}>Permiso</MenuItem>
-          <MenuItem value={"Retraso"}>Retraso</MenuItem>
+          {setDoc ? (
+            [
+              <MenuItem key="Permiso" value="Permiso">Permiso</MenuItem>,
+              <MenuItem key="Retraso" value="Retraso">Retraso</MenuItem>
+            ]
+          ) : (
+            [
+              <MenuItem key="DDJJ" value="DDJJ">DDJJ</MenuItem>,
+              <MenuItem key="Permiso" value="Permiso">Permiso</MenuItem>,
+              <MenuItem key="Retraso" value="Retraso">Retraso</MenuItem>
+            ]
+          )}
         </Select>
       </FormControl>
-      <Button component="label" variant="contained" >
+      <Button component="label" variant="contained">
         Archivo
         <VisuallyHiddenInput onChange={handleFileChange} type="file" />
-      </Button>      
+      </Button>
       <Button type="submit" variant="contained">
         Guardar
       </Button>

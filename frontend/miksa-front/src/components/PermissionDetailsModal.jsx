@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { BasicDatePicker } from "./BasicDatePicker";
 import BasicTimePicker from "./BasicTimePicker";
 
-export const PermissionModalForm = ({ permission }) => {
+export const PermissionDetailsModal = ({ permission }) => {
   const [data, setData] = useState(permission);
 
   useEffect(() => {
