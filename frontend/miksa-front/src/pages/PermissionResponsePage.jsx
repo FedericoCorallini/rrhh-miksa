@@ -2,10 +2,35 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { PermissionResponseTable } from "../components/PermissionResponseTable.jsx";
+import { PermissionModalForm } from "../components/PermissionModalForm.jsx";
 import { getAbsencePermissions, getFile, patchState } from "../utils/Axios";
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 465,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 24,
+  p: 1,
+};
+
 
 export const PermissionResponsePage = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedPermission, setSelectedPermission] = useState(null);
+
+  const handleOpen = (permission) => {
+    setSelectedPermission(permission);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+
   const COLUMNS = [
     { field: "employee_name", headerName: "Empleado", width: 150 },
     { field: "reason", headerName: "Motivo", width: 150 },
@@ -71,7 +96,9 @@ export const PermissionResponsePage = () => {
       width: 150,
       renderCell: (params) => (
         <>
-          <PermissionResponseTable permission={params.row} />
+          <Button variant="outlined" size="small" onClick={() => handleOpen(params.row)}>
+            Ver Detalles
+          </Button>
         </>
       ),
     },
@@ -127,6 +154,16 @@ export const PermissionResponsePage = () => {
           },
         }}
       />
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {selectedPermission && <PermissionModalForm permission={selectedPermission} />}
+        </Box>
+      </Modal>
     </Box>
   );
 };
