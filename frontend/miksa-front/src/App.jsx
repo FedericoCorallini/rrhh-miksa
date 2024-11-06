@@ -39,14 +39,34 @@ const App = () => {
     return <div><Loading />Loading...</div>;
   }
 
+  const ProtectedRoute = ({ children, roleRequired }) => {
+    if (!user || !user['roles/roles'] || !user['roles/roles'].includes(roleRequired)) {
+      console.log("No validado o requiere rol");
+      console.log("Usuario:", user);
+      console.log("Rol requerido;", roleRequired);
+      console.log("Roles del usuario:", user['roles/roles']);
+      return <Navigate to="/" />;
+    }
+    return children;
+  };
+
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<MainLayout />}>
           <Route path='/perfil/:id' element={<ProfilePage />} />
-          <Route path='/permisos' element={<PermissionResponsePage />} />
+          <Route path='/permisos' element={
+            <ProtectedRoute roleRequired="gerente">
+              <PermissionResponsePage />
+            </ProtectedRoute>
+          } />
           <Route path='/solicitudes' element={<PermissionRequestPage />} />
-          <Route path='/empleados' element={<EmployeesPage />} />
+          <Route path='/empleados' element={
+            <ProtectedRoute roleRequired="admin">
+              <EmployeesPage />
+            </ProtectedRoute>
+          } />
         </Route>
       </Routes>
     </BrowserRouter>

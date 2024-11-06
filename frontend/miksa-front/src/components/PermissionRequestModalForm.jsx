@@ -6,7 +6,20 @@ import { Button } from '@mui/material';
 import BasicTimePicker from './BasicTimePicker';
 import { postDocument, postFile, postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
-import { DocumentationRequestSection } from './DocumentationRequestSection';
+import { DocumentationRequestModalForm } from './DocumentationRequestModalForm';
+import Modal from '@mui/material/Modal'; // Importar Modal
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export const PermissionRequestModalForm = () => {
   const [data, setData] = useState({ 
@@ -84,6 +97,10 @@ export const PermissionRequestModalForm = () => {
     }
   }, [docId]);
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box
       component="form"
@@ -133,7 +150,17 @@ export const PermissionRequestModalForm = () => {
         time={data.end_time}
         onChange={(time) => handleTimeChange('end_time', time)}
       />
-      <DocumentationRequestSection setDoc={setDoc} setFile={setFile}></DocumentationRequestSection>
+      <Button fullWidth variant="contained" onClick={handleOpen}>Cargar documento</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <DocumentationRequestModalForm handleClose={handleClose} setDoc={setDoc} setFile={setFile} />
+        </Box>
+      </Modal>
       <Button sx={{ flexBasis: 'calc(27.5ch)' }} type="submit" variant="contained">
         Enviar
       </Button>

@@ -1,9 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DocumentationSection } from "../DocumentationSection";
+//import { DocumentationSection } from "../DocumentationSection";
 import { deleteDocumentation, getFile, postDocument } from "../../utils/Axios";
+import { DocumentationModalForm } from "../DocumentationModalForm.jsx";
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export const DocsTable = ({documentation, reload, employeeId}) => {
   const COLUMNS = [
@@ -38,6 +52,10 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
     window.open(url, '_blank');
   };
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box sx={{ height: 350, width: 1 }}>
       <DataGrid
@@ -48,7 +66,17 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
         disableColumnFilter   
       />
       {console.log(documentation)}
-      <DocumentationSection employeeId={employeeId} reload={reload}></DocumentationSection>
+      <Button variant="contained" onClick={handleOpen}>Nuevo</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <DocumentationModalForm employeeId={employeeId} handleClose={handleClose} reload={reload} />
+        </Box>
+      </Modal>
     </Box>
   );
 };
