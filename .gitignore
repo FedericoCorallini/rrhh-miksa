@@ -1,2 +1,4 @@
 # Ignorar el archivo de variables de entorno
 .env
+.idea/
+node_modules/
