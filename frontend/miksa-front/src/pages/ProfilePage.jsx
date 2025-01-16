@@ -54,7 +54,7 @@ export const ProfilePage = () => {
     if (id && id !== "0") {
       callApi();
     }  
-  }, [id]);
+  }, []);
 
   const callApi = async () => {
     console.log(id)

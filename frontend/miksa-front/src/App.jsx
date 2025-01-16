@@ -6,38 +6,11 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import PermissionResponsePage from "./pages/PermissionResponsePage.jsx";
 import PermissionRequestPage from "./pages/PermissionRequestPage.jsx";
 import EmployeesPage from "./pages/EmployeesPage.jsx";
-import Loading from "./components/Loading.jsx";
+import AuthWrapper from "./components/AuthWrapper.jsx";
+
 
 const App = () => {
-  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading, user } = useAuth0();
-
-  useEffect(() => {
-    const getToken = async () => {
-      if (isAuthenticated) {
-        try {
-          const accessToken = await getAccessTokenSilently({
-            authorizationParams: {
-              audience: `http://spring-miksa`,
-            },
-          });
-          sessionStorage.setItem('jwt', accessToken);
-          console.log(accessToken);
-        } catch (e) {
-          console.log(e.message);
-        }
-      }
-    };
-
-    if (!isAuthenticated && !isLoading) {
-      loginWithRedirect();
-    } else {
-      getToken();
-    }
-  }, [isAuthenticated, getAccessTokenSilently, loginWithRedirect, isLoading]);
-
-  if (isLoading) {
-    return <div><Loading />Loading...</div>;
-  }
+  const { user } = useAuth0();
 
   const ProtectedRoute = ({ children, roleRequired }) => {
     if (!user || !user['roles/roles'] || !user['roles/roles'].includes(roleRequired)) {
@@ -52,24 +25,26 @@ const App = () => {
 
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<MainLayout />}>
-          <Route path='/perfil/:id' element={<ProfilePage />} />
-          <Route path='/permisos' element={
-            <ProtectedRoute roleRequired="gerente">
-              <PermissionResponsePage />
-            </ProtectedRoute>
-          } />
-          <Route path='/solicitudes' element={<PermissionRequestPage />} />
-          <Route path='/empleados' element={
-            <ProtectedRoute roleRequired="admin">
-              <EmployeesPage />
-            </ProtectedRoute>
-          } />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthWrapper>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<MainLayout />}>
+            <Route path='/perfil/:id' element={<ProfilePage />} />
+            <Route path='/permisos' element={
+              <ProtectedRoute roleRequired="gerente">
+                <PermissionResponsePage />
+              </ProtectedRoute>
+            } />
+            <Route path='/solicitudes' element={<PermissionRequestPage />} />
+            <Route path='/empleados' element={
+              <ProtectedRoute roleRequired="admin">
+                <EmployeesPage />
+              </ProtectedRoute>
+            } />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthWrapper>
   );
 }
 
