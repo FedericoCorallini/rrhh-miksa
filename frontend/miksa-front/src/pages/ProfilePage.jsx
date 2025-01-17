@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AccountFields } from '../components/profile/AccountFields';
 import { FamilyFields } from '../components/profile/FamilyFields';
 import { ProfileForm } from '../components/profile/ProfileForm';
