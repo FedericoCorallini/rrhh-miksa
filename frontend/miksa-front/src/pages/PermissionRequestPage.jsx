@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deletePermission, getEmployee, getFile } from "../utils/Axios";
-//import { PermissionRequestSection } from "../components/PermissionRequestSection.jsx";
 import { PermissionRequestModalForm} from "../components/PermissionRequestModalForm.jsx";
 import Button from '@mui/material/Button'; // Importar Button
 import Modal from '@mui/material/Modal'; // Importar Modal
