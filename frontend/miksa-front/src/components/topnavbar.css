@@ -1,0 +1,9 @@
+/* filepath: /c:/Users/damia/Desktop/proyecto miksa/rrhh-miksa/frontend/miksa-front/src/components/TopNavBar.css */
+.top-nav-bar {
+    box-shadow: none; /* Eliminar la sombra */
+    width: 100%; /* Ocupar todo el ancho de la página */
+    position: fixed; /* Fijar la barra en la parte superior */
+    top: 0; /* Llegar hasta el tope de la pantalla */
+    left: 0; /* Asegurar que esté alineada a la izquierda */
+    z-index: 1100; /* Asegurar que esté por encima de otros elementos */
+  }
