@@ -11,10 +11,11 @@ const AuthWrapper = ({ children }) => {
           const accessToken = await getAccessTokenSilently({
             authorizationParams: {
               audience: `http://spring-miksa`,
+              scope: "openid profile email" // Solicitar scopes adicionales
             },
           });
           sessionStorage.setItem('jwt', accessToken);
-          console.log(accessToken);
+          console.log(accessToken); 
         } catch (e) {
           console.log(e.message);
         }
@@ -27,6 +28,12 @@ const AuthWrapper = ({ children }) => {
       getToken();
     }
   }, [isAuthenticated, getAccessTokenSilently, loginWithRedirect, isLoading]);
+
+  useEffect(() => {
+    if (user) {
+      console.log("User attributes:", user); // Imprimir los atributos del usuario
+    }
+  }, [user]);
 
   if (isLoading) {
     return <div>Loading...</div>;
