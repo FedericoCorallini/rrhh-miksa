@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { BasicDatePicker } from "../BasicDatePicker";
 import { Button } from "@mui/material";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 import { postEmployee, putEmployee } from "../../utils/Axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
 // Componente reutilizable para TextField
-const FormField = ({ label, name, rules, register, errors, select, children, ...props }) => (
+const FormField = ({ label, name, rules, register, errors, select, children, readOnly, ...props }) => (
   <TextField
     label={label}
     {...register(name, rules)}
@@ -20,6 +22,11 @@ const FormField = ({ label, name, rules, register, errors, select, children, ...
     select={select}
     variant="standard"
     fullWidth
+    InputLabelProps={{ shrink: true }}
+    InputProps={{
+      readOnly: readOnly,
+      style: { color: readOnly ? 'gray' : 'inherit' }
+    }}
     {...props}
   >
     {children}
@@ -34,6 +41,7 @@ export const ProfileForm = ({ profile }) => {
   const { user } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -54,11 +62,25 @@ export const ProfileForm = ({ profile }) => {
         await putEmployee(data.id, data);
       }
       setSnackbar({ open: true, message: "Datos guardados exitosamente", severity: "success" });
+      setIsEditing(false);
     } catch (error) {
       console.error(error);
       setSnackbar({ open: true, message: "Error al guardar los datos", severity: "error" });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    if (profile) {
+      for (const key in profile) {
+        setValue(key, profile[key]);
+      }
     }
   };
 
@@ -78,6 +100,7 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El nombre es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="Apellido"
@@ -85,6 +108,7 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El apellido es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="DNI"
@@ -92,6 +116,7 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El DNI es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="CUIL"
@@ -99,6 +124,7 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El CUIL es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="Celular"
@@ -106,6 +132,7 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El celular es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="Teléfono"
@@ -113,6 +140,7 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El teléfono es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="Email"
@@ -123,6 +151,7 @@ export const ProfileForm = ({ profile }) => {
           }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="Estado civil"
@@ -130,43 +159,31 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El estado civil es obligatorio" }}
           register={register}
           errors={errors}
-          select
-        >
-          <MenuItem value="soltero">Soltero</MenuItem>
-          <MenuItem value="casado">Casado</MenuItem>
-          <MenuItem value="divorciado">Divorciado</MenuItem>
-          <MenuItem value="viudo">Viudo</MenuItem>
-        </FormField>
+          readOnly={!isEditing}
+        />
         <FormField
           label="Género"
           name="gender"
           rules={{ required: "El género es obligatorio" }}
           register={register}
           errors={errors}
-          select
-        >
-          <MenuItem value="hombre">Hombre</MenuItem>
-          <MenuItem value="mujer">Mujer</MenuItem>
-          <MenuItem value="otro">Otro</MenuItem>
-        </FormField>
+          readOnly={!isEditing}
+        />
         <FormField
           label="Nacionalidad"
           name="nationality"
           rules={{ required: "La nacionalidad es obligatoria" }}
           register={register}
           errors={errors}
-          select
-        >
-          <MenuItem value="Argentina">Argentina</MenuItem>
-          <MenuItem value="Brasil">Brasil</MenuItem>
-          <MenuItem value="Chile">Chile</MenuItem>
-        </FormField>
+          readOnly={!isEditing}
+        />
         <FormField
           label="Horario laboral"
           name="working_hours"
           rules={{ required: "El horario laboral es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
         <FormField
           label="Puesto laboral"
@@ -174,28 +191,96 @@ export const ProfileForm = ({ profile }) => {
           rules={{ required: "El puesto laboral es obligatorio" }}
           register={register}
           errors={errors}
+          readOnly={!isEditing}
         />
-        <BasicDatePicker
-          label="Fecha de nacimiento"
-          value={watch("date_of_birth")}
-          onChange={(newValue) => setValue("date_of_birth", newValue, { shouldValidate: true })}
-        />
-        <BasicDatePicker
-          label="Fecha de admisión"
-          value={watch("date_of_admission")}
-          onChange={(newValue) => setValue("date_of_admission", newValue, { shouldValidate: true })}
-        />
+        {!isEditing && (
+          <>
+            <FormField
+              label="Fecha de nacimiento"
+              name="date_of_birth"
+              rules={{ required: "La fecha de nacimiento es obligatoria" }}
+              register={register}
+              errors={errors}
+              readOnly={!isEditing}
+            />
+
+            <FormField
+              label="Fecha de admisión"
+              name="date_of_admission"
+              rules={{ required: "La fecha de admisión es obligatoria" }}
+              register={register}
+              errors={errors}
+              readOnly={!isEditing}
+            />
+          </>
+        )}
+
+        {isEditing && (
+          <>
+            <BasicDatePicker
+              label="Fecha de nacimiento"
+              InputProps={{
+                readOnly: !isEditing,
+                style: { color: !isEditing ? 'gray' : 'inherit' }
+              }}
+              value={watch("date_of_birth")}
+              onChange={(newValue) => setValue("date_of_birth", newValue, { shouldValidate: true })}
+              sx={{ color: !isEditing ? 'gray' : 'inherit' }}
+            />
+            <BasicDatePicker
+              label="Fecha de admisión"
+              InputProps={{
+                readOnly: !isEditing,
+                style: { color: !isEditing ? 'gray' : 'inherit' }
+              }}
+              value={watch("date_of_admission")}
+              onChange={(newValue) => setValue("date_of_admission", newValue, { shouldValidate: true })}
+              sx={{ color: !isEditing ? 'gray' : 'inherit' }}
+            />
+          </>
+        )}
       </Box>
-      {user && user["roles/roles"] && user["roles/roles"].includes("admin") && (
-        <Button
-          sx={{ mt: "15px" }}
-          type="submit"
-          variant="contained"
-          size="large"
-          disabled={loading}
+      {user && user["roles/roles"] && (user["roles/roles"].includes("admin") || user["roles/roles"].includes("gerente")) && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            mt: 2,
+          }}
         >
-          {loading ? "Guardando..." : "Guardar"}
-        </Button>
+          {!isEditing ? (
+            <Button
+              startIcon={<EditNoteIcon />}
+              variant="contained"
+              size="large"
+              onClick={handleEditClick}
+            >
+              Modificar
+            </Button>
+          ) : (
+            <>
+              <Button
+                sx={{ mr: 2, backgroundColor: '#5bbc5e' }}
+                type="submit"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                size="large"
+                disabled={loading}
+              >
+                {loading ? "Guardando..." : "Guardar"}
+              </Button>
+              <Button
+                startIcon={<CloseIcon />}
+                variant="outlined"
+                color="error"
+                size="large"
+                onClick={handleCancelClick}
+              >
+                Cancelar
+              </Button>
+            </>
+          )}
+        </Box>
       )}
 
       {/* Ventana emergente (Snackbar) */}
@@ -216,7 +301,6 @@ export const ProfileForm = ({ profile }) => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-
     </Box>
   );
 };

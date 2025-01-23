@@ -5,6 +5,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deleteDocumentation, getFile, postDocument } from "../../utils/Axios";
 import { DocumentationModalForm } from "../DocumentationModalForm.jsx";
 import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/material/Modal';
 
 const style = {
@@ -66,7 +67,21 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
         disableColumnFilter   
       />
       {console.log(documentation)}
-      <Button variant="contained" onClick={handleOpen}>Nuevo</Button>
+      <Button
+        startIcon={<AddIcon />}
+        variant="contained"
+        sx={{
+          backgroundColor: "#5bbc5e",
+          color: 'white',
+          marginTop: "2%",
+          '&:hover': {
+            backgroundColor: "#4caf50", // Verde más oscuro
+          },
+        }}
+        onClick={handleOpen}
+      >
+        Nueva solicitud
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}

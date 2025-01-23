@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import SaveIcon from '@mui/icons-material/Save';
 import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
@@ -136,8 +138,10 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
       onSubmit={handleSubmit}
       sx={{
         display: 'flex',
-        flexWrap: 'wrap',
-        '& > :not(style)': { m: 1, width: '25ch' },
+        flexDirection: 'column',
+        gap:2,
+        mx:2,
+        width: '80%',
       }}
       noValidate
       autoComplete="off"
@@ -151,7 +155,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
         error={!!errors.description}
         helperText={errors.description}
       />
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+      <FormControl variant="standard">
         <InputLabel id="demo-simple-select-standard-label">Tipo de documento</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
@@ -171,21 +175,24 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
           </Typography>
         )}
       </FormControl>
-      <Button component="label" variant="contained">
-        Archivo
-        <VisuallyHiddenInput onChange={handleFileChange} type="file" />
-      </Button>
-      {file && (
-        <Typography variant="caption" color="textSecondary">
-          {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
-        </Typography>
-      )}
-      {errors.file && (
-        <Typography variant="caption" color="error">
-          {errors.file}
-        </Typography>
-      )}
-      <Button type="submit" variant="contained" disabled={!isFormComplete()}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+        <Button component="label" variant="contained" width="100%" startIcon={<FileUploadIcon />}>
+          Cargar archivo
+          <VisuallyHiddenInput onChange={handleFileChange} type="file" />
+        </Button>
+        {file && (
+          <Typography variant="caption" color="textSecondary">
+            {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+          </Typography>
+        )}
+        {errors.file && (
+          <Typography variant="caption" color="error">
+            {errors.file}
+          </Typography>
+        )}
+
+      </Box>
+      <Button type="submit" variant="contained" disabled={!isFormComplete()} startIcon={<SaveIcon />} sx={{ backgroundColor: '#5bbc5e', color: 'white', minWidth: '120px' }}>
         Guardar
       </Button>
     </Box>

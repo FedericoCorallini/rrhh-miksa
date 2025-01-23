@@ -68,7 +68,17 @@ export const ProfilePage = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs 
+          value={value} 
+          onChange={handleChange} 
+          aria-label="basic tabs example"
+          variant="scrollable"
+          scrollButtons="auto"
+          TabIndicatorProps={{ style: { backgroundColor: '#5bbc5e' } }} // Cambia el color de la barra inferior
+          sx={{
+            '& .MuiTab-root.Mui-selected': { color: '#5bbc5e' }, // Cambia el color del texto de la pestaña seleccionada
+          }}
+        >
           <Tab label="Datos personales" {...a11yProps(0)} />
           <Tab label="Datos bancarios" {...a11yProps(1)} />
           <Tab label="Grupo familiar" {...a11yProps(2)} />
