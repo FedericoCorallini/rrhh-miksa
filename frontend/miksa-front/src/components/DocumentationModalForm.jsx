@@ -140,8 +140,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
         display: 'flex',
         flexDirection: 'column',
         gap:2,
-        mx:2,
-        width: '80%',
+        margin: '1%',
       }}
       noValidate
       autoComplete="off"
@@ -176,7 +175,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
         )}
       </FormControl>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-        <Button component="label" variant="contained" width="100%" startIcon={<FileUploadIcon />}>
+        <Button component="label" variant="contained" width="100%" startIcon={<FileUploadIcon />} sx={{whiteSpace: 'nowrap'}}>
           Cargar archivo
           <VisuallyHiddenInput onChange={handleFileChange} type="file" />
         </Button>

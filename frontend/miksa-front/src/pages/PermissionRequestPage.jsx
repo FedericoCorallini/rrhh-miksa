@@ -5,6 +5,9 @@ import { deletePermission, getEmployee, getFile } from "../utils/Axios";
 import { PermissionRequestModalForm} from "../components/PermissionRequestModalForm.jsx";
 import Button from '@mui/material/Button'; // Importar Button
 import Modal from '@mui/material/Modal'; // Importar Modal
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'; // Importar icono de Delete
+import AddIcon from '@mui/icons-material/Add'; // Importar icono de Add
+
 
 
 export const PermissionRequestPage = () => {
@@ -29,9 +32,9 @@ export const PermissionRequestPage = () => {
       width: 350,
       renderCell: (params) => (
         <>
-          <button onClick={() => deleteRow(params.row.id)}>
-            Eliminar
-          </button>
+          <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
+            <DeleteOutlineIcon fontSize="small"/>
+          </Button>
 
         </>
       ),
@@ -82,7 +85,22 @@ export const PermissionRequestPage = () => {
           },
         }}
       />
-      <Button sx={{ marginTop: '10px' }} variant='contained' onClick={handleOpen}>Nueva solicitud</Button>
+      <Button
+        startIcon={<AddIcon />}
+        variant="contained"
+        sx={{
+          backgroundColor: "#5bbc5e",
+          color: 'white',
+          marginTop: "2%",
+          marginLeft: "1%",
+          '&:hover': {
+            backgroundColor: "#4caf50", // Verde más oscuro
+          },
+        }}
+        onClick={handleOpen}
+      >
+        Nueva solicitud
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -94,11 +112,12 @@ export const PermissionRequestPage = () => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 465,
+          minWidth: '50%',
+          maxWidth: '70%',
           bgcolor: 'background.paper',
           border: '1px solid #000',
           boxShadow: 24,
-          p: 1,
+          p: 4,
         }}>
           <PermissionRequestModalForm />
         </Box>

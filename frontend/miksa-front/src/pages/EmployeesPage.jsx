@@ -4,6 +4,8 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deleteEmployee, getEmployees, getFile } from "../utils/Axios";
 import { NavLink } from "react-router-dom";
 import { Button } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export const EmployeesPage = () => {
   const COLUMNS = [
@@ -28,12 +30,12 @@ export const EmployeesPage = () => {
       width: 350,
       renderCell: (params) => (
         <>
-          <button onClick={() => deleteRow(params.row.id)}>
-            Eliminar
-          </button>
-          <button >
-          <NavLink to={`/perfil/${params.row.id}`} > Detalles </NavLink>
-          </button>
+          <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)} sx={{padding: "1%"}}>
+            <DeleteOutlineIcon fontSize="small"/>
+          </Button>
+          <Button variant='outlined'fontSize="small" sx={{color:'#1976D2', marginLeft: "2%", padding: "1%"}}>
+          <NavLink to={`/perfil/${params.row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}> Detalles </NavLink>
+          </Button>
           
         </>
       ),
@@ -80,8 +82,18 @@ export const EmployeesPage = () => {
         }}
       
       />
-      <Button sx={{ mt: '15px' }} size="small" color="primary" variant='contained'>
-        <NavLink className='active'to={`/perfil/0`} > Agregar empleado </NavLink>
+      <Button startIcon={<AddIcon />}
+        variant="contained"
+        sx={{
+          backgroundColor: "#5bbc5e",
+          color: 'white',
+          marginTop: "2%",
+          marginLeft: "1%",
+          '&:hover': {
+            backgroundColor: "#4caf50", // Verde más oscuro
+          },
+        }}>
+        <NavLink className='active'to={`/perfil/0`} style={{ textDecoration: 'none', color: 'inherit' }}> Agregar empleado </NavLink>
       </Button>
     </Box>
     

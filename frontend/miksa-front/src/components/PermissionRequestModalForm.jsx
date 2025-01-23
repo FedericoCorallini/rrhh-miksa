@@ -7,14 +7,14 @@ import BasicTimePicker from './BasicTimePicker';
 import { postDocument, postFile, postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
 import { DocumentationModalForm } from './DocumentationModalForm';
+import SendIcon from '@mui/icons-material/Send';
 import Modal from '@mui/material/Modal'; // Importar Modal
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
+  transform: 'translate(-50%, -50%)', 
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -189,8 +189,9 @@ return (
     onSubmit={handleSubmit}
     sx={{
       display: 'flex',
-      flexWrap: 'wrap',
-      '& > :not(style)': { m: 1, width: '25ch' },
+      flexDirection: 'column',
+      gap:2,
+      margin: '1%',
     }}
     noValidate
     autoComplete="off"
@@ -242,7 +243,7 @@ return (
       )}
 
     {/* <DocumentationRequestModal setDoc={setDoc} setFile={setFile}></DocumentationRequestModal> */}
-    <Button sx={{ flexBasis: 'calc(27.5ch)' }} type="submit" variant="contained" disabled={!isFormComplete()}>
+    <Button sx={{backgroundColor: "#5bbc5e", color: 'white','&:hover': { backgroundColor: "#4caf50", }}} startIcon={<SendIcon/>} type="submit" variant="contained" disabled={!isFormComplete()}>
       Enviar
     </Button>
 
