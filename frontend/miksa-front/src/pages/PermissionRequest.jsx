@@ -90,6 +90,7 @@ export const PermissionRequest = () => {
   const callApi = async () => {
     const respuesta = await getEmployeeByEmail();
     setPermissions(respuesta.data.absence_permissions_list);
+    sessionStorage.setItem('employeeId', respuesta.data.id)
   };
 
   return (

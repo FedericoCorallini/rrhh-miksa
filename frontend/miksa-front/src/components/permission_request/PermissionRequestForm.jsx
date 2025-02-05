@@ -10,7 +10,7 @@ import { DocumentationRequestModal } from './DocumentationRequestModal';
 
 export const PermissionRequestForm = () => {
   const [data, setData] = useState({ 
-    employee_id: 1,
+    employee_id: sessionStorage.getItem('employeeId'),
     reason: '',
     details: '',
     start_date: dayjs(), 
