@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-//import { DocumentationSection } from "../DocumentationSection";
 import { deleteDocumentation, getFile, postDocument } from "../../utils/Axios";
 import { DocumentationModalForm } from "../DocumentationModalForm.jsx";
 import Button from '@mui/material/Button';
@@ -21,11 +20,9 @@ const style = {
   maxWidth: '70%',
 };
 
-export const DocsTable = ({documentation, reload, employeeId}) => {
+export const DocsTable = ({ documentation, reload, employeeId }) => {
   const COLUMNS = [
-
     { field: "description", headerName: "Detalles", width: 200 },
-  
     {
       field: "actions",
       headerName: "Acciones",
@@ -34,22 +31,21 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
         <>
           <button onClick={() => downloadFile(params.row.id)}>Descargar</button>
           <button onClick={() => deleteRow(params.row.id)}>Eliminar</button>
-
         </>
       ),
     },
   ];
 
-  const filterDocumentation = documentation.filter(doc => doc.documentation_type === 'DDJJ')
+  const filterDocumentation = documentation.filter(doc => doc.documentation_type === 'DDJJ');
 
   const deleteRow = async (id) => {
-    await deleteDocumentation(id)
-    reload()
-  }
+    await deleteDocumentation(id);
+    reload();
+  };
 
   const downloadFile = async (id) => {
     const data = await getFile(id);
-    const pdfBlob = new Blob([data], { type: 'application/pdf' })
+    const pdfBlob = new Blob([data], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(pdfBlob);
     window.open(url, '_blank');
   };
@@ -65,7 +61,7 @@ export const DocsTable = ({documentation, reload, employeeId}) => {
         rows={filterDocumentation}
         disableColumnSelector
         disableDensitySelector
-        disableColumnFilter   
+        disableColumnFilter
       />
       {console.log(documentation)}
       <Button
