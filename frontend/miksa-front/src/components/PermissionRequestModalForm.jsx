@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import SendIcon from '@mui/icons-material/Send';
 import Swal from 'sweetalert2';
 
-export const PermissionRequestModalForm = ({}) => { // Ensure updateRequests is passed as a prop
+export const PermissionRequestModalForm = ({permission}) => { // Ensure updateRequests is passed as a prop
   
   const [data, setData] = useState({ 
     employee_id: 1,

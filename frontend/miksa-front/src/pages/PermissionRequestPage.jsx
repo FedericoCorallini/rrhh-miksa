@@ -148,7 +148,7 @@ export const PermissionRequestPage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <PermissionRequestModalForm />
+          <PermissionRequestModalForm onClose={handleClose} updateRequests={callApi} /> {/* Pass onClose and updateRequests as props */}
         </Box>
       </Modal>
       <Modal
