@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = 'http://localhost:8080/api'
+const BASE_URL = 'http://localhost:8080/api' /*'http://172.178.53.21:8080/api'*/
 
 export const getAbsencePermissions = async () => {
     
@@ -220,6 +220,66 @@ export const postAllFile = async (file) => {
         headers: { 
             'Access-Control-Allow-Origin': '*', 
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}
+
+export const getRelatives = async (id) => {
+    
+    const config = {
+        method: `get`,
+        url: BASE_URL + `/families/${id}`,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}
+
+export const updateRelative = async (id, data) => {
+    
+    const config = {
+        method: 'put',
+        url: BASE_URL + `/families/${id}`,
+        data: data,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}
+
+export const addRelative = async (data) => {
+    
+    const config = {
+        method: 'post',
+        url: BASE_URL + `/families`,
+        data: data,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}
+
+export const deleteRelative = async (id) => {
+    
+    const config = {
+        method: `delete`,
+        url: BASE_URL + `/families/${id}`,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
             Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
          }
     } 
