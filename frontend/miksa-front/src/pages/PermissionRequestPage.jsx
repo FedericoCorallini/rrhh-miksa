@@ -7,23 +7,38 @@ import Button from '@mui/material/Button'; // Importar Button
 import Modal from '@mui/material/Modal'; // Importar Modal
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'; // Importar icono de Delete
 import AddIcon from '@mui/icons-material/Add'; // Importar icono de Add
+import AttachFileIcon from '@mui/icons-material/AttachFile'; // Importar icono de AttachFile
 
 
 
 export const PermissionRequestPage = () => {
   const COLUMNS = [
+    { field: "motivo", headerName: "Motivo", width: 200 }, 
     { field: "details", headerName: "Detalles", width: 200 },
     {
       field: "start_date",
       headerName: "Fecha de inicio",
-      width: 200,
+      width: 180,
       type: "Date",
     },
+    
     {
       field: "end_date",
       headerName: "Fecha de finalizacion",
-      width: 200,
+      width: 180,
       type: "Date",
+    },
+    {
+      field: "start_time",
+      headerName: "Hora de inicio",
+      width: 150,
+      type: "Time",
+    },
+    {
+      field: "end_time",
+      headerName: "Hora de finalizacion",
+      width: 150,
+      type: "Time",
     },
     { field: "permission_state", headerName: "Estado", width: 110 },
     {
@@ -32,10 +47,12 @@ export const PermissionRequestPage = () => {
       width: 350,
       renderCell: (params) => (
         <>
+        <Button variant="outlined" color="primary" onClick={() => downloadFile(params.row.documentation.id)}>
+        <AttachFileIcon fontSize="small"/>
+      </Button>
           <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
             <DeleteOutlineIcon fontSize="small"/>
           </Button>
-
         </>
       ),
     },
@@ -61,8 +78,9 @@ export const PermissionRequestPage = () => {
   const [permissions, setPermissions] = useState([]);
 
   const callApi = async () => {
-    const respuesta = await getEmployee(1);
+    const respuesta = await getEmployeeByEmail();
     setPermissions(respuesta.data.absence_permissions_list);
+    sessionStorage.setItem('employeeId', respuesta.data.id)
   };
 
   const [open, setOpen] = useState(false);
