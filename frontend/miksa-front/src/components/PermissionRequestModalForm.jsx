@@ -6,22 +6,11 @@ import { Button } from '@mui/material';
 import BasicTimePicker from './BasicTimePicker';
 import { postDocument, postFile, postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
-import { DocumentationModalForm } from './DocumentationModalForm';
 import SendIcon from '@mui/icons-material/Send';
-import Modal from '@mui/material/Modal'; // Importar Modal
+import Swal from 'sweetalert2';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)', 
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-export const PermissionRequestModalForm = ({onClose, updateRequests}) => {
+export const PermissionRequestModalForm = ({}) => { // Ensure updateRequests is passed as a prop
+  
   const [data, setData] = useState({ 
     employee_id: 1,
     reason: '',
@@ -140,12 +129,9 @@ const isFormComplete = () => {
           icon: 'success',
           confirmButtonText: 'Aceptar'
         });
-        updateRequests();
-        onClose();
       } else {
         console.error('Error en la respuesta del servidor:', response);
-        updateRequests();
-        onClose();
+
       }
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
@@ -155,8 +141,6 @@ const isFormComplete = () => {
         icon: 'error',
         confirmButtonText: 'Aceptar'
       });
-      updateRequests();
-      onClose();
     }
   };
 /*

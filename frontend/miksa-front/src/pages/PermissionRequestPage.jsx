@@ -26,12 +26,12 @@ const style = {
 
 export const PermissionRequestPage = () => {
   const [permissions, setPermissions] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [openDocumentationModal, setOpenDocumentationModal] = useState(false);
 
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [openDocumentationModal, setOpenDocumentationModal] = useState(false);
   const handleOpenDocumentationModal = () => setOpenDocumentationModal(true);
   const handleCloseDocumentationModal = () => setOpenDocumentationModal(false);
 
