@@ -57,14 +57,14 @@ export const ProfilePage = () => {
   }, []);
 
   const callApi = async () => {
-    console.log(id)
-    console.log("callApi")
+    // console.log(id)
+    // console.log("callApi")
     const respuesta = await getEmployee(id);
     setProfile(respuesta.data);
-    console.log(respuesta.data);
+    // console.log(respuesta.data);
     setDocumentation(respuesta.data.documentation_list)
   };
-
+  console.log("ProfilePage");
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

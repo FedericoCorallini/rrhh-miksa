@@ -4,15 +4,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export const BasicDatePicker = ({label, date, name, onChange}) => {
+export const BasicDatePicker = ({ label, date, onChange }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker label={label} value={dayjs(date)} 
+      <DatePicker
+        label={label}
+        value={date ? dayjs(date) : null}
         onChange={(newValue) => {
-          const formattedDate = newValue ? newValue.format('YYYY-MM-DD') : ''
-          onChange({ target: { name, value: formattedDate } });
+          const formattedDate = newValue ? newValue.format('YYYY-MM-DD') : '';
+          onChange(formattedDate);
         }}
-        format="DD/MM/YYYY"/>
+        format="DD/MM/YYYY"
+      />
     </LocalizationProvider>
   );
-}
+};

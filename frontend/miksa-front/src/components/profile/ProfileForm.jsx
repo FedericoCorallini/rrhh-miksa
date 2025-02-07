@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -12,8 +13,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { postEmployee, putEmployee } from "../../utils/Axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
+
 // Componente reutilizable para TextField
-const FormField = ({ label, name, rules, register, errors, select, children, readOnly, ...props }) => (
+const FormField = React.memo(({ label, name, rules, register, errors, select, children, readOnly, ...props }) => (
   <TextField
     label={label}
     {...register(name, rules)}
@@ -31,60 +33,86 @@ const FormField = ({ label, name, rules, register, errors, select, children, rea
   >
     {children}
   </TextField>
-);
+));
+
+FormField.displayName = "FormField";
+
+FormField.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  rules: PropTypes.object,
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  select: PropTypes.bool,
+  children: PropTypes.node,
+  readOnly: PropTypes.bool,
+};
 
 export const ProfileForm = ({ profile }) => {
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
-    defaultValues: profile,
-  });
+  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
   const { user } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState(null);
+  const [dateOfAdmission, setDateOfAdmission] = useState(null);
 
   useEffect(() => {
     if (profile) {
-      for (const key in profile) {
+      Object.keys(profile).forEach(key => {
         setValue(key, profile[key]);
-      }
+      });
+      setDateOfBirth(profile.date_of_birth);
+      setDateOfAdmission(profile.date_of_admission);
     }
   }, [profile, setValue]);
-
+  console.log(dateOfBirth);
   const handleSnackbarClose = () => setSnackbar({ ...snackbar, open: false });
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      if (data.id === undefined) {
+      // Agregar fechas al objeto data
+      console.log("data antes:", data);
+      data.date_of_birth = dateOfBirth;
+      data.date_of_admission = dateOfAdmission;
+      console.log("data despues:", data);
+      if (!data.id) {
         await postEmployee(data);
       } else {
-        await putEmployee(data.id, data);
+        console.log("devolucion del back: ", await putEmployee(data.id, data));
       }
       setSnackbar({ open: true, message: "Datos guardados exitosamente", severity: "success" });
       setIsEditing(false);
     } catch (error) {
-      console.error(error);
+      console.error("Error al guardar los datos:", error);
       setSnackbar({ open: true, message: "Error al guardar los datos", severity: "error" });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
 
-  const handleCancelClick = () => {
+  const handleEditClick = useCallback(() => {
+    console.log("edicion true");
+    setIsEditing(true);
+  }, []);
+  
+  const handleCancelClick = useCallback(() => {
+    console.log("cancel");
     setIsEditing(false);
     if (profile) {
-      for (const key in profile) {
+      Object.keys(profile).forEach(key => {
         setValue(key, profile[key]);
-      }
+      });
+      setDateOfBirth(profile.date_of_birth);
+      setDateOfAdmission(profile.date_of_admission);
     }
-  };
-
+  }, [profile, setValue]);
+  console.log("Renderizado perfil");
   return (
+    <>
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Box
         sx={{
@@ -214,75 +242,29 @@ export const ProfileForm = ({ profile }) => {
             />
           </>
         )}
-
         {isEditing && (
           <>
-            <BasicDatePicker
-              label="Fecha de nacimiento"
-              InputProps={{
-                readOnly: !isEditing,
-                style: { color: !isEditing ? 'gray' : 'inherit' }
-              }}
-              value={watch("date_of_birth")}
-              onChange={(newValue) => setValue("date_of_birth", newValue, { shouldValidate: true })}
-              sx={{ color: !isEditing ? 'gray' : 'inherit' }}
-            />
-            <BasicDatePicker
-              label="Fecha de admisión"
-              InputProps={{
-                readOnly: !isEditing,
-                style: { color: !isEditing ? 'gray' : 'inherit' }
-              }}
-              value={watch("date_of_admission")}
-              onChange={(newValue) => setValue("date_of_admission", newValue, { shouldValidate: true })}
-              sx={{ color: !isEditing ? 'gray' : 'inherit' }}
-            />
-          </>
+          <BasicDatePicker
+            label="Fecha de nacimiento"
+            date={dateOfBirth}
+            onChange={(newValue) => {
+              setValue("date_of_birth", newValue, { shouldValidate: true });
+              setDateOfBirth(newValue);
+            }}
+            sx={{ color: !isEditing ? 'gray' : 'inherit' }}
+          />
+          <BasicDatePicker
+            label="Fecha de admisión"
+            date={dateOfAdmission}
+            onChange={(newValue) => {
+              setValue("date_of_admission", newValue, { shouldValidate: true });
+              setDateOfAdmission(newValue);
+            }}
+            sx={{ color: !isEditing ? 'gray' : 'inherit' }}
+          />
+        </>
         )}
       </Box>
-      {user && user["roles/roles"] && (user["roles/roles"].includes("admin") || user["roles/roles"].includes("gerente")) && (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            mt: 2,
-          }}
-        >
-          {!isEditing ? (
-            <Button
-              startIcon={<EditNoteIcon />}
-              variant="contained"
-              size="large"
-              onClick={handleEditClick}
-            >
-              Modificar
-            </Button>
-          ) : (
-            <>
-              <Button
-                sx={{ mr: 2, backgroundColor: '#5bbc5e' }}
-                type="submit"
-                startIcon={<SaveIcon />}
-                variant="contained"
-                size="large"
-                disabled={loading}
-              >
-                {loading ? "Guardando..." : "Guardar"}
-              </Button>
-              <Button
-                startIcon={<CloseIcon />}
-                variant="outlined"
-                color="error"
-                size="large"
-                onClick={handleCancelClick}
-              >
-                Cancelar
-              </Button>
-            </>
-          )}
-        </Box>
-      )}
-
       {/* Ventana emergente (Snackbar) */}
       <Snackbar
         open={snackbar.open}
@@ -295,12 +277,58 @@ export const ProfileForm = ({ profile }) => {
           severity={snackbar.severity}
           sx={{
             width: "100%",
-            maxWidth: "400px", // Opcional: limitar el ancho del mensaje
+            maxWidth: "400px",
+          }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Box>
+      {user && user["roles/roles"] && (user["roles/roles"].includes("admin") || user["roles/roles"].includes("gerente")) && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            mt: 2,
           }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
-  );
-};
+          {!isEditing ? (
+            <Button
+            startIcon={<EditNoteIcon />}
+            variant="contained"
+            size="large"
+            onClick={handleEditClick}
+            aria-label="Modificar perfil"
+          >
+            Modificar
+          </Button>
+          ) : (
+            <>
+              <Button
+                sx={{ mr: 2, backgroundColor: '#5bbc5e' }}
+                startIcon={<SaveIcon />}
+                variant="contained"
+                size="large"
+                onClick={handleSubmit(onSubmit)}
+                disabled={loading}
+                aria-label="Guardar cambios"
+              >
+                {loading ? "Guardando..." : "Guardar"}
+              </Button>
+              <Button
+                startIcon={<CloseIcon />}
+                variant="outlined"
+                color="error"
+                size="large"
+                onClick={handleCancelClick}
+                aria-label="Cancelar cambios"
+              >
+                Cancelar
+              </Button>
+            </>
+          )}
+        </Box>
+      )}
+    </>
+    );
+  };
