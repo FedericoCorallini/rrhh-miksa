@@ -77,7 +77,7 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
         }}
         onClick={handleOpen}
       >
-        Nueva solicitud
+        Nueva documentación
       </Button>
       <Modal
         open={open}
