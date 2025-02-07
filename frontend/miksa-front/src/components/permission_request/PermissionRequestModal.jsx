@@ -16,14 +16,14 @@ const style = {
   p: 1,
 };
 
-export const PermissionRequestModal = ({permission}) => {
+export const PermissionRequestModal = ({ permission, onSuccess, onError, onUpdate }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button sx={{marginTop: '10px'}} variant='contained' onClick={handleOpen}>Nueva solicitud</Button>
+      <Button sx={{ marginTop: '10px' }} variant='contained' onClick={handleOpen}>Nueva solicitud</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -31,9 +31,9 @@ export const PermissionRequestModal = ({permission}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <PermissionRequestForm permission={{permission}}></PermissionRequestForm>
+          <PermissionRequestForm permission={permission} onSuccess={onSuccess} onError={onError} handleClose={handleClose} onUpdate={onUpdate} />
         </Box>
       </Modal>
     </div>
   );
-}
+};

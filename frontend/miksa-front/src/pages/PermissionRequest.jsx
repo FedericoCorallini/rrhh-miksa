@@ -1,10 +1,10 @@
-import { Button } from "@mui/material";
+import { Button, Snackbar, Alert } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { PermissionRequestModal } from "../components/permission_request/PermissionRequestModal";
 import { deletePermission, getEmployeeByEmail, getFile } from "../utils/Axios";
-import { DocumentationAppendModal } from '../components/permission_request/DocumentationAppendModal'
+import { DocumentationAppendModal } from '../components/permission_request/DocumentationAppendModal';
 
 export const PermissionRequest = () => {
   const COLUMNS = [
@@ -13,12 +13,12 @@ export const PermissionRequest = () => {
     {
       field: "start_date",
       headerName: "Fecha de inicio",
-      width: 120  ,
+      width: 120,
       type: "Date",
     },
     {
       field: "end_date",
-      headerName: "Fecha de finalizacion",
+      headerName: "Fecha de finalización",
       width: 150,
       type: "Date",
     },
@@ -30,7 +30,7 @@ export const PermissionRequest = () => {
     },
     {
       field: "end_time",
-      headerName: "Hora de finalizacion",
+      headerName: "Hora de finalización",
       width: 140,
       type: "Date",
     },
@@ -86,11 +86,31 @@ export const PermissionRequest = () => {
   };
 
   const [permissions, setPermissions] = useState([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const callApi = async () => {
     const respuesta = await getEmployeeByEmail();
     setPermissions(respuesta.data.absence_permissions_list);
-    sessionStorage.setItem('employeeId', respuesta.data.id)
+    sessionStorage.setItem('employeeId', respuesta.data.id);
+  };
+
+  const handleSuccess = (message) => {
+    setSnackbarMessage(message);
+    setIsSuccess(true);
+    setOpenSnackbar(true);
+    callApi(); // Actualiza la grilla después de una solicitud exitosa
+  };
+
+  const handleError = (message) => {
+    setSnackbarMessage(message);
+    setIsSuccess(false);
+    setOpenSnackbar(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -108,7 +128,12 @@ export const PermissionRequest = () => {
           },
         }}
       />
-      <PermissionRequestModal permission={"permission"} />
+      <PermissionRequestModal permission={"permission"} onSuccess={handleSuccess} onError={handleError} onUpdate={callApi} />
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={isSuccess ? "success" : "error"} sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

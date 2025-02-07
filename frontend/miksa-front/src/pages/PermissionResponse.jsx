@@ -88,6 +88,7 @@ export const PermissionResponse = () => {
 
   const downloadFile = async (id) => {
     const data = await getFile(id);
+    console.log(data);
     const pdfBlob = new Blob([data], { type: "application/pdf" });
     const url = window.URL.createObjectURL(pdfBlob);
     window.open(url, "_blank");

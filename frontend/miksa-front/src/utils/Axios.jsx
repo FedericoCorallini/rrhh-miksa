@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const BASE_URL = 'http://172.178.53.21:8080/api'
+// const BASE_URL = 'http://172.178.53.21:8080/api'
+const BASE_URL = "http://localhost:8080/api"
 
 export const getAbsencePermissions = async () => {
     

@@ -7,7 +7,7 @@ const LoginButton = () => {
   
   useEffect(() => {
     const getToken = async () => {
-      console.log(isAuthenticated)
+      console.log("login",isAuthenticated)
       if (isAuthenticated) {
         try {
           const accessToken = await getAccessTokenSilently({
@@ -17,7 +17,6 @@ const LoginButton = () => {
             },
           });
           sessionStorage.setItem('jwt', accessToken);
-          console.log(accessToken)
         } catch (e) {
           console.log(e.message);
         }

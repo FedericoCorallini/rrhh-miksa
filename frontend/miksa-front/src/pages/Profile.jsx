@@ -1,4 +1,3 @@
-
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -52,16 +51,20 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    if(id != 0){
+    if (id != 0) {
       callApi();
-    }  
-  }, []);
+    }
+  }, [id]);
 
   const callApi = async () => {
-    console.log(id)
-    const respuesta = await getEmployee(id);
-    setProfile(respuesta.data);
-    setDocumentation(respuesta.data.documentation_list)
+    try {
+      console.log(id);
+      const respuesta = await getEmployee(id);
+      setProfile(respuesta.data);
+      setDocumentation(respuesta.data.documentation_list);
+    } catch (error) {
+      console.error("Error al obtener los datos del empleado:", error);
+    }
   };
 
   return (

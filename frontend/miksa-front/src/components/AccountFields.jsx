@@ -29,7 +29,7 @@ export const AccountFields = ({ profile }) => {
       ...prevData,
       bank_account: {
         ...prevData.bank_account,
-        [name]: value,
+        [name]: name === "account_number" ? parseInt(value, 10) : value,
       },
     }));
   };
@@ -38,7 +38,11 @@ export const AccountFields = ({ profile }) => {
     let newErrors = {};
     if (!data.bank_account.cbu) newErrors.cbu = "El CBU es obligatorio";
     if (!data.bank_account.alias) newErrors.alias = "El alias es obligatorio";
-    if (!data.bank_account.account_number) newErrors.account_number = "El número de cuenta es obligatorio";
+    if (!data.bank_account.account_number) {
+      newErrors.account_number = "El número de cuenta es obligatorio";
+    } else if (isNaN(data.bank_account.account_number) || data.bank_account.account_number < -2147483648 || data.bank_account.account_number > 2147483647) {
+      newErrors.account_number = "El numero de cuenta debe ser un número válido";
+    }
     if (!data.bank_account.bank_branch) newErrors.bank_branch = "La sucursal bancaria es obligatoria";
     if (!data.bank_account.bank) newErrors.bank = "Seleccione un banco";
     setErrors(newErrors);
@@ -47,9 +51,12 @@ export const AccountFields = ({ profile }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validate()) return;
-
-    const submitAction = data.id === undefined ? postEmployee(data) : putEmployee(data.id, data);
+    if (!validate()){
+      console.log("No se enviaron los datos bancarios");
+      return;
+    } 
+    console.log("datos bancarios", data);
+    const submitAction = data.id == undefined || data.id == 0 ? postEmployee(data) : putEmployee(data.id, data);
 
     submitAction
       .then(() => {
@@ -126,7 +133,7 @@ export const AccountFields = ({ profile }) => {
           select
           label="Cuenta sueldo"
           variant="standard"
-          name="salary_account"
+          name="is_salary_account"
           value={data.bank_account.salary_account ? "Sí" : "No"}
           onChange={(e) =>
             setData((prevData) => ({

@@ -58,6 +58,7 @@ export const ProfileForm = ({ profile }) => {
     e.preventDefault();
     
     if (!validate()) {
+      console.log("No se envio el formulario.")
       return; // Si hay errores, no enviar el formulario
     }
 
@@ -82,7 +83,7 @@ export const ProfileForm = ({ profile }) => {
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
-
+  console.log(data);
   return (
     <Box component="form" onSubmit={handleSubmit}>
       <Typography variant="h6" sx={{ mb: 2 }}>
