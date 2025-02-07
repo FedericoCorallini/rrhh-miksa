@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { getRelatives, addRelative, updateRelative, deleteRelative } from "../../utils/Axios";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Typography, FormControlLabel, Checkbox } from "@mui/material";
 
 export const FamilyFields = ({ employeeId }) => {
   const [relatives, setRelatives] = useState([]);
@@ -77,12 +77,14 @@ export const FamilyFields = ({ employeeId }) => {
     <Box sx={{ display: "flex", gap: 3, p: 3, alignItems: "start" }}>
       {/* Lista de familiares con más información */}
       <Box sx={{ flex: 2 }}>
-        <h3>Familiares</h3>
+        <Typography variant="h6">Familiares</Typography>
         <Box component="ul" sx={{ p: 0, listStyle: "none" }}>
           {relatives.map((relative) => (
             <Box component="li" key={relative.id} sx={{ mb: 2, p: 2, border: "1px solid #ccc", borderRadius: 2 }}>
-              <strong>{relative.firstname} {relative.lastname}</strong> ({relative.relation}) - {relative.gender}<br />
-              Nacimiento: {relative.date_of_birth} - Vive: {relative.lives ? "Sí" : "No"} - Convive: {relative.coexists ? "Sí" : "No"}
+              <Typography variant="body1">
+                <strong>{relative.firstname} {relative.lastname}</strong> ({relative.relation}) - {relative.gender}<br />
+                Nacimiento: {relative.date_of_birth} - Vive: {relative.lives ? "Sí" : "No"} - Convive: {relative.coexists ? "Sí" : "No"}
+              </Typography>
               <Box sx={{ mt: 1 }}>
                 <Button size="small" onClick={() => handleEdit(relative)}>Editar</Button>
                 <Button size="small" color="error" onClick={() => handleDelete(relative.id)}>Eliminar</Button>
@@ -94,7 +96,7 @@ export const FamilyFields = ({ employeeId }) => {
 
       {/* Formulario más compacto */}
       <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1, p: 3, border: "1px solid #ddd", borderRadius: 2, bgcolor: "#f9f9f9" }}>
-        <h3>{form.id ? "Editar Familiar" : "Agregar Familiar"}</h3>
+        <Typography variant="h6">{form.id ? "Editar Familiar" : "Agregar Familiar"}</Typography>
         <TextField fullWidth name="firstname" label="Nombre" variant="standard" value={form.firstname} onChange={handleChange} required sx={{ mb: 2 }} />
         <TextField fullWidth name="lastname" label="Apellido" variant="standard" value={form.lastname} onChange={handleChange} required sx={{ mb: 2 }} />
         <TextField select fullWidth name="gender" label="Género" variant="standard" value={form.gender} onChange={handleChange} required sx={{ mb: 2 }}>
@@ -110,12 +112,14 @@ export const FamilyFields = ({ employeeId }) => {
         </TextField>
         <TextField fullWidth name="date_of_birth" label="Fecha de Nacimiento" type="date" InputLabelProps={{ shrink: true }} value={form.date_of_birth} onChange={handleChange} required sx={{ mb: 2 }} />
         <Box sx={{ display: "flex", gap: 2, alignItems: "center", mb: 2 }}>
-          <label>
-            <input type="checkbox" name="lives" checked={form.lives} onChange={handleChange} /> Vive
-          </label>
-          <label>
-            <input type="checkbox" name="coexists" checked={form.coexists} onChange={handleChange} /> Convive
-          </label>
+          <FormControlLabel
+            control={<Checkbox checked={form.lives} onChange={handleChange} name="lives" />}
+            label="Vive"
+          />
+          <FormControlLabel
+            control={<Checkbox checked={form.coexists} onChange={handleChange} name="coexists" />}
+            label="Convive"
+          />
         </Box>
         <Button type="submit" variant="contained" fullWidth>
           {form.id ? "Actualizar" : "Agregar"}
