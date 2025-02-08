@@ -8,7 +8,7 @@ spring:
     url: jdbc:mysql://localhost:3306/miksa
     dbname: miksa
     username: root
-    password: 32422
+    password: 7070
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

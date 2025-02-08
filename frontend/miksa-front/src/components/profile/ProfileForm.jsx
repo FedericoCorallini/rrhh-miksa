@@ -152,6 +152,14 @@ export const ProfileForm = ({ profile, setProfile  }) => {
           readOnly={!isEditing}
         />
         <FormField
+          label="Categoría"
+          name="category"
+          rules={{ required: "La Categoria es obligatoria" }}
+          register={register}
+          errors={errors}
+          readOnly={!isEditing}
+        />
+        <FormField
           label="CUIL"
           name="cuil"
           rules={{ required: "El CUIL es obligatorio" }}

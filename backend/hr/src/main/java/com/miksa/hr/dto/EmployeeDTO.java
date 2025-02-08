@@ -26,6 +26,8 @@ public class EmployeeDTO {
 
     private Long dni;
 
+    private String category;
+
     private Long cuil;
 
     private String email;
