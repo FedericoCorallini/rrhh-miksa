@@ -22,10 +22,10 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeRequestDTO saveEmployee(EmployeeRequestDTO employeeDTO){
+    public EmployeeDTO saveEmployee(EmployeeRequestDTO employeeDTO){
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employeeRepository.save(employee);
-        return employeeDTO;
+        return modelMapper.map(employee, EmployeeDTO.class);
     }
 
     public EmployeeDTO getEmployeeByEmail(String email){

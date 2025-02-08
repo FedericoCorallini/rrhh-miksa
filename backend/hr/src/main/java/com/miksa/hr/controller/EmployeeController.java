@@ -42,7 +42,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeRequestDTO> saveEmployee(@Valid @RequestBody EmployeeRequestDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> saveEmployee(@Valid @RequestBody EmployeeRequestDTO employeeDTO){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(employeeService.saveEmployee(employeeDTO));
     }
 

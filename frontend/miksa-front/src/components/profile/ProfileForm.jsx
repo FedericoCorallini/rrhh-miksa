@@ -84,7 +84,7 @@ export const ProfileForm = ({ profile, setProfile }) => {
       } else {
         const response = await putEmployee(data.id, data);
         // reloadProfile();
-        setProfile(prevProfile => ({ ...prevProfile, ...data }));
+        setProfile(prevProfile => ({ ...prevProfile, ...response.data }));
         console.log("respuesta: ", response.data);
       }
       
