@@ -45,7 +45,7 @@ export const AccountFields = ({ profile, setProfile }) => {
   const handleSnackbarClose = () => setSnackbar({ ...snackbar, open: false });
 
   const onSubmit = async (data) => {
-    if (!data.bank_account.cbu || !data.bank_account.alias || !data.bank_account.accountNumber) {
+    if (!data.bank_account.cbu || !data.bank_account.alias || !data.bank_account.account_number) {
       setSnackbar({ open: true, message: "Faltan completar datos obligatorios" });
       setIsSuccess(false);
       return;

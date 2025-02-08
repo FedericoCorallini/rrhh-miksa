@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deleteEmployee, getEmployees, getFile } from "../utils/Axios";
 import { NavLink } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Snackbar, Alert } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
@@ -42,13 +42,21 @@ export const EmployeesPage = () => {
     },
   ];
 
+  const [employees, setEmployees] = useState([]);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
+
   useEffect(() => {
     callApi();
   }, []);
 
   const deleteRow = async (id) => {
-    await deleteEmployee(id);
-    callApi();
+    try {
+      await deleteEmployee(id);
+      setSnackbar({ open: true, message: "Empleado eliminado con éxito", severity: "success" });
+      callApi();
+    } catch (error) {
+      setSnackbar({ open: true, message: "Error al eliminar el empleado", severity: "error" });
+    }
   };
 
   const downloadFile = async (id) => {
@@ -57,9 +65,6 @@ export const EmployeesPage = () => {
     const url = window.URL.createObjectURL(pdfBlob);
     window.open(url, '_blank');
   };
-
-
-  const [employees, setEmployees] = useState([]);
 
   const callApi = async () => {
     const respuesta = await getEmployees();
@@ -92,11 +97,26 @@ export const EmployeesPage = () => {
           '&:hover': {
             backgroundColor: "#4caf50", // Verde más oscuro
           },
-        }}>
+        }}
+        onClick={() => setSnackbar({ open: true, message: "Empleado agregado con éxito", severity: "success" })}
+      >
         <NavLink className='active'to={`/perfil/0`} style={{ textDecoration: 'none', color: 'inherit' }}> Agregar empleado </NavLink>
       </Button>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={5000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
-    
   );
 };
 export default EmployeesPage;

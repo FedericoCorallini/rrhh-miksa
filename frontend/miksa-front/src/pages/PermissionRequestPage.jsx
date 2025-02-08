@@ -10,6 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import CloudDownload from '@mui/icons-material/CloudDownload';
 import { DocumentationModalForm } from "../components/DocumentationModalForm.jsx";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute',
@@ -29,10 +31,12 @@ export const PermissionRequestPage = () => {
   const [open, setOpen] = useState(false);
   const [openDocumentationModal, setOpenDocumentationModal] = useState(false);
   const [selectedPermissionId, setSelectedPermissionId] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
+    setSnackbar({ open: true, message: "Solicitud creada con éxito", severity: "success" });
     callApi(); // Recargar la tabla
   };
   const handleOpenDocumentationModal = (permissionId) => {
@@ -41,6 +45,7 @@ export const PermissionRequestPage = () => {
   };
   const handleCloseDocumentationModal = () => {
     setOpenDocumentationModal(false);
+    setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
     callApi(); // Recargar la tabla
   };
 
@@ -102,8 +107,13 @@ export const PermissionRequestPage = () => {
   }, []);
 
   const deleteRow = async (id) => {
-    await deletePermission(id);
-    callApi();
+    try {
+      await deletePermission(id);
+      setSnackbar({ open: true, message: "Solicitud eliminada con éxito", severity: "success" });
+      callApi();
+    } catch (error) {
+      setSnackbar({ open: true, message: "Error al eliminar la solicitud", severity: "error" });
+    }
   };
 
   const downloadFile = async (id) => {
@@ -167,9 +177,24 @@ export const PermissionRequestPage = () => {
             handleClose={handleCloseDocumentationModal}
             isPermissionMode={true}
             permissionId={selectedPermissionId}
+            setSnackbar={setSnackbar}
           />
         </Box>
       </Modal>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={5000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

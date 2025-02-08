@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Snackbar, Alert } from "@mui/material";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
@@ -21,10 +21,10 @@ const style = {
   p: 1,
 };
 
-
 export const PermissionResponsePage = () => {
   const [open, setOpen] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
 
   const handleOpen = (permission) => {
     setSelectedPermission(permission);
@@ -32,7 +32,6 @@ export const PermissionResponsePage = () => {
   };
 
   const handleClose = () => setOpen(false);
-
 
   const COLUMNS = [
     { field: "employee_name", headerName: "Empleado", width: 150 },
@@ -110,8 +109,13 @@ export const PermissionResponsePage = () => {
   }, []);
 
   const changeState = async (id, state) => {
-    await patchState(id, state);
-    callApi();
+    try {
+      await patchState(id, state);
+      setSnackbar({ open: true, message: `Solicitud ${state.toLowerCase()} con éxito`, severity: "success" });
+      callApi();
+    } catch (error) {
+      setSnackbar({ open: true, message: `Error al ${state.toLowerCase()} la solicitud`, severity: "error" });
+    }
   };
 
   const downloadFile = async (id) => {
@@ -165,6 +169,20 @@ export const PermissionResponsePage = () => {
           {selectedPermission && <PermissionDetailsModal permission={selectedPermission} onClose={handleClose} />}
         </Box>
       </Modal>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={5000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
