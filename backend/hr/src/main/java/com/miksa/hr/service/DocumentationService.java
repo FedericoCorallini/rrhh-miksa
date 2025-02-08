@@ -99,7 +99,8 @@ public class DocumentationService {
             if (Files.notExists(destinationPath)) {
                 Files.createDirectories(destinationPath);
             }
-            Path destination = destinationPath.resolve(Objects.requireNonNull(file.getOriginalFilename()));
+            String fileName = documentation.getId() + "_" + file.getOriginalFilename();
+            Path destination = destinationPath.resolve(fileName);
             Files.copy(file.getInputStream(), destination);
             documentation.setPathToFile(destination.toString());
 

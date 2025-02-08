@@ -36,10 +36,10 @@ public class Employee {
     @Column(unique = true)
     private String email;
 
-    @Column(name = "date_of_admission", updatable = false)
+    @Column(name = "date_of_admission")
     private LocalDate dateOfAdmission;
 
-    @Column(name = "date_of_birth", updatable = false)
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @Column(name = "marital_status")

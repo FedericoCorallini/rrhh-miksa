@@ -12,16 +12,17 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAuth0 } from "@auth0/auth0-react";
+import { postEmployee, putEmployee } from "../../utils/Axios";
 
-export const AccountFields = ({ profile }) => {
+export const AccountFields = ({ profile, setProfile }) => {
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       bank_account: {
         cbu: profile?.bank_account?.cbu || "",
         alias: profile?.bank_account?.alias || "",
-        accountNumber: profile?.bank_account?.accountNumber || "",
+        accountNumber: profile?.bank_account?.account_number || "",
         bank: profile?.bank_account?.bank || "",
-        branch: profile?.bank_account?.branch || "",
+        bank_branch: profile?.bank_account?.bank_branch || "",
         isSalaryAccount: profile?.bank_account?.isSalaryAccount || false
       }
     },
@@ -49,10 +50,18 @@ export const AccountFields = ({ profile }) => {
       setIsSuccess(false);
       return;
     }
-
+    const employeeData = {
+      ...profile, 
+      bank_account: data.bank_account 
+    };
     setLoading(true);
     try {
-      console.log(data);
+      if (profile?.id) {
+        await putEmployee(profile.id, employeeData);
+        setProfile(prevProfile => ({ ...prevProfile, ...data }));
+      } else {
+        await postEmployee(employeeData);
+      }
       setIsSuccess(true);
       setSnackbar({ open: true, message: "Datos guardados exitosamente" });
       setIsEditing(false);
@@ -76,6 +85,7 @@ export const AccountFields = ({ profile }) => {
   };
 
   return (
+    <>
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Box
         sx={{
@@ -109,12 +119,13 @@ export const AccountFields = ({ profile }) => {
             style: { color: !isEditing ? 'gray' : 'inherit' }
           }}
         />
-
         <TextField
           label="Banco"
           select
           variant="standard"
           {...register("bank_account.bank", { required: "El banco es obligatorio" })}
+          value={watch("bank_account.bank") || ""} // Asegura que el valor se actualice
+          onChange={(e) => setValue("bank_account.bank", e.target.value)}
           error={!!errors.bank_account?.bank}
           helperText={errors.bank_account?.bank?.message}
           InputProps={{
@@ -122,34 +133,32 @@ export const AccountFields = ({ profile }) => {
             style: { color: !isEditing ? 'gray' : 'inherit' }
           }}
         >
-          <MenuItem value="Galicia">Galicia</MenuItem>
+          <MenuItem value="GALICIA">Galicia</MenuItem>
           <MenuItem value="BBVA">BBVA</MenuItem>
-          <MenuItem value="Provincia">Provincia</MenuItem>
+          <MenuItem value="PROVINCIA">Provincia</MenuItem>
         </TextField>
-
         <TextField
           label="Sucursal"
-          select
           variant="standard"
-          {...register("bank_account.branch", { required: "La sucursal es obligatoria" })}
-          error={!!errors.bank_account?.branch}
-          helperText={errors.bank_account?.branch?.message}
+          {...register("bank_account.bank_branch", { required: "La sucursal es obligatoria" })}
+          error={!!errors.bank_account?.bank_branch}
+          helperText={errors.bank_account?.bank_branch?.message}
           InputProps={{
             readOnly: !isEditing,
             style: { color: !isEditing ? 'gray' : 'inherit' }
           }}
         >
-          <MenuItem value="Sucursal1">Sucursal 1</MenuItem>
+          {/* <MenuItem value="Sucursal1">Sucursal 1</MenuItem>
           <MenuItem value="Sucursal2">Sucursal 2</MenuItem>
-          <MenuItem value="Sucursal3">Sucursal 3</MenuItem>
+          <MenuItem value="Sucursal3">Sucursal 3</MenuItem> */}
         </TextField>
 
         <TextField
           label="Número de cuenta"
           variant="standard"
-          {...register("bank_account.accountNumber", { required: "El número de cuenta es obligatorio" })}
-          error={!!errors.bank_account?.accountNumber}
-          helperText={errors.bank_account?.accountNumber?.message}
+          {...register("bank_account.account_number", { required: "El número de cuenta es obligatorio" })}
+          error={!!errors.bank_account?.account_number}
+          helperText={errors.bank_account?.account_number?.message}
           InputProps={{
             readOnly: !isEditing,
             style: { color: !isEditing ? 'gray' : 'inherit' }
@@ -166,8 +175,13 @@ export const AccountFields = ({ profile }) => {
           }}
         />
       </Box>
-
-      {user?.["roles/roles"]?.includes("admin") && (
+      <Snackbar open={snackbar.open} autoHideDuration={5000} onClose={handleSnackbarClose}>
+        <Alert severity={isSuccess ? "success" : "error"} sx={{ width: "100%" }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Box>
+    {user?.["roles/roles"]?.includes("admin") && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
           {!isEditing ? (
             <Button startIcon={<EditNoteIcon />} variant="contained" size="large" onClick={handleEditClick}>
@@ -175,7 +189,7 @@ export const AccountFields = ({ profile }) => {
             </Button>
           ) : (
             <>
-              <Button sx={{ mr: 2, backgroundColor: '#5bbc5e' }} type="submit" startIcon={<SaveIcon />} variant="contained" size="large" disabled={loading}>
+              <Button sx={{ mr: 2, backgroundColor: '#5bbc5e' }} onClick={handleSubmit(onSubmit)} startIcon={<SaveIcon />} variant="contained" size="large" disabled={loading}>
                 {loading ? "Guardando..." : "Guardar"}
               </Button>
               <Button startIcon={<CloseIcon />} variant="outlined" color="error" size="large" onClick={handleCancelClick}>
@@ -185,12 +199,6 @@ export const AccountFields = ({ profile }) => {
           )}
         </Box>
       )}
-
-      <Snackbar open={snackbar.open} autoHideDuration={5000} onClose={handleSnackbarClose}>
-        <Alert severity={isSuccess ? "success" : "error"} sx={{ width: "100%" }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+    </>
   );
 };
