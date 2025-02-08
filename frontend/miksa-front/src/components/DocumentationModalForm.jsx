@@ -26,6 +26,15 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
     width: 1,
   });
 
+  useEffect(() => {
+    if (!isPermissionMode) {
+      setDataPermission((prevData) => ({
+        ...prevData,
+        documentation_type: 'DDJJ',
+      }));
+    }
+  }, [isPermissionMode]);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -72,7 +81,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
   const validate = () => {
     let tempErrors = {};
     if (!dataPermission.description) tempErrors.description = '*La descripción es obligatoria';
-    if (!dataPermission.documentation_type) tempErrors.documentation_type = '*El tipo de documento es obligatorio';
+    if (!dataPermission.documentation_type && !isPermissionMode) tempErrors.documentation_type = '*El tipo de documento es obligatorio';
     if (!file) tempErrors.file = '*Es obligatorio cargar un archivo';
 
     setErrors(tempErrors);
@@ -80,7 +89,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
   };
 
   const isFormComplete = () => {
-    return dataPermission.description && dataPermission.documentation_type && file;
+    return dataPermission.description && (dataPermission.documentation_type || !isPermissionMode) && file;
   };
 
   const handleSubmit = async (e) => {
@@ -166,14 +175,20 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
             <MenuItem value={"RETRASO"}>Retraso</MenuItem>
           </Select>
         ) : (
-          <TextField
-            variant="standard"
-            InputLabelProps={{ shrink: true }}
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
             value="DDJJ"
-            InputProps={{
-              readOnly: true,
+            inputProps={{ readOnly: true }}
+            sx={{
+              color: 'gray', // Ensure the text color is gray
+              '& .MuiSelect-icon': {
+                display: 'none', // Hide the dropdown arrow
+              },
             }}
-          />
+          >
+            <MenuItem value="DDJJ">DDJJ</MenuItem>
+          </Select>
         )}
         {errors.documentation_type && (
           <Typography variant="caption" color="error">

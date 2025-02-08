@@ -66,7 +66,10 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    reload(); // Call API to update the table
+  };
 
   return (
     <Box sx={{ height: 350, width: 1 }}>
