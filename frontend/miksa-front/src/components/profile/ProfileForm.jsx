@@ -48,7 +48,7 @@ FormField.propTypes = {
   readOnly: PropTypes.bool,
 };
 
-export const ProfileForm = ({ profile, setProfile, isEditing  }) => {
+export const ProfileForm = ({ profile, setProfile }) => {
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
   const { user } = useAuth0();
