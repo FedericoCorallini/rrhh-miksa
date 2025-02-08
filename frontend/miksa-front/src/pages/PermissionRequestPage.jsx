@@ -31,12 +31,18 @@ export const PermissionRequestPage = () => {
   const [selectedPermissionId, setSelectedPermissionId] = useState(null);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    callApi(); // Recargar la tabla
+  };
   const handleOpenDocumentationModal = (permissionId) => {
     setSelectedPermissionId(permissionId);
     setOpenDocumentationModal(true);
   };
-  const handleCloseDocumentationModal = () => setOpenDocumentationModal(false);
+  const handleCloseDocumentationModal = () => {
+    setOpenDocumentationModal(false);
+    callApi(); // Recargar la tabla
+  };
 
   const COLUMNS = [
     { field: "reason", headerName: "Motivo", width: 200 },
@@ -151,7 +157,7 @@ export const PermissionRequestPage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <PermissionRequestModalForm setPermission={setSelectedPermissionId} />
+          <PermissionRequestModalForm setPermission={setSelectedPermissionId} handleClose={handleClose} />
         </Box>
       </Modal>
       <Modal open={openDocumentationModal} onClose={handleCloseDocumentationModal}>
@@ -159,7 +165,6 @@ export const PermissionRequestPage = () => {
           <DocumentationModalForm
             employeeId={sessionStorage.getItem('employeeId')}
             handleClose={handleCloseDocumentationModal}
-            reload={() => {}}
             isPermissionMode={true}
             permissionId={selectedPermissionId}
           />

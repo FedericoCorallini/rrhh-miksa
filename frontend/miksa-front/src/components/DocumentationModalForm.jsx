@@ -127,7 +127,6 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload, isPerm
         confirmButtonText: "Aceptar",
       });
       handleClose();
-      reload();
     }
   };
 
@@ -155,24 +154,27 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload, isPerm
       />
       <FormControl variant="standard">
         <InputLabel id="demo-simple-select-standard-label">Tipo de documento</InputLabel>
-        <Select
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard"
-          value={dataPermission.documentation_type || ''}
-          onChange={handleSelectChange}
-          label="Tipo de documento"
-          error={!!errors.documentation_type}
-        >
-          {!isPermissionMode ? (
-            <MenuItem value={"DDJJ"}>DDJJ</MenuItem>
-          ) : (
-            <>
+        {isPermissionMode ? (
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={dataPermission.documentation_type || ''}
+            onChange={handleSelectChange}
+            label="Tipo de documento"
+            error={!!errors.documentation_type}
+          >
             <MenuItem value={"PERMISO"}>Permiso</MenuItem>
             <MenuItem value={"RETRASO"}>Retraso</MenuItem>
-            </>
-          )}
-          
-        </Select>
+          </Select>
+        ) : (
+          <TextField
+            variant="standard"
+            value="DDJJ"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        )}
         {errors.documentation_type && (
           <Typography variant="caption" color="error">
             {errors.documentation_type}

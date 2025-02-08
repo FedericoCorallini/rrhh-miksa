@@ -8,7 +8,7 @@ import { postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
 import SendIcon from '@mui/icons-material/Send';
 
-export const PermissionRequestModalForm = ({setPermission}) => {
+export const PermissionRequestModalForm = ({setPermission , handleClose}) => {
   const [data, setData] = useState({
     employee_id: sessionStorage.getItem('employeeId'),
     reason: '',
@@ -104,6 +104,7 @@ export const PermissionRequestModalForm = ({setPermission}) => {
       const response = await postPermission(data);
       if (response && response.data && response.data.id) {
         setPermission(response.data);
+        handleClose();
       } else {
         console.error('Error en la respuesta del servidor:', response);
       }
