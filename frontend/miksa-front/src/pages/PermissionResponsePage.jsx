@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import { PermissionDetailsModal } from "../components/PermissionDetails.jsx";
 import { getAbsencePermissions, getFile, patchState } from "../utils/Axios";
 import Modal from '@mui/material/Modal';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 
 const style = {
   position: "absolute",
@@ -52,14 +55,13 @@ export const PermissionResponsePage = () => {
       headerName: "Aprobar",
       width: 100,
       renderCell: (params) => (
-        <>
-          <Button
-            size="small"
-            onClick={() => changeState(params.row.id, "APROBADO")}
-          >
-            Aprobar
-          </Button>
-        </>
+        <Button
+          size="small"
+          onClick={() => changeState(params.row.id, "APROBADO")}
+          sx={{ color: 'green' }}
+        >
+          <CheckRoundedIcon />
+        </Button>
       ),
     },
     {
@@ -67,14 +69,13 @@ export const PermissionResponsePage = () => {
       headerName: "Rechazar",
       width: 100,
       renderCell: (params) => (
-        <>
-          <Button
-            size="small"
-            onClick={() => changeState(params.row.id, "RECHAZADO")}
-          >
-            Rechazar
-          </Button>
-        </>
+        <Button
+          size="small"
+          onClick={() => changeState(params.row.id, "RECHAZADO")}
+          sx={{ color: 'red' }}
+        >
+          <CloseRoundedIcon />
+        </Button>
       ),
     },
     {
@@ -86,7 +87,7 @@ export const PermissionResponsePage = () => {
           size="small"
           onClick={() => downloadFile(params.row.documentation.id)}
         >
-          Descargar
+          <DownloadRoundedIcon />
         </Button>
       ),
     },

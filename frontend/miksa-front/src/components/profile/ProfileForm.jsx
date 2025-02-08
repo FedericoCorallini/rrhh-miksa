@@ -275,7 +275,7 @@ export const ProfileForm = ({ profile, setProfile  }) => {
         open={snackbar.open}
         autoHideDuration={5000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Posición en la parte superior central
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }} // Posición en la parte inferior izquierda
       >
         <Alert
           onClose={handleSnackbarClose}
