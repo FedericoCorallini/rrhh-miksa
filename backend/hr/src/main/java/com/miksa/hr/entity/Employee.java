@@ -30,6 +30,8 @@ public class Employee {
     @Column(unique = true)
     private Long dni;
 
+    private String category;
+
     @Column(unique = true)
     private Long cuil;
 

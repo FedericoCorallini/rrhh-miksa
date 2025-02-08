@@ -11,6 +11,7 @@ export const EmployeesPage = () => {
   const COLUMNS = [
     { field: "firstname", headerName: "Nombre", width: 150 },
     { field: "lastname", headerName: "Apellido", width: 150 },
+    { field : "category", headerName: "Categoría", width: 150},
     {
       field: "dni",
       headerName: "Dni",

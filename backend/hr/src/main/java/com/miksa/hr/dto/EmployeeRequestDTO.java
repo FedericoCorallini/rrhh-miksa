@@ -27,6 +27,9 @@ public class EmployeeRequestDTO {
     private Long dni;
 
     @NotNull
+    private String category;
+
+    @NotNull
     private Long cuil;
 
     @Email @NotNull
