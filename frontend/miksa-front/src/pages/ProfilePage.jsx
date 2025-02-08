@@ -86,10 +86,10 @@ export const ProfilePage = () => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ProfileForm profile={profile} />
+        <ProfileForm profile={profile} setProfile={setProfile}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <AccountFields />
+        <AccountFields profile={profile} setProfile={setProfile}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <FamilyFields />

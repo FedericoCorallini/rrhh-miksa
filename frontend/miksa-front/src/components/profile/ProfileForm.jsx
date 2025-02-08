@@ -48,7 +48,7 @@ FormField.propTypes = {
   readOnly: PropTypes.bool,
 };
 
-export const ProfileForm = ({ profile }) => {
+export const ProfileForm = ({ profile, setProfile  }) => {
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
   const { user } = useAuth0();
@@ -79,10 +79,15 @@ export const ProfileForm = ({ profile }) => {
       data.date_of_admission = dateOfAdmission;
       console.log("data despues:", data);
       if (!data.id) {
-        await postEmployee(data);
+        const response = await postEmployee(data);
+        console.log("respuesta: ", response.data);
       } else {
-        console.log("devolucion del back: ", await putEmployee(data.id, data));
+        const response = await putEmployee(data.id, data);
+        // reloadProfile();
+        setProfile(prevProfile => ({ ...prevProfile, ...data }));
+        console.log("respuesta: ", response.data);
       }
+      
       setSnackbar({ open: true, message: "Datos guardados exitosamente", severity: "success" });
       setIsEditing(false);
     } catch (error) {

@@ -8,8 +8,8 @@ import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 
-export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
-  const [data, setData] = useState({ employee: employeeId, documentation_type: '', description: '' });
+export const DocumentationModalForm = ({ employeeId, handleClose, reload, isPermissionMode, permissionId }) => {
+  const [dataPermission, setDataPermission] = useState({ employee: employeeId, documentation_type: '', description: '', absence_permission: null });
   const [file, setFile] = useState(null);
   const [docId, setDocId] = useState(0);
   const [errors, setErrors] = useState({});
@@ -48,7 +48,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prevData) => ({
+    setDataPermission((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -59,7 +59,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
   };
 
   const handleSelectChange = (e) => {
-    setData((prevData) => ({
+    setDataPermission((prevData) => ({
       ...prevData,
       documentation_type: e.target.value,
     }));
@@ -71,8 +71,8 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
 
   const validate = () => {
     let tempErrors = {};
-    if (!data.description) tempErrors.description = '*La descripción es obligatoria';
-    if (!data.documentation_type) tempErrors.documentation_type = '*El tipo de documento es obligatorio';
+    if (!dataPermission.description) tempErrors.description = '*La descripción es obligatoria';
+    if (!dataPermission.documentation_type) tempErrors.documentation_type = '*El tipo de documento es obligatorio';
     if (!file) tempErrors.file = '*Es obligatorio cargar un archivo';
 
     setErrors(tempErrors);
@@ -80,57 +80,56 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
   };
 
   const isFormComplete = () => {
-    return data.description && data.documentation_type && file;
+    return dataPermission.description && dataPermission.documentation_type && file;
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Asegúrate de que esto esté aquí para evitar la recarga de la página
     if (!validate()) return;
 
     try {
-      const response = await postDocument(data);
-      setDocId(response.data.id);
+      let updatedDataPermission = { ...dataPermission };
+      console.log("permiso elegido: ", permissionId);
+      if (isPermissionMode && permissionId) {
+        updatedDataPermission.absence_permission = permissionId;
+      }
+      console.log("después del isPermissionMode: ", updatedDataPermission);
+      console.log("antes del post: ", updatedDataPermission);
+      const response = await postDocument(updatedDataPermission);
+      const newDocId = response.data.id; // Capturar el docId correctamente
+
+      console.log("modal", newDocId);
+      setDocId(newDocId);
+
+      if (file) {
+        const fileData = new FormData();
+        fileData.append("file", file);
+        console.log("Subiendo archivo para el documento:", newDocId);
+
+        await postFile(fileData, newDocId);
+      }
+
       Swal.fire({
-        title: 'Guardado exitoso',
-        text: 'El formulario se ha enviado correctamente',
-        icon: 'success',
-        confirmButtonText: 'Aceptar'
+        title: "Guardado exitoso",
+        text: "El formulario se ha enviado correctamente",
+        icon: "success",
+        confirmButtonText: "Aceptar",
       });
+
       handleClose();
       reload();
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
+      console.error("Error al guardar los datos:", error);
       Swal.fire({
-        title: 'Error',
-        text: 'Hubo un problema al guardar los datos',
-        icon: 'error',
-        confirmButtonText: 'Aceptar'
+        title: "Error",
+        text: "Hubo un problema al guardar los datos",
+        icon: "error",
+        confirmButtonText: "Aceptar",
       });
       handleClose();
       reload();
     }
   };
-
-  useEffect(() => {
-    if (docId !== 0) {
-      const fileData = new FormData();
-      fileData.append('file', file);
-      postFile(fileData, docId)
-        .then(() => {
-          handleClose();
-          reload();
-        })
-        .catch((error) => {
-          console.error('Error al subir el archivo:', error);
-          Swal.fire({
-            title: 'Error',
-            text: 'Hubo un problema al subir el archivo',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-          });
-        });
-    }
-  }, [docId, file, handleClose, reload]);
 
   return (
     <Box
@@ -139,7 +138,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap:2,
+        gap: 2,
         margin: '1%',
       }}
       noValidate
@@ -149,7 +148,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
         label="Descripcion"
         variant="standard"
         name="description"
-        value={data.description || ''}
+        value={dataPermission.description || ''}
         onChange={handleChange}
         error={!!errors.description}
         helperText={errors.description}
@@ -159,14 +158,20 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={data.documentation_type || ''}
+          value={dataPermission.documentation_type || ''}
           onChange={handleSelectChange}
           label="Tipo de documento"
           error={!!errors.documentation_type}
         >
-          <MenuItem value={"DDJJ"}>DDJJ</MenuItem>
-          <MenuItem value={"Permiso"}>Permiso</MenuItem>
-          <MenuItem value={"Retraso"}>Retraso</MenuItem>
+          {!isPermissionMode ? (
+            <MenuItem value={"DDJJ"}>DDJJ</MenuItem>
+          ) : (
+            <>
+            <MenuItem value={"PERMISO"}>Permiso</MenuItem>
+            <MenuItem value={"RETRASO"}>Retraso</MenuItem>
+            </>
+          )}
+          
         </Select>
         {errors.documentation_type && (
           <Typography variant="caption" color="error">
@@ -175,7 +180,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
         )}
       </FormControl>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-        <Button component="label" variant="contained" width="100%" startIcon={<FileUploadIcon />} sx={{whiteSpace: 'nowrap'}}>
+        <Button component="label" variant="contained" width="100%" startIcon={<FileUploadIcon />} sx={{ whiteSpace: 'nowrap' }}>
           Cargar archivo
           <VisuallyHiddenInput onChange={handleFileChange} type="file" />
         </Button>
@@ -189,7 +194,6 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload }) => {
             {errors.file}
           </Typography>
         )}
-
       </Box>
       <Button type="submit" variant="contained" disabled={!isFormComplete()} startIcon={<SaveIcon />} sx={{ backgroundColor: '#5bbc5e', color: 'white', minWidth: '120px' }}>
         Guardar

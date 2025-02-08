@@ -108,7 +108,7 @@ export const FamilyFields = ({ employeeId }) => {
           <MenuItem value="MADRE">Madre</MenuItem>
           <MenuItem value="HIJO">Hijo</MenuItem>
           <MenuItem value="HIJA">Hija</MenuItem>
-          <MenuItem value="PAREJA">Pareja</MenuItem>
+          <MenuItem value="PAREJA">Concubino</MenuItem>
         </TextField>
         <TextField fullWidth name="date_of_birth" label="Fecha de Nacimiento" type="date" InputLabelProps={{ shrink: true }} value={form.date_of_birth} onChange={handleChange} required sx={{ mb: 2 }} />
         <Box sx={{ display: "flex", gap: 2, alignItems: "center", mb: 2 }}>

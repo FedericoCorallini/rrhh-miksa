@@ -6,6 +6,10 @@ import { DocumentationModalForm } from "../DocumentationModalForm.jsx";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/material/Modal';
+import CloudDownload from '@mui/icons-material/CloudDownload';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+
 
 const style = {
   position: 'absolute',
@@ -27,12 +31,20 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
       field: "actions",
       headerName: "Acciones",
       width: 800,
-      renderCell: (params) => (
-        <>
-          <button onClick={() => downloadFile(params.row.id)}>Descargar</button>
-          <button onClick={() => deleteRow(params.row.id)}>Eliminar</button>
-        </>
-      ),
+      renderCell: (params) => {
+        return (
+          <>
+            {params.row.id && (
+              <Button variant="outlined" color="primary" onClick={() => downloadFile(params.row.id)}>
+                <CloudDownload fontSize="small" />
+              </Button>
+            )}
+            <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
+              <DeleteOutlineIcon fontSize="small" />
+            </Button>
+          </>
+        );
+      },
     },
   ];
 
@@ -44,7 +56,9 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
   };
 
   const downloadFile = async (id) => {
+    console.log("ID: ", id);
     const data = await getFile(id);
+    console.log("Data: ", data);
     const pdfBlob = new Blob([data], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(pdfBlob);
     window.open(url, '_blank');

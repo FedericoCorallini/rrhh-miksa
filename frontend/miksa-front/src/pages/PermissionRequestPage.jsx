@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { deletePermission, getEmployee, getFile } from "../utils/Axios";
+import { deletePermission, getEmployeeByEmail, getFile } from "../utils/Axios";
 import { PermissionRequestModalForm } from "../components/PermissionRequestModalForm.jsx";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -26,13 +26,16 @@ const style = {
 
 export const PermissionRequestPage = () => {
   const [permissions, setPermissions] = useState([]);
-
   const [open, setOpen] = useState(false);
+  const [openDocumentationModal, setOpenDocumentationModal] = useState(false);
+  const [selectedPermissionId, setSelectedPermissionId] = useState(null);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [openDocumentationModal, setOpenDocumentationModal] = useState(false);
-  const handleOpenDocumentationModal = () => setOpenDocumentationModal(true);
+  const handleOpenDocumentationModal = (permissionId) => {
+    setSelectedPermissionId(permissionId);
+    setOpenDocumentationModal(true);
+  };
   const handleCloseDocumentationModal = () => setOpenDocumentationModal(false);
 
   const COLUMNS = [
@@ -74,7 +77,7 @@ export const PermissionRequestPage = () => {
               <CloudDownload fontSize="small" />
             </Button>
           ) : (
-            <Button variant="outlined" color="primary" onClick={handleOpenDocumentationModal}>
+            <Button variant="outlined" color="primary" onClick={() => handleOpenDocumentationModal(params.row.id)}>
               <CloudUpload fontSize="small" />
             </Button>
           )}
@@ -109,7 +112,7 @@ export const PermissionRequestPage = () => {
     setPermissions(respuesta.data.absence_permissions_list);
     sessionStorage.setItem('employeeId', respuesta.data.id);
   };
-
+  console.log(selectedPermissionId);
   return (
     <Box sx={{ height: 450, width: 1 }}>
       <DataGrid
@@ -148,17 +151,18 @@ export const PermissionRequestPage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <PermissionRequestModalForm />
+          <PermissionRequestModalForm setPermission={setSelectedPermissionId} />
         </Box>
       </Modal>
-      <Modal
-        open={openDocumentationModal}
-        onClose={handleCloseDocumentationModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <DocumentationModalForm employeeId={sessionStorage.getItem('employeeId')} handleClose={handleCloseDocumentationModal} reload={callApi} fromPRPage={true} />
+      <Modal open={openDocumentationModal} onClose={handleCloseDocumentationModal}>
+        <Box sx={{ ...modalStyle }}>
+          <DocumentationModalForm
+            employeeId={sessionStorage.getItem('employeeId')}
+            handleClose={handleCloseDocumentationModal}
+            reload={() => {}}
+            isPermissionMode={true}
+            permissionId={selectedPermissionId}
+          />
         </Box>
       </Modal>
     </Box>
@@ -166,3 +170,15 @@ export const PermissionRequestPage = () => {
 };
 
 export default PermissionRequestPage;
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};

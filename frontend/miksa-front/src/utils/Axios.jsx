@@ -123,6 +123,21 @@ export const postPermission = async (data) => {
 
     return await axios(config);
 }
+export const updatePermission = async (data) => {
+    
+    const config = {
+        method: 'put',
+        url: BASE_URL + `/absence-permission`,
+        data: data,
+        headers: { 
+            'Access-Control-Allow-Origin': '*', 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sessionStorage.getItem('jwt')}`
+         }
+    } 
+
+    return await axios(config);
+}
 
 export const getEmployees = async () => {
     

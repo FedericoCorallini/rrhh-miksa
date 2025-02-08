@@ -3,6 +3,7 @@ package com.miksa.hr.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,11 +26,11 @@ public class AbsencePermissionRequestDTO {
     private String details;
 
     @NotNull(message = "Debes ingresar la fecha de inicio")
-    @Future(message = "La fecha de inicio debe ser posterior a la fecha actual")
+    @FutureOrPresent(message = "La fecha de inicio no debe ser anterior a la fecha actual")
     private LocalDate startDate;
 
     @NotNull(message = "Debes ingresar la fecha de finalizacion")
-    @Future(message = "La fecha de finalizacion debe ser posterior a la fecha actual")
+    @FutureOrPresent(message = "La fecha de finalizacion no debe ser anterior a la fecha actual")
     private LocalDate endDate;
 
     private LocalTime startTime;
