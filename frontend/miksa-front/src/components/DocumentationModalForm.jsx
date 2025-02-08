@@ -8,7 +8,7 @@ import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 
-export const DocumentationModalForm = ({ employeeId, handleClose, reload, isPermissionMode, permissionId }) => {
+export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMode, permissionId }) => {
   const [dataPermission, setDataPermission] = useState({ employee: employeeId, documentation_type: '', description: '', absence_permission: null });
   const [file, setFile] = useState(null);
   const [docId, setDocId] = useState(0);
@@ -117,7 +117,6 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload, isPerm
       });
 
       handleClose();
-      reload();
     } catch (error) {
       console.error("Error al guardar los datos:", error);
       Swal.fire({
@@ -169,6 +168,7 @@ export const DocumentationModalForm = ({ employeeId, handleClose, reload, isPerm
         ) : (
           <TextField
             variant="standard"
+            InputLabelProps={{ shrink: true }}
             value="DDJJ"
             InputProps={{
               readOnly: true,

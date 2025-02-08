@@ -92,7 +92,7 @@ export const ProfilePage = () => {
         <AccountFields profile={profile} setProfile={setProfile}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <FamilyFields />
+        <FamilyFields employeeId={profile.id}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
         <DocsTable documentation={documentation} reload={callApi} employeeId={id} ></DocsTable>
