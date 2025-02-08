@@ -8,8 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/material/Modal';
 import CloudDownload from '@mui/icons-material/CloudDownload';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute',
@@ -50,9 +50,16 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
 
   const filterDocumentation = documentation.filter(doc => doc.documentation_type === 'DDJJ');
 
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
+
   const deleteRow = async (id) => {
-    await deleteDocumentation(id);
-    reload();
+    try {
+      await deleteDocumentation(id);
+      setSnackbar({ open: true, message: "Documentación eliminada con éxito", severity: "success" });
+      reload();
+    } catch (error) {
+      setSnackbar({ open: true, message: "Error al eliminar la documentación", severity: "error" });
+    }
   };
 
   const downloadFile = async (id) => {
@@ -68,6 +75,7 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
+    setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
     reload(); // Call API to update the table
   };
 
@@ -103,9 +111,23 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <DocumentationModalForm employeeId={employeeId} handleClose={handleClose} reload={reload} />
+          <DocumentationModalForm employeeId={employeeId} handleClose={handleClose} reload={reload} setSnackbar={setSnackbar} />
         </Box>
       </Modal>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={5000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

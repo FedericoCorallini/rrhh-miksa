@@ -3,12 +3,12 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import SaveIcon from '@mui/icons-material/Save';
-import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography, Snackbar, Alert } from '@mui/material';
 import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 
-export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMode, permissionId }) => {
+export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMode, permissionId, setSnackbar }) => {
   const [dataPermission, setDataPermission] = useState({ employee: employeeId, documentation_type: '', description: '', absence_permission: null });
   const [file, setFile] = useState(null);
   const [docId, setDocId] = useState(0);
@@ -118,22 +118,11 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
         await postFile(fileData, newDocId);
       }
 
-      Swal.fire({
-        title: "Guardado exitoso",
-        text: "El formulario se ha enviado correctamente",
-        icon: "success",
-        confirmButtonText: "Aceptar",
-      });
-
+      setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
       handleClose();
     } catch (error) {
       console.error("Error al guardar los datos:", error);
-      Swal.fire({
-        title: "Error",
-        text: "Hubo un problema al guardar los datos",
-        icon: "error",
-        confirmButtonText: "Aceptar",
-      });
+      setSnackbar({ open: true, message: "Error al cargar la documentación", severity: "error" });
       handleClose();
     }
   };
