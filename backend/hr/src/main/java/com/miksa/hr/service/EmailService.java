@@ -17,7 +17,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 @Slf4j
 public class EmailService {
 
-    private static final String FROM_EMAIL = "conectar.utn@gmail.com";
+    private static final String FROM_EMAIL = "fedecorallini@gmail.com";
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine springTemplateEngine;
 
