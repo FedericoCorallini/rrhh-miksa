@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class AbsencePermissionController {
         return ResponseEntity.ok(absencePermissionService.updateAbsencePermission(id, absencePermissionDTO));
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_manager')")
     @PatchMapping("/state/{id}")
     public ResponseEntity<String> updateAbsencePermissionState(@PathVariable Long id, @RequestBody PermissionState state){
         return ResponseEntity.ok(absencePermissionService.updateAbsencePermissionState(id, state));

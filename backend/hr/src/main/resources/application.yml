@@ -25,6 +25,8 @@ spring:
         jwt:
           issuer-uri: https://dev-a8n8uoz6yo02wcvy.us.auth0.com/
           audiences: http://spring-miksa
+          authorities-claim-name: "permissions"
+          authority-prefix: "SCOPE_"
 
   mail:
     host: ${MAIL_HOST}
