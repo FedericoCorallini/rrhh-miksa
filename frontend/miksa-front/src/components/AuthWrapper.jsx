@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const AuthWrapper = ({ children }) => {
   const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading, user } = useAuth0();
@@ -36,7 +37,11 @@ const AuthWrapper = ({ children }) => {
   }, [user]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <CircularProgress color="success" size="3rem" />
+      </div>
+    );
   }
 
   return children;
