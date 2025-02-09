@@ -41,7 +41,7 @@ export const AccountFields = ({ employeeId }) => {
       bank_account: {
         cbu: profile?.bank_account?.cbu || "",
         alias: profile?.bank_account?.alias || "",
-        accountNumber: profile?.bank_account?.account_number || "",
+        account_number: profile?.bank_account?.account_number || "",
         bank: profile?.bank_account?.bank || "",
         bank_branch: profile?.bank_account?.bank_branch || "",
         isSalaryAccount: profile?.bank_account?.isSalaryAccount || false
