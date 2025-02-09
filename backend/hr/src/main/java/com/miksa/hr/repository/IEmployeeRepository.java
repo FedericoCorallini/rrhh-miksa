@@ -1,6 +1,7 @@
 package com.miksa.hr.repository;
 
 import com.miksa.hr.entity.Employee;
+import com.miksa.hr.entity.enums.EmployeeRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,4 +18,6 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             "LEFT JOIN e.absencePermissionsList a WITH a.eliminated = false " +
             "WHERE e.eliminated = false")
     List<Employee> findEmployeeWithQuery ();
+
+    List<Employee> findByRole(EmployeeRole role);
 }

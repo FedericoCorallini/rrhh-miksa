@@ -5,10 +5,10 @@ spring:
     name: hr
 
   datasource:
-    url: jdbc:mysql://localhost:3306/miksa
+    url: jdbc:mysql://localhost:3310/miksa
     dbname: miksa
     username: root
-    password: 7070
+    password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -25,3 +25,15 @@ spring:
         jwt:
           issuer-uri: https://dev-a8n8uoz6yo02wcvy.us.auth0.com/
           audiences: http://spring-miksa
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USER}
+    password: ${MAIL_KEY}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

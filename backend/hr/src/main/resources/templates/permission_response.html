@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de permiso evaluada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 5px auto;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .summary-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .column {
+            flex: 1;
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .column h4 {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .column p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="https://miksa.com.ar/wp-content/uploads/2016/03/logo-miksa-pinturas-gris.png" alt="Logo" width="200">
+    <h4>Han evaluado tu solicitud</h4>
+    <h4>Resultado: <strong><span th:text="${state}">empleado</span></strong></h4>
+
+    <div class="summary-wrapper">
+        <div class="column">
+            <h4>Detalles del permiso solicitado:</h4>
+            <p><strong>Fecha de inicio:</strong> <span th:text="${start_date}">sin fecha</span></p>
+            <p><strong>Hora de inicio:</strong> <span th:text="${start_time}">sin hora</span></p>
+            <p><strong>Fecha de finalizacion:</strong> <span th:text="${end_date}">sin fecha</span></p>
+            <p><strong>Hora de finalizacion:</strong> <span th:text="${end_time}">sin hora</span></p>
+            <p><strong>Motivo:</strong> <span th:text="${reason}">sin motivo</span></p>
+            <p><strong>Detalles:</strong> <span th:text="${details}">sin detalle</span></p>
+            <p><strong>Resultado:</strong> <span th:text="${state}">sin detalle</span></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
