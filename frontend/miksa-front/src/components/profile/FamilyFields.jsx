@@ -101,7 +101,7 @@ export const FamilyFields = ({ employeeId }) => {
       </Box>
 
       {/* Formulario más compacto */}
-      {user && user["roles/roles"] && (user["roles/roles"].includes("admin") || user["roles/roles"].includes("gerente")) && (
+      {user && user["roles/roles"] && (user["roles/roles"].includes("admin")) && (
         <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1, p: 3, border: "1px solid #ddd", borderRadius: 2, bgcolor: "#f9f9f9" }}>
           <Typography variant="h6">{form.id ? "Editar Familiar" : "Agregar Familiar"}</Typography>
           <TextField fullWidth name="firstname" label="Nombre" variant="standard" value={form.firstname} onChange={handleChange} required sx={{ mb: 2 }} />

@@ -10,6 +10,7 @@ import CloudDownload from '@mui/icons-material/CloudDownload';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const style = {
   position: 'absolute',
@@ -25,6 +26,9 @@ const style = {
 };
 
 export const DocsTable = ({ documentation, reload, employeeId }) => {
+
+  const { user } = useAuth0();
+
   const COLUMNS = [
     { field: "description", headerName: "Detalles", width: 200 },
     {
@@ -39,9 +43,12 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
                 <CloudDownload fontSize="small" />
               </Button>
             )}
-            <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
-              <DeleteOutlineIcon fontSize="small" />
-            </Button>
+            {user && user['roles/roles'] && user['roles/roles'].includes('admin') &&
+              <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
+                <DeleteOutlineIcon fontSize="small" />
+              </Button>
+            }
+            
           </>
         );
       },
@@ -89,21 +96,24 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
         disableColumnFilter
       />
       {console.log(documentation)}
-      <Button
-        startIcon={<AddIcon />}
-        variant="contained"
-        sx={{
-          backgroundColor: "#5bbc5e",
-          color: 'white',
-          marginTop: "2%",
-          '&:hover': {
-            backgroundColor: "#4caf50", // Verde más oscuro
-          },
-        }}
-        onClick={handleOpen}
-      >
-        Nueva documentación
-      </Button>
+      {user && user['roles/roles'] && user['roles/roles'].includes('admin') &&
+        <Button
+          startIcon={<AddIcon />}
+          variant="contained"
+          sx={{
+            backgroundColor: "#5bbc5e",
+            color: 'white',
+            marginTop: "2%",
+            '&:hover': {
+              backgroundColor: "#4caf50", // Verde más oscuro
+            },
+          }}
+          onClick={handleOpen}
+        >
+          Nueva documentación
+        </Button>
+      }
+    
       <Modal
         open={open}
         onClose={handleClose}
