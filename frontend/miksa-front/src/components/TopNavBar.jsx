@@ -34,7 +34,7 @@ function TopNavBar() {
     <>
       <header style={{ 
         height: '10vh', 
-        backgroundColor: '#66DC69',
+        backgroundColor: '#8ad453',
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'space-between',
@@ -50,18 +50,18 @@ function TopNavBar() {
             onChange={handleChange} // Maneja el cambio de pestaña
             variant="scrollable"
             scrollButtons="auto"
-            TabIndicatorProps={{ style: { backgroundColor: '#5bbc5e' } }}
+            TabIndicatorProps={{ style: { backgroundColor: '#8ad453' } }}
             sx={{
-              '& .MuiTab-root.Mui-selected': { color: '#5bbc5e' },
+              '& .MuiTab-root.Mui-selected': { color: '#8ad453' },
             }}
           >
             <Tab label="Perfil" onClick={handleProfileClick} />
-            <Tab label="Solicitudes" component={NavLink} to='/solicitudes' />
             {user && user['roles/roles'] && user['roles/roles'].includes('admin') && (
               <Tab label="Empleados" component={NavLink} to='/empleados' />
             )}
+            <Tab label="Solicitudes" component={NavLink} to='/solicitudes' />
             {user && user['roles/roles'] && (user['roles/roles'].includes('admin') || user['roles/roles'].includes('gerente')) && (
-              <Tab label="Permisos" component={NavLink} to='/permisos' />
+              <Tab label="Administrar Permisos" component={NavLink} to='/permisos' />
             )}
           </Tabs>
         </Toolbar>

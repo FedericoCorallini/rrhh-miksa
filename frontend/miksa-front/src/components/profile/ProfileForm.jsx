@@ -73,6 +73,7 @@ export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
       });
       setDateOfBirth(profile.date_of_birth);
       setDateOfAdmission(profile.date_of_admission);
+
     }
   }, [profile, setValue]);
 
@@ -297,7 +298,7 @@ export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
           </Alert>
         </Snackbar>
       </Box>
-      {user && user["roles/roles"] && (user["roles/roles"].includes("admin") || user["roles/roles"].includes("gerente")) && (
+      {user && user["roles/roles"] && (user["roles/roles"].includes("admin")) && (
         <Box
           sx={{
             display: 'flex',

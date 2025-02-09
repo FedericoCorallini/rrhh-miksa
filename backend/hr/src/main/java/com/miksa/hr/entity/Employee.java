@@ -1,6 +1,7 @@
 package com.miksa.hr.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.miksa.hr.entity.enums.EmployeeRole;
 import com.miksa.hr.entity.enums.GenderEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,8 @@ public class Employee {
     private Long dni;
 
     private String category;
+
+    private EmployeeRole role;
 
     @Column(unique = true)
     private Long cuil;

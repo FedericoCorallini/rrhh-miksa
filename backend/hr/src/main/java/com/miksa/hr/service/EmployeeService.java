@@ -3,6 +3,7 @@ package com.miksa.hr.service;
 import com.miksa.hr.dto.EmployeeDTO;
 import com.miksa.hr.dto.EmployeeRequestDTO;
 import com.miksa.hr.entity.Employee;
+import com.miksa.hr.entity.enums.EmployeeRole;
 import com.miksa.hr.repository.IEmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -90,6 +91,12 @@ public class EmployeeService {
             throw new RuntimeException("El empleado no existe");
         }
         return employeeOptional.get();
+    }
+
+    public String[] getManagerEmails(){
+        List<Employee> managers= employeeRepository.findByRole(EmployeeRole.GERENTE);
+        List<String> managerEmails = managers.stream().map(Employee::getEmail).toList();
+        return managerEmails.toArray(new String[0]);
     }
 
     private void filterEliminatedItems(EmployeeDTO employeeDTO) {
