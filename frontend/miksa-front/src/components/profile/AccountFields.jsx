@@ -30,7 +30,7 @@ export const AccountFields = ({ employeeId }) => {
           callApi();
         }  
       }, [employeeId]);
-    console.log(employeeId);
+    
       const callApi = async () => {
         const respuesta = await getEmployee(employeeId);
         setProfile(respuesta.data);

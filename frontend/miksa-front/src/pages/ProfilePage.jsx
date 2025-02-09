@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
+import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from "react";
 import { AccountFields } from '../components/profile/AccountFields';
 import { FamilyFields } from '../components/profile/FamilyFields';
@@ -45,6 +46,7 @@ export const ProfilePage = () => {
   const [profile, setProfile] = useState([]);
   const [documentation, setDocumentation] = useState([]);
   const {id} = useParams();
+  const [newEmployee, setNewEmployee] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -53,15 +55,14 @@ export const ProfilePage = () => {
   useEffect(() => {
     if (id && id !== "0") {
       callApi();
-    }  
+    }else{
+      setNewEmployee(true);
+    }
   }, [id]);
 
   const callApi = async () => {
-    // console.log(id)
-    // console.log("callApi")
     const respuesta = await getEmployee(id);
     setProfile(respuesta.data);
-    // console.log(respuesta.data);
     setDocumentation(respuesta.data.documentation_list)
   };
   console.log("ProfilePage");
@@ -86,16 +87,30 @@ export const ProfilePage = () => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ProfileForm profile={profile} setProfile={setProfile}/>
+        <ProfileForm profile={profile} setProfile={setProfile} newEmployee={newEmployee}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {profile.id && <AccountFields employeeId={profile.id} />}
+        {profile.id ? (<AccountFields employeeId={profile.id}/>
+        ) : (
+          <Box sx={{ p: 3, textAlign: 'center', backgroundColor: '#ffebee', borderRadius: 1 }}>
+            <Typography color="error" variant="h6">Debe ingresar al empleado antes de acceder a esta sección.</Typography>
+          </Box>)}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        {profile.id && <FamilyFields employeeId={profile.id} />}
+        {profile.id ? (<FamilyFields employeeId={profile.id} />
+        ) : (
+          <Box sx={{ p: 3, textAlign: 'center', backgroundColor: '#ffebee', borderRadius: 1 }}>
+            <Typography color="error" variant="h6">Debe ingresar al empleado antes de acceder a esta sección.</Typography>
+          </Box>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <DocsTable documentation={documentation} reload={callApi} employeeId={id} ></DocsTable>
+        {!newEmployee ? (<DocsTable documentation={documentation} reload={callApi} employeeId={id} ></DocsTable>
+        ) : (
+          <Box sx={{ p: 3, textAlign: 'center', backgroundColor: '#ffebee', borderRadius: 1 }}>
+            <Typography color="error" variant="h6">Debe ingresar al empleado antes de acceder a esta sección.</Typography>
+          </Box>
+        )}
       </CustomTabPanel>
     </Box>
   );

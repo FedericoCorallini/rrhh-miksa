@@ -47,7 +47,7 @@ FormField.propTypes = {
   readOnly: PropTypes.bool,
 };
 
-export const ProfileForm = ({ profile, setProfile }) => {
+export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
   const { user } = useAuth0();
@@ -56,6 +56,15 @@ export const ProfileForm = ({ profile, setProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [dateOfAdmission, setDateOfAdmission] = useState(null);
+
+  useEffect(() => {
+    if(newEmployee){
+      console.log("empleado nuevo");
+      setIsEditing(true);
+    }else{
+      console.log("empleado ya creado");
+    }
+  },[newEmployee]);
 
   useEffect(() => {
     if (profile) {
