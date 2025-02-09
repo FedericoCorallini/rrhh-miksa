@@ -12,10 +12,31 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAuth0 } from "@auth0/auth0-react";
-import { postEmployee, putEmployee } from "../../utils/Axios";
+import { getEmployee, postEmployee, putEmployee } from "../../utils/Axios";
 
-export const AccountFields = ({ profile, setProfile }) => {
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+export const AccountFields = ({ employeeId }) => {
+  
+  const [profile, setProfile ] = useState();
+
+
+    // useEffect(() => {
+    //     if(!employeeId) (    PARA VALIDAR QUE NO SE PUEDAN AGREGAR DATOS BANCARIOS SIN AGREGAR PRIMERO UN EMPLEADO
+
+    //     )
+    // }, [])
+    useEffect(() => {
+        if (employeeId) {
+            console.log("llamando a la api");
+          callApi();
+        }  
+      }, [employeeId]);
+    console.log(employeeId);
+      const callApi = async () => {
+        const respuesta = await getEmployee(employeeId);
+        setProfile(respuesta.data);
+      };
+  
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       bank_account: {
         cbu: profile?.bank_account?.cbu || "",

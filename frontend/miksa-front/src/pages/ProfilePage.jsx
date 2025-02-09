@@ -54,7 +54,7 @@ export const ProfilePage = () => {
     if (id && id !== "0") {
       callApi();
     }  
-  }, []);
+  }, [id]);
 
   const callApi = async () => {
     // console.log(id)
@@ -89,10 +89,10 @@ export const ProfilePage = () => {
         <ProfileForm profile={profile} setProfile={setProfile}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <AccountFields profile={profile} setProfile={setProfile}/>
+        {profile.id && <AccountFields employeeId={profile.id} />}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <FamilyFields employeeId={profile.id}/>
+        {profile.id && <FamilyFields employeeId={profile.id} />}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
         <DocsTable documentation={documentation} reload={callApi} employeeId={id} ></DocsTable>
