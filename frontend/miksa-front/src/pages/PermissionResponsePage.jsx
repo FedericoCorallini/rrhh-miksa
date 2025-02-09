@@ -84,9 +84,11 @@ export const PermissionResponsePage = () => {
       renderCell: (params) => (
         <Button
           size="small"
-          onClick={() => downloadFile(params.row.documentation.id)}
+          onClick={() => params.row.documentation && downloadFile(params.row.documentation.id)}
+          sx={{ color: params.row.documentation ? 'blue' : 'gray' }}
+          disabled={!params.row.documentation}
         >
-          <DownloadRoundedIcon />
+        <DownloadRoundedIcon />
         </Button>
       ),
     },
