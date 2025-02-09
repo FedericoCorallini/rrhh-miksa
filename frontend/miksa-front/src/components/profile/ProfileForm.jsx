@@ -13,7 +13,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { postEmployee, putEmployee } from "../../utils/Axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 // Componente reutilizable para TextField
 const FormField = React.memo(({ label, name, rules, register, errors, select, children, readOnly, ...props }) => (
   <TextField
@@ -67,25 +66,20 @@ export const ProfileForm = ({ profile, setProfile }) => {
       setDateOfAdmission(profile.date_of_admission);
     }
   }, [profile, setValue]);
-  console.log(dateOfBirth);
+
   const handleSnackbarClose = () => setSnackbar({ ...snackbar, open: false });
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      // Agregar fechas al objeto data
-      console.log("data antes:", data);
       data.date_of_birth = dateOfBirth;
       data.date_of_admission = dateOfAdmission;
-      console.log("data despues:", data);
       if (!data.id) {
         const response = await postEmployee(data);
-        console.log("respuesta: ", response.data);
+        setProfile(response.data); // Actualiza el estado profile con los datos del nuevo empleado
       } else {
         const response = await putEmployee(data.id, data);
-        // reloadProfile();
         setProfile(prevProfile => ({ ...prevProfile, ...response.data }));
-        console.log("respuesta: ", response.data);
       }
       
       setSnackbar({ open: true, message: "Datos guardados exitosamente", severity: "success" });
@@ -98,14 +92,11 @@ export const ProfileForm = ({ profile, setProfile }) => {
     }
   };
 
-
   const handleEditClick = useCallback(() => {
-    console.log("edicion true");
     setIsEditing(true);
   }, []);
   
   const handleCancelClick = useCallback(() => {
-    console.log("cancel");
     setIsEditing(false);
     if (profile) {
       Object.keys(profile).forEach(key => {
@@ -115,7 +106,7 @@ export const ProfileForm = ({ profile, setProfile }) => {
       setDateOfAdmission(profile.date_of_admission);
     }
   }, [profile, setValue]);
-  console.log("Renderizado perfil");
+  
   return (
     <>
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
