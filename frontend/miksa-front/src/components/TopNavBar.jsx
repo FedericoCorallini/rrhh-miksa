@@ -43,6 +43,10 @@ function TopNavBar({ setIsTabSelected }) {
     setIsTabSelected(newValue !== false); // Update isTabSelected state
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <header style={{ 
@@ -53,7 +57,7 @@ function TopNavBar({ setIsTabSelected }) {
         justifyContent: 'space-between',
         padding: '0 2vh'
         }}>
-        <img src={logoMiksa} alt="Miksa Logo" style={{ height: '40%' }} />
+        <img src={logoMiksa} alt="Miksa Logo" style={{ height: '40%' }} className="clickable-logo" onClick={handleLogoClick} />
         <LogoutButton />
       </header>
       <AppBar position="static" color="default">

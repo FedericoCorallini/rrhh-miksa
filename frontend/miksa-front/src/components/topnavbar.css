@@ -6,4 +6,8 @@
     top: 0; /* Llegar hasta el tope de la pantalla */
     left: 0; /* Asegurar que esté alineada a la izquierda */
     z-index: 1100; /* Asegurar que esté por encima de otros elementos */
-  }
+}
+
+.clickable-logo {
+    cursor: pointer;
+}
