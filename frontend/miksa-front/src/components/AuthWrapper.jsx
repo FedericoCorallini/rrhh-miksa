@@ -16,7 +16,7 @@ const AuthWrapper = ({ children }) => {
             },
           });
           sessionStorage.setItem('jwt', accessToken);
-          console.log(accessToken); 
+          // console.log(accessToken); 
         } catch (e) {
           console.log(e.message);
         }
@@ -32,7 +32,7 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      console.log("User attributes:", user); // Imprimir los atributos del usuario
+      // console.log("User attributes:", user); // Imprimir los atributos del usuario
     }
   }, [user]);
 

@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { BasicDatePicker } from "../BasicDatePicker";
-import { Button } from "@mui/material";
+import { Button, MenuItem } from "@mui/material";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
@@ -48,7 +48,7 @@ FormField.propTypes = {
 };
 
 export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
-  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors }, watch } = useForm();
 
   const { user } = useAuth0();
   const [loading, setLoading] = useState(false);
@@ -59,10 +59,7 @@ export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
 
   useEffect(() => {
     if(newEmployee){
-      console.log("empleado nuevo");
       setIsEditing(true);
-    }else{
-      console.log("empleado ya creado");
     }
   },[newEmployee]);
 
@@ -73,7 +70,6 @@ export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
       });
       setDateOfBirth(profile.date_of_birth);
       setDateOfAdmission(profile.date_of_admission);
-
     }
   }, [profile, setValue]);
 
@@ -95,7 +91,6 @@ export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
       setSnackbar({ open: true, message: "Datos guardados exitosamente", severity: "success" });
       setIsEditing(false);
     } catch (error) {
-      console.error("Error al guardar los datos:", error);
       setSnackbar({ open: true, message: "Error al guardar los datos", severity: "error" });
     } finally {
       setLoading(false);
@@ -196,29 +191,56 @@ export const ProfileForm = ({ profile, setProfile, newEmployee }) => {
           readOnly={!isEditing}
         />
         <FormField
-          label="Estado civil"
+          label="Estado Civil"
           name="marital_status"
           rules={{ required: "El estado civil es obligatorio" }}
           register={register}
           errors={errors}
+          select
           readOnly={!isEditing}
-        />
+          value={watch("marital_status") || ""}
+          onChange={(e) => setValue("marital_status", e.target.value)}
+        >
+          <MenuItem value="SOLTERO">Soltero</MenuItem>
+          <MenuItem value="CASADO">Casado</MenuItem>
+          <MenuItem value="DIVORCIADO">Divorciado</MenuItem>
+          <MenuItem value="VIUDO">Viudo</MenuItem>
+        </FormField>
         <FormField
           label="Género"
           name="gender"
           rules={{ required: "El género es obligatorio" }}
           register={register}
           errors={errors}
+          select
           readOnly={!isEditing}
-        />
+          value={watch("gender") || ""}
+          onChange={(e) => setValue("gender", e.target.value)}
+        >
+          <MenuItem value="MASCULINO">Hombre</MenuItem>
+          <MenuItem value="FEMENINO">Mujer</MenuItem>
+          {/* <MenuItem value="OTRO">Otro</MenuItem> */}
+        </FormField>
         <FormField
           label="Nacionalidad"
           name="nationality"
           rules={{ required: "La nacionalidad es obligatoria" }}
           register={register}
           errors={errors}
+          select
           readOnly={!isEditing}
-        />
+          value={watch("nationality") || ""}
+          onChange={(e) => setValue("nationality", e.target.value)}
+        >
+          <MenuItem value="ARGENTINA">Argentina</MenuItem>
+          <MenuItem value="BOLIVIA">Bolivia</MenuItem>
+          <MenuItem value="PARAGUAY">Paraguay</MenuItem>
+          <MenuItem value="CHILE">Chile</MenuItem>
+          <MenuItem value="URUGUAY">Uruguay</MenuItem>
+          <MenuItem value="BRASIL">Brasil</MenuItem>
+          <MenuItem value="VENEZUELA">Venezuela</MenuItem>
+          <MenuItem value="COLOMBIA">Colombia</MenuItem>
+        </FormField>
         <FormField
           label="Horario laboral"
           name="working_hours"

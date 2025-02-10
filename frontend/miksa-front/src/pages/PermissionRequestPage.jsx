@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { deletePermission, getEmployeeByEmail, getFile } from "../utils/Axios";
 import { PermissionRequestModalForm } from "../components/PermissionRequestModalForm.jsx";
+import { ConfirmDialog } from "../components/ConfirmDialog.jsx";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -30,23 +31,48 @@ export const PermissionRequestPage = () => {
   const [permissions, setPermissions] = useState([]);
   const [open, setOpen] = useState(false);
   const [openDocumentationModal, setOpenDocumentationModal] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [selectedPermissionId, setSelectedPermissionId] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {
+  const handleClose = () => setOpen(false);
+
+  const handleSuccessDocumentation = () => {
+    setOpenDocumentationModal(false);
+    setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
+    callApi(); // Recargar la tabla
+  };
+
+  const handleSuccess = () => {
     setOpen(false);
     setSnackbar({ open: true, message: "Solicitud creada con éxito", severity: "success" });
     callApi(); // Recargar la tabla
   };
+
   const handleOpenDocumentationModal = (permissionId) => {
     setSelectedPermissionId(permissionId);
     setOpenDocumentationModal(true);
   };
-  const handleCloseDocumentationModal = () => {
-    setOpenDocumentationModal(false);
-    setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
-    callApi(); // Recargar la tabla
+  const handleCloseDocumentationModal = () => setOpenDocumentationModal(false);
+
+  const handleOpenConfirmDialog = (permissionId) => {
+    setSelectedPermissionId(permissionId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deletePermission(selectedPermissionId);
+      setSnackbar({ open: true, message: "Solicitud eliminada con éxito", severity: "success" });
+      callApi();
+    } catch (error) {
+      setSnackbar({ open: true, message: "Error al eliminar la solicitud", severity: "error" });
+    } finally {
+      setOpenConfirmDialog(false);
+    }
   };
 
   const COLUMNS = [
@@ -93,7 +119,7 @@ export const PermissionRequestPage = () => {
             </Button>
           )}
           {params.row.permission_state === "PENDIENTE" && (
-            <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
+            <Button variant="outlined" color="error" onClick={() => handleOpenConfirmDialog(params.row.id)}>
               <DeleteOutlineIcon fontSize="small" />
             </Button>
           )}
@@ -105,16 +131,6 @@ export const PermissionRequestPage = () => {
   useEffect(() => {
     callApi();
   }, []);
-
-  const deleteRow = async (id) => {
-    try {
-      await deletePermission(id);
-      setSnackbar({ open: true, message: "Solicitud eliminada con éxito", severity: "success" });
-      callApi();
-    } catch (error) {
-      setSnackbar({ open: true, message: "Error al eliminar la solicitud", severity: "error" });
-    }
-  };
 
   const downloadFile = async (id) => {
     const data = await getFile(id);
@@ -128,7 +144,6 @@ export const PermissionRequestPage = () => {
     setPermissions(respuesta.data.absence_permissions_list);
     sessionStorage.setItem('employeeId', respuesta.data.id);
   };
-  console.log(selectedPermissionId);
   return (
     <Box sx={{ height: 450, width: 1 }}>
       <DataGrid
@@ -167,7 +182,7 @@ export const PermissionRequestPage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <PermissionRequestModalForm setPermission={setSelectedPermissionId} handleClose={handleClose} />
+          <PermissionRequestModalForm setPermission={setSelectedPermissionId} handleClose={handleClose} handleSuccess={handleSuccess} />
         </Box>
       </Modal>
       <Modal open={openDocumentationModal} onClose={handleCloseDocumentationModal}>
@@ -178,9 +193,16 @@ export const PermissionRequestPage = () => {
             isPermissionMode={true}
             permissionId={selectedPermissionId}
             setSnackbar={setSnackbar}
+            handleSuccess={handleSuccessDocumentation}
           />
         </Box>
       </Modal>
+      <ConfirmDialog
+        open={openConfirmDialog}
+        handleClose={handleCloseConfirmDialog}
+        handleConfirm={handleConfirmDelete}
+        message="¿Está seguro de que desea eliminar esta solicitud?"
+      />
       <Snackbar
         open={snackbar.open}
         autoHideDuration={5000}

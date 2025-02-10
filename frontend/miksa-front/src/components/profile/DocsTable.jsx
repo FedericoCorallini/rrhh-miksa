@@ -11,6 +11,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useAuth0 } from "@auth0/auth0-react";
+import { ConfirmDialog } from "../ConfirmDialog.jsx";
 
 const style = {
   position: 'absolute',
@@ -28,6 +29,27 @@ const style = {
 export const DocsTable = ({ documentation, reload, employeeId }) => {
 
   const { user } = useAuth0();
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const [ deleteId, setDeleteId ] = useState();
+    
+    const handleOpenConfirmDialog = (id) => {
+      setDeleteId(id);
+      setOpenConfirmDialog(true);
+    };
+  
+    const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+    
+    const handleConfirmDelete = async () => {
+      try {
+        await deleteDocumentation(deleteId);
+        setSnackbar({ open: true, message: "Documento eliminado con éxito", severity: "success" });
+        reload();
+      } catch (error) {
+        setSnackbar({ open: true, message: "Error al eliminar el documento", severity: "error" });
+      } finally {
+        setOpenConfirmDialog(false);
+      }
+    };
 
   const COLUMNS = [
     { field: "description", headerName: "Detalles", width: 200 },
@@ -44,7 +66,7 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
               </Button>
             )}
             {user && user['roles/roles'] && user['roles/roles'].includes('admin') &&
-              <Button variant="outlined" color="error" onClick={() => deleteRow(params.row.id)}>
+              <Button variant="outlined" color="error" onClick={() => handleOpenConfirmDialog(params.row.id)}>
                 <DeleteOutlineIcon fontSize="small" />
               </Button>
             }
@@ -59,20 +81,8 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
 
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
 
-  const deleteRow = async (id) => {
-    try {
-      await deleteDocumentation(id);
-      setSnackbar({ open: true, message: "Documentación eliminada con éxito", severity: "success" });
-      reload();
-    } catch (error) {
-      setSnackbar({ open: true, message: "Error al eliminar la documentación", severity: "error" });
-    }
-  };
-
   const downloadFile = async (id) => {
-    console.log("ID: ", id);
     const data = await getFile(id);
-    console.log("Data: ", data);
     const pdfBlob = new Blob([data], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(pdfBlob);
     window.open(url, '_blank');
@@ -80,10 +90,12 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {
+  const handleClose = () => setOpen(false);
+
+  const handleSuccessDocumentation = () => {
     setOpen(false);
     setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
-    reload(); // Call API to update the table
+    reload(); // Recargar la tabla
   };
 
   return (
@@ -95,7 +107,6 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
         disableDensitySelector
         disableColumnFilter
       />
-      {console.log(documentation)}
       {user && user['roles/roles'] && user['roles/roles'].includes('admin') &&
         <Button
           startIcon={<AddIcon />}
@@ -121,9 +132,15 @@ export const DocsTable = ({ documentation, reload, employeeId }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <DocumentationModalForm employeeId={employeeId} handleClose={handleClose} reload={reload} setSnackbar={setSnackbar} />
+          <DocumentationModalForm employeeId={employeeId} handleClose={handleClose} reload={reload} setSnackbar={setSnackbar} handleSuccess={handleSuccessDocumentation} />
         </Box>
       </Modal>
+      <ConfirmDialog
+        open={openConfirmDialog}
+        handleClose={handleCloseConfirmDialog}
+        handleConfirm={handleConfirmDelete}
+        message="¿Está seguro de que desea eliminar este documento?"
+      />
       <Snackbar
         open={snackbar.open}
         autoHideDuration={5000}

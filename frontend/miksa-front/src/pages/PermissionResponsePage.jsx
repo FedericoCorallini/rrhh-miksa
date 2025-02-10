@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import { ConfirmDialog } from "../components/ConfirmDialog.jsx";
 
 const style = {
   position: "absolute",
@@ -23,7 +24,9 @@ const style = {
 
 export const PermissionResponsePage = () => {
   const [open, setOpen] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState(null);
+  const [selectedAction, setSelectedAction] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "" });
 
   const handleOpen = (permission) => {
@@ -32,6 +35,27 @@ export const PermissionResponsePage = () => {
   };
 
   const handleClose = () => setOpen(false);
+
+  const handleOpenConfirmDialog = (permission, action) => {
+    setSelectedPermission(permission);
+    setSelectedAction(action);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+  const handleConfirmAction = async () => {
+    if (!selectedAction) return; // Verificación adicional
+    try {
+      await patchState(selectedPermission.id, selectedAction);
+      setSnackbar({ open: true, message: `Solicitud ${selectedAction.toLowerCase()} con éxito`, severity: "success" });
+      callApi();
+    } catch (error) {
+      setSnackbar({ open: true, message: `Error al ${selectedAction.toLowerCase()} la solicitud`, severity: "error" });
+    } finally {
+      setOpenConfirmDialog(false);
+    }
+  };
 
   const COLUMNS = [
     { field: "employee_name", headerName: "Empleado", width: 150 },
@@ -56,7 +80,7 @@ export const PermissionResponsePage = () => {
       renderCell: (params) => (
         <Button
           size="small"
-          onClick={() => changeState(params.row.id, "APROBADO")}
+          onClick={() => handleOpenConfirmDialog(params.row, "APROBADO")}
           sx={{ color: 'green' }}
         >
           <CheckRoundedIcon />
@@ -70,7 +94,7 @@ export const PermissionResponsePage = () => {
       renderCell: (params) => (
         <Button
           size="small"
-          onClick={() => changeState(params.row.id, "RECHAZADO")}
+          onClick={() => handleOpenConfirmDialog(params.row, "RECHAZADO")}
           sx={{ color: 'red' }}
         >
           <CloseRoundedIcon />
@@ -97,11 +121,9 @@ export const PermissionResponsePage = () => {
       headerName: "Detalles",
       width: 150,
       renderCell: (params) => (
-        <>
-          <Button variant="outlined" size="small" onClick={() => handleOpen(params.row)}>
-            Ver Detalles
-          </Button>
-        </>
+        <Button variant="outlined" size="small" onClick={() => handleOpen(params.row)}>
+          Ver Detalles
+        </Button>
       ),
     },
   ];
@@ -109,16 +131,6 @@ export const PermissionResponsePage = () => {
   useEffect(() => {
     callApi();
   }, []);
-
-  const changeState = async (id, state) => {
-    try {
-      await patchState(id, state);
-      setSnackbar({ open: true, message: `Solicitud ${state.toLowerCase()} con éxito`, severity: "success" });
-      callApi();
-    } catch (error) {
-      setSnackbar({ open: true, message: `Error al ${state.toLowerCase()} la solicitud`, severity: "error" });
-    }
-  };
 
   const downloadFile = async (id) => {
     const data = await getFile(id);
@@ -141,7 +153,6 @@ export const PermissionResponsePage = () => {
         rows={permissions}
         disableColumnSelector
         disableDensitySelector
-        
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
@@ -161,7 +172,7 @@ export const PermissionResponsePage = () => {
           },
         }}
       />
-    <Modal
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -171,6 +182,12 @@ export const PermissionResponsePage = () => {
           {selectedPermission && <PermissionDetailsModal permission={selectedPermission} onClose={handleClose} />}
         </Box>
       </Modal>
+      <ConfirmDialog
+        open={openConfirmDialog}
+        handleClose={handleCloseConfirmDialog}
+        handleConfirm={handleConfirmAction}
+        message={`¿Está seguro de que desea ${selectedAction === "APROBADO" ? "aprobar" : "rechazar"} esta solicitud?`}
+      />
       <Snackbar
         open={snackbar.open}
         autoHideDuration={5000}
@@ -188,4 +205,5 @@ export const PermissionResponsePage = () => {
     </Box>
   );
 };
+
 export default PermissionResponsePage;

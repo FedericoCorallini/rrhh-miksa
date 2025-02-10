@@ -6,10 +6,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { getRelatives, addRelative, updateRelative, deleteRelative } from "../../utils/Axios";
 import { Snackbar, Alert, Typography, FormControlLabel, Checkbox } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
-
-
+import { ConfirmDialog } from "../ConfirmDialog";
+import { BasicDatePicker } from "../BasicDatePicker";
 
 export const FamilyFields = ({ employeeId }) => {
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [deleteId, setDeleteId] = useState();
   const [relatives, setRelatives] = useState([]);
   const [form, setForm] = useState({
     employee_id: employeeId,
@@ -42,6 +44,10 @@ export const FamilyFields = ({ employeeId }) => {
     setForm({ ...form, [e.target.name]: value });
   };
 
+  const handleDateChange = (date) => {
+    setForm({ ...form, date_of_birth: date });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -63,18 +69,27 @@ export const FamilyFields = ({ employeeId }) => {
     setForm(relative);
   };
 
-  const handleDelete = async (id) => {
+  const handleCloseAlert = () => {
+    setAlert({ open: false, message: "", severity: "success" });
+  };
+
+  const handleOpenConfirmDialog = (id) => {
+    setDeleteId(id);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+  const handleConfirmDelete = async () => {
     try {
-      await deleteRelative(id);
+      await deleteRelative(deleteId);
       setAlert({ open: true, message: "Familiar eliminado con éxito", severity: "success" });
       fetchRelatives();
     } catch (error) {
       setAlert({ open: true, message: "Error al eliminar el familiar", severity: "error" });
+    } finally {
+      setOpenConfirmDialog(false);
     }
-  };
-
-  const handleCloseAlert = () => {
-    setAlert({ open: false, message: "", severity: "success" });
   };
 
   return (
@@ -92,7 +107,7 @@ export const FamilyFields = ({ employeeId }) => {
               {user && user["roles/roles"] && (user["roles/roles"].includes("admin") || user["roles/roles"].includes("gerente")) && (
               <Box sx={{ mt: 1 }}>
                 <Button size="small" onClick={() => handleEdit(relative)}>Editar</Button>
-                <Button size="small" color="error" onClick={() => handleDelete(relative.id)}>Eliminar</Button>
+                <Button size="small" color="error" onClick={() => handleOpenConfirmDialog(relative.id)}>Eliminar</Button>
               </Box>
               )}
             </Box>
@@ -117,7 +132,13 @@ export const FamilyFields = ({ employeeId }) => {
             <MenuItem value="HIJA">Hija</MenuItem>
             <MenuItem value="PAREJA">Concubino</MenuItem>
           </TextField>
-          <TextField fullWidth name="date_of_birth" label="Fecha de Nacimiento" type="date" InputLabelProps={{ shrink: true }} value={form.date_of_birth} onChange={handleChange} required sx={{ mb: 2 }} />
+          <BasicDatePicker
+            label="Fecha de Nacimiento"
+            date={form.date_of_birth}
+            onChange={handleDateChange}
+            required
+            sx={{ mb: 2 }}
+          />
           <Box sx={{ display: "flex", gap: 2, alignItems: "center", mb: 2 }}>
             <FormControlLabel
               control={<Checkbox checked={form.lives} onChange={handleChange} name="lives" />}
@@ -133,7 +154,12 @@ export const FamilyFields = ({ employeeId }) => {
           </Button>
         </Box>
       )}  
-
+      <ConfirmDialog
+        open={openConfirmDialog}
+        handleClose={handleCloseConfirmDialog}
+        handleConfirm={handleConfirmDelete}
+        message="¿Está seguro de que desea eliminar este familiar?"
+      />
       {/* Snackbar Alert */}
       <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert}>
         <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>

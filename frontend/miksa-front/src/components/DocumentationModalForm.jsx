@@ -3,12 +3,11 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import SaveIcon from '@mui/icons-material/Save';
-import { Button, FormControl, InputLabel, MenuItem, Select, Typography, Snackbar, Alert } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { postDocument, postFile } from '../utils/Axios';
 import { styled } from '@mui/material/styles';
-import Swal from 'sweetalert2';
 
-export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMode, permissionId, setSnackbar }) => {
+export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMode, permissionId, setSnackbar, handleSuccess }) => {
   const [dataPermission, setDataPermission] = useState({ employee: employeeId, documentation_type: '', description: '', absence_permission: null });
   const [file, setFile] = useState(null);
   const [docId, setDocId] = useState(0);
@@ -50,7 +49,6 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
           ...prevErrors,
           file: '',
         }));
-        console.log('Archivo cargado:', file);
       }
     }
   };
@@ -98,30 +96,21 @@ export const DocumentationModalForm = ({ employeeId, handleClose, isPermissionMo
 
     try {
       let updatedDataPermission = { ...dataPermission };
-      console.log("permiso elegido: ", permissionId);
       if (isPermissionMode && permissionId) {
         updatedDataPermission.absence_permission = permissionId;
       }
-      console.log("después del isPermissionMode: ", updatedDataPermission);
-      console.log("antes del post: ", updatedDataPermission);
       const response = await postDocument(updatedDataPermission);
       const newDocId = response.data.id; // Capturar el docId correctamente
-
-      console.log("modal", newDocId);
       setDocId(newDocId);
 
       if (file) {
         const fileData = new FormData();
         fileData.append("file", file);
-        console.log("Subiendo archivo para el documento:", newDocId);
-
         await postFile(fileData, newDocId);
       }
 
-      setSnackbar({ open: true, message: "Documentación cargada con éxito", severity: "success" });
-      handleClose();
+      handleSuccess(); // Llama a handleSuccess para cerrar el modal y mostrar la alerta de éxito
     } catch (error) {
-      console.error("Error al guardar los datos:", error);
       setSnackbar({ open: true, message: "Error al cargar la documentación", severity: "error" });
       handleClose();
     }

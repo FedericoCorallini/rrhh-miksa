@@ -26,7 +26,6 @@ export const AccountFields = ({ employeeId }) => {
     // }, [])
     useEffect(() => {
         if (employeeId) {
-            console.log("llamando a la api");
           callApi();
         }  
       }, [employeeId]);

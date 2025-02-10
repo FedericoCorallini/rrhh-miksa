@@ -17,9 +17,8 @@ function TopNavBar() {
   const [value, setValue] = useState(0); // Define el estado value con un valor inicial
 
   const handleProfileClick = async () => {
-    console.log(`${sessionStorage.getItem('jwt')}`);
+    // console.log(`${sessionStorage.getItem('jwt')}`);
     const employeeData = await getEmployeeByEmail();
-    console.log(employeeData.data);
     const userId = employeeData.data.id;
     if (userId) {
       navigate(`/perfil/${userId}`);

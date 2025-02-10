@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { BasicDatePicker } from './BasicDatePicker';
@@ -8,7 +8,7 @@ import { postPermission } from '../utils/Axios';
 import dayjs from 'dayjs';
 import SendIcon from '@mui/icons-material/Send';
 
-export const PermissionRequestModalForm = ({setPermission , handleClose}) => {
+export const PermissionRequestModalForm = ({ setPermission, handleClose, handleSuccess }) => {
   const [data, setData] = useState({
     employee_id: sessionStorage.getItem('employeeId'),
     reason: '',
@@ -22,7 +22,6 @@ export const PermissionRequestModalForm = ({setPermission , handleClose}) => {
   const [errors, setErrors] = useState({});
   const [isMounted, setIsMounted] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,12 +98,11 @@ export const PermissionRequestModalForm = ({setPermission , handleClose}) => {
     e.preventDefault();
     setHasSubmitted(true);
     if (!validate()) return;
-    console.log('Datos antes de enviar:', data); // Verifica los datos antes de enviar
     try {
       const response = await postPermission(data);
       if (response && response.data && response.data.id) {
         setPermission(response.data);
-        handleClose();
+        handleSuccess(); // Llama a handleSuccess para cerrar el modal y mostrar la alerta de éxito
       } else {
         console.error('Error en la respuesta del servidor:', response);
       }
@@ -175,4 +173,4 @@ export const PermissionRequestModalForm = ({setPermission , handleClose}) => {
       </Button>
     </Box>
   );
-};
+};  
