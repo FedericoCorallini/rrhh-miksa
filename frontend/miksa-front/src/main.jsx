@@ -17,8 +17,6 @@ createRoot(document.getElementById('root')).render(
         audience: "http://spring-miksa",
         scope: "read:current_user update:current_user_metadata"
       }}
-      useRefreshTokens={true}
-      cacheLocation="localstorage"
     >
       <App />
     </Auth0Provider>
