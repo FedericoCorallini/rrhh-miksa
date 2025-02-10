@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getEmployeeByEmail } from '../utils/Axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Tabs from '@mui/material/Tabs';
@@ -9,15 +9,28 @@ import { NavLink } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import './TopNavBar.css';
-import logoMiksa from '../assets/logos/MiksaColores.png';
+import logoMiksa from '../assets/logos/MiksaColors.png';
 
-function TopNavBar() {
+function TopNavBar({ setIsTabSelected }) {
   const { user } = useAuth0();
   const navigate = useNavigate();
-  const [value, setValue] = useState(0); // Define el estado value con un valor inicial
+  const location = useLocation();
+  const [value, setValue] = useState(false); // Set initial state to false
+
+  useEffect(() => {
+    const pathToValueMap = {
+      '/perfil': 0,
+      '/empleados': 1,
+      '/solicitudes': 2,
+      '/permisos': 3,
+    };
+    const currentPath = Object.keys(pathToValueMap).find(path => location.pathname.startsWith(path));
+    const newValue = pathToValueMap[currentPath] ?? false;
+    setValue(newValue);
+    setIsTabSelected(newValue !== false);
+  }, [location, setIsTabSelected]);
 
   const handleProfileClick = async () => {
-    // console.log(`${sessionStorage.getItem('jwt')}`);
     const employeeData = await getEmployeeByEmail();
     const userId = employeeData.data.id;
     if (userId) {
@@ -26,7 +39,8 @@ function TopNavBar() {
   };
 
   const handleChange = (event, newValue) => {
-    setValue(newValue); // Actualiza el estado value cuando se selecciona una pestaña
+    setValue(newValue); // Update state when a tab is selected
+    setIsTabSelected(newValue !== false); // Update isTabSelected state
   };
 
   return (
@@ -45,8 +59,8 @@ function TopNavBar() {
       <AppBar position="static" color="default">
         <Toolbar sx={{ height: '5vh' }}>
           <Tabs
-            value={value} // Asigna el estado value al componente Tabs
-            onChange={handleChange} // Maneja el cambio de pestaña
+            value={value} // Assign state value to Tabs component
+            onChange={handleChange} // Handle tab change
             variant="scrollable"
             scrollButtons="auto"
             TabIndicatorProps={{ style: { backgroundColor: '#8ad453' } }}

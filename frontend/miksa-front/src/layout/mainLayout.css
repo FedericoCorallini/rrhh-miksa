@@ -1,0 +1,17 @@
+.no-tab-selected {
+    background: url('../assets/logos/miksa-rrhh.png') no-repeat center 60%;
+    background-size: 30%;
+    min-height: 100%;
+}
+
+.tab-selected-footer {
+    
+    min-height: 5%;
+    font-size: 0.8em;
+    color: #666;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: url('../assets/logos/miksa-rrhh-small.png') no-repeat center bottom;
+    background-size: 10%;
+}
