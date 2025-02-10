@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import CircularProgress from '@mui/material/CircularProgress';
 
 const AuthWrapper = ({ children }) => {
-  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading, user } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, getAccessTokenSilently, isLoading, error, user } = useAuth0();
 
   useEffect(() => {
     const getToken = async () => {
@@ -23,12 +23,12 @@ const AuthWrapper = ({ children }) => {
       }
     };
 
-    if (!isAuthenticated && !isLoading) {
+    if (!isAuthenticated && !isLoading && !error) {
       loginWithRedirect();
-    } else {
+    } else if (isAuthenticated) {
       getToken();
     }
-  }, [isAuthenticated, getAccessTokenSilently, loginWithRedirect, isLoading]);
+  }, [isAuthenticated, getAccessTokenSilently, loginWithRedirect, isLoading, error]);
 
   useEffect(() => {
     if (user) {
@@ -42,6 +42,10 @@ const AuthWrapper = ({ children }) => {
         <CircularProgress color="success" size="3rem" />
       </div>
     );
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return children;
